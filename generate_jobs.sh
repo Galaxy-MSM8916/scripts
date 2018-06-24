@@ -319,6 +319,8 @@ for file in $JOB_DESC_FILES; do
             JOB_EXTENDED_DESCRIPTION=`substitute_string $JOB_EXTENDED_DESCRIPTION_OLD`
             BUILD_DIR=`substitute_string $BUILD_DIR_OLD`
 
+            SHELL_COMMANDS_EXTRA=`substitute_string ${SHELL_COMMANDS_EXTRA}`
+
             JOB_BASE_NAME=${JOB_PREFIX}-${DIST_VERSION}-${DEVICE_CODENAME}
             JOB_DIR_PATH=${JENKINS_JOB_DIR}/${JOB_DIR_PROPER}/${JOB_BASE_NAME}/
             CONFIG_PATH=${JOB_DIR_PATH}/config.xml

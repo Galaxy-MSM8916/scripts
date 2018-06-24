@@ -33,4 +33,4 @@ DEVICES+=gt58wifi:SM-T350,
 DEVICES+=gt510wifi:SM-T550
 
 # extra commands to pass to build script
-#SHELL_COMMANDS_EXTRA="--clean"
+SHELL_COMMANDS_EXTRA="--pick-topic ##DEVICE_CODENAME-${DIST}-${DIST_VERSION}"
