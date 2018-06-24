@@ -31,4 +31,4 @@ DEVICES=serranovelte:SM-I9195I,
 #DEVICES+=serranove3g:SM-I9192I
 
 # extra commands to pass to build script
-#SHELL_COMMANDS_EXTRA="--clean"
+SHELL_COMMANDS_EXTRA="--pick-topic ##DEVICE_CODENAME-${DIST}-${DIST_VERSION}"
