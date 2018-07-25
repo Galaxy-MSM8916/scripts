@@ -48,7 +48,7 @@ POST_COPY_FUNCTIONS=();
 
 REPO_REF_MAP=();
 
-SCRIPT_REPO_URL="https://git.msm8916.com/Galaxy-MSM8916/build_script.git/plain"
+SCRIPT_REPO_URL="https://git.msm8916.com/Galaxy-MSM8916/scripts.git/plain"
 
 SILENT=0
 

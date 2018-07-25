@@ -1,8 +1,8 @@
-sync_functions.sh
-misc_functions.sh
-bootstrap_core.sh
-build_functions.sh
-copy_functions.sh
-bootimage_functions.sh
-lineage_oms_merge.sh
-print_notification.sh
+build_script/sync_functions.sh
+build_script/misc_functions.sh
+build_script/bootstrap_core.sh
+build_script/build_functions.sh
+build_script/copy_functions.sh
+build_script/bootimage_functions.sh
+build_script/lineage_oms_merge.sh
+build_script/print_notification.sh
