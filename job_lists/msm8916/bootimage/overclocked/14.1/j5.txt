@@ -1,0 +1,41 @@
+#!/bin/bash
+# format:
+# multiple versions can be specified in DIST_VERSION,
+# separated by $SEPARATOR.
+#
+# '##' followed by a variable name in the JOB_EXTENDED_DESCRIPTION
+# or BUILD_DIR variables will be substituted by that variable
+# at generation time.
+#
+
+# for parsing variables below
+SEPARATOR=,
+
+# job config file variables
+#ASSIGNED_NODE=!master
+BLOCKING_JOBS=administrative/block_all_jobs
+BUILDS_TO_KEEP=6
+
+BUILD_TARGET=bootimage
+BUILD_TYPE=eng
+DIST=lineage
+DIST_LONG=LineageOS
+DIST_VERSION=14.1
+JOB_DIR=Boot_Images/Overclocked_Images/Samsung_Galaxy_J5
+JOB_EXTENDED_DESCRIPTION="Overclocked kernel for the ##DEVICE_MODEL"
+JOB_PREFIX=overclocked
+
+BUILD_DIR=lineage-##{DIST_VERSION}
+
+# format: DEVICE_CODENAME:DEVICE_MODEL:DESCRIPTION
+# Use '_' to denote a space.
+DEVICES=j5lte:SM-J500F/G/M/Y:Unified,
+DEVICES+=j53gxx:SM-J500H,
+DEVICES+=j5ltechn:SM-J5008,
+DEVICES+=j5nlte:SM-J500FN,
+DEVICES+=j5xnlte:SM-J510FN
+
+# extra commands to pass to build script
+SHELL_COMMANDS_EXTRA="--branch-map=device/samsung/msm8916-common:cm-14.1-experimental \\"
+SHELL_COMMANDS_EXTRA+=${NEWLINE}
+SHELL_COMMANDS_EXTRA+="--branch-map=kernel/samsung/msm8916:cm-14.1-experimental"

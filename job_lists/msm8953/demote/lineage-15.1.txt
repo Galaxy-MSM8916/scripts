@@ -1,0 +1,33 @@
+#!/bin/bash
+# format:
+# multiple versions can be specified in DIST_VERSION,
+# separated by $SEPARATOR.
+#
+# '##' followed by a variable name in the JOB_EXTENDED_DESCRIPTION
+# or BUILD_DIR variables will be substituted by that variable
+# at generation time.
+#
+
+# for parsing variables below
+SEPARATOR=,
+
+# job config file variables
+ASSIGNED_NODE=google-1
+BLOCKING_JOBS=administrative/block_all_jobs
+
+DIST=lineage
+DIST_LONG=LineageOS
+DIST_VERSION=15.1
+JOB_DIR=administrative/Demote/${DIST_LONG}_15.1_Builds
+JOB_EXTENDED_DESCRIPTION="Demote ${DIST_LONG} ##DIST_VERSION for the ##DEVICE_MODEL"
+JOB_PREFIX=los
+BUILD_TARGET=demote
+
+# format: DEVICE_CODENAME:DEVICE_MODEL:DESCRIPTION
+# Use '_' to denote a space.
+DEVICES=j7popltespr:SM-J727P,
+DEVICES+=j7poplteusc:SM-J727R4,
+DEVICES+=on7xltechn:SM-G6100,
+DEVICES+=c7ltechn:SM-C7000,
+DEVICES+=c7proltedd:SM-C701F
+

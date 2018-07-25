@@ -1,0 +1,34 @@
+#!/bin/bash
+# format:
+# multiple versions can be specified in DIST_VERSION,
+# separated by $SEPARATOR.
+#
+# '##' followed by a variable name in the JOB_EXTENDED_DESCRIPTION
+# or BUILD_DIR variables will be substituted by that variable
+# at generation time.
+#
+
+# for parsing variables below
+SEPARATOR=,
+
+# job config file variables
+#ASSIGNED_NODE=!master
+BLOCKING_JOBS=administrative/block_all_jobs
+
+DIST=lineage-go
+DIST_LONG=LineageOS
+DIST_VERSION=15.1
+JOB_DIR=${DIST_LONG}_GO_Builds/Samsung_Galaxy_S4_Mini_VE
+JOB_EXTENDED_DESCRIPTION="${DIST_LONG} GO ##DIST_VERSION for the ##DEVICE_MODEL"
+JOB_PREFIX=los-go
+BUILD_DIR=lineage-##{DIST_VERSION}
+BUILD_TYPE=userdebug
+BUILD_TARGET=otapackage
+
+# format: DEVICE_CODENAME:DEVICE_MODEL:DESCRIPTION
+# Use '_' to denote a space.
+DEVICES=serranovelte:SM-I9195I,
+#DEVICES+=serranove3g:SM-I9192I
+
+# extra commands to pass to build script
+SHELL_COMMANDS_EXTRA="--pick-topic android-go"

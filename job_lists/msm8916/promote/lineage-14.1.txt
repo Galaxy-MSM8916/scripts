@@ -1,0 +1,45 @@
+#!/bin/bash
+# format:
+# multiple versions can be specified in DIST_VERSION,
+# separated by $SEPARATOR.
+#
+# '##' followed by a variable name in the JOB_EXTENDED_DESCRIPTION
+# or BUILD_DIR variables will be substituted by that variable
+# at generation time.
+#
+
+# for parsing variables below
+SEPARATOR=,
+
+# job config file variables
+ASSIGNED_NODE=google-1
+BLOCKING_JOBS=administrative/block_all_jobs
+
+DIST=lineage
+DIST_LONG=LineageOS
+DIST_VERSION=14.1
+JOB_DIR=administrative/Promote/${DIST_LONG}_14.1_Builds
+JOB_EXTENDED_DESCRIPTION="Promote ${DIST_LONG} ##DIST_VERSION for the ##DEVICE_MODEL"
+JOB_PREFIX=los
+BUILD_TARGET=promote
+
+# format: DEVICE_CODENAME:DEVICE_MODEL:DESCRIPTION
+# Use '_' to denote a space.
+DEVICES=a33g:SM-A300H,
+DEVICES+=a3lte:SM-A300F,
+DEVICES+=a3ulte:SM-A300FU,
+DEVICES+=coreprimeltespr:SM-G360P,
+DEVICES+=gprimelte:SM-G530T/T1/W:Unified_Builds,
+DEVICES+=gprimeltexx:SM-G530FZ,
+DEVICES+=gprimeltezt:SM-G530MU,
+DEVICES+=gprimeltespr:SM-G530P,
+DEVICES+=gprimeltetfnvzw:SM-S920L,
+DEVICES+=gtelwifiue:SM-T560NU,
+DEVICES+=gtesqltespr:SM-T377P,
+DEVICES+=j5lte:SM-J500F/G/M/Y:Unified_Builds,
+DEVICES+=j53gxx:SM-J500H,
+DEVICES+=j5ltechn:SM-J5008,
+DEVICES+=j5nlte:SM-J500FN,
+DEVICES+=j5xnlte:SM-J510FN,
+DEVICES+=j7ltespr:SM-J700P,
+DEVICES+=j7ltechn:SM-J7008

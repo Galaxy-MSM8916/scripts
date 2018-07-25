@@ -1,0 +1,37 @@
+#!/bin/bash
+# format:
+# multiple versions can be specified in DIST_VERSION,
+# separated by $SEPARATOR.
+#
+# '##' followed by a variable name in the JOB_EXTENDED_DESCRIPTION
+# or BUILD_DIR variables will be substituted by that variable
+# at generation time.
+#
+
+# for parsing variables below
+SEPARATOR=,
+
+# job config file variables
+#ASSIGNED_NODE=!master
+BLOCKING_JOBS=administrative/block_all_jobs
+BUILDS_TO_KEEP=6
+
+BUILD_TARGET=bootimage
+BUILD_TYPE=eng
+DIST=lineage
+DIST_LONG=LineageOS
+DIST_VERSION=14.1
+JOB_DIR=Boot_Images/Testing_Images/CVE_Branch
+JOB_DESCRIPTION="CVE Branch"
+JOB_EXTENDED_DESCRIPTION="CVE testing kernel for the ##DEVICE_MODEL"
+JOB_PREFIX=boot-upstream
+BUILD_DIR=lineage-##{DIST_VERSION}
+
+# format: DEVICE_CODENAME:DEVICE_MODEL:DESCRIPTION
+# Use '_' to denote a space.
+DEVICES=a3lte:SM-A300F,
+DEVICES+=gprimelte:SM-G530T/T1/W,
+DEVICES+=j7ltespr:SM-J700P
+
+# extra commands to pass to build script
+SHELL_COMMANDS_EXTRA="--branch-map=kernel/samsung/msm8916:cm-14.1-cve --silent"
