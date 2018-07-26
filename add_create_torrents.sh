@@ -100,8 +100,7 @@ for i in `find ${JENKINS_HOME}/jobs/AOSPA_Builds -type f -name '*zip' | grep -i 
      [ -e $DEST ] || mkdir -p $DEST
 
      for j in `find $F_DIR -mindepth 1 -maxdepth 1 -type f | grep -iv torrent`; do
-         # ! [ -f $DEST/$(basename $j) ] && 
-         echo "Linking $j --> $DEST/$(basename $j) ..."
+         ! [ -f $DEST/$(basename $j) ] && echo "Linking $j --> $DEST/$(basename $j) ..."
          I_DIR=$(dirname $j)
          O_DIR=$DEST
          [ -e $O_DIR/$(basename $j) ] || ln $j $O_DIR/$(basename $j)
@@ -131,8 +130,7 @@ for i in `find ${JENKINS_HOME}/jobs/dotOS_Builds -type f -name '*zip' | grep -i 
      [ -e $DEST ] || mkdir -p $DEST
 
      for j in `find $F_DIR -mindepth 1 -maxdepth 1 -type f | grep -iv torrent`; do
-         # ! [ -f $DEST/$(basename $j) ] && 
-         echo "Linking $j --> $DEST/$(basename $j) ..."
+         ! [ -f $DEST/$(basename $j) ] && echo "Linking $j --> $DEST/$(basename $j) ..."
          I_DIR=$(dirname $j)
          O_DIR=$DEST
          [ -e $O_DIR/$(basename $j) ] || ln $j $O_DIR/$(basename $j)
@@ -162,8 +160,7 @@ for i in `find ${JENKINS_HOME}/jobs/ResurrectionRemix_Builds -type f -name '*zip
      [ -e $DEST ] || mkdir -p $DEST
 
      for j in `find $F_DIR -mindepth 1 -maxdepth 1 -type f | grep -iv torrent`; do
-         # ! [ -f $DEST/$(basename $j) ] && 
-         echo "Linking $j --> $DEST/$(basename $j) ..."
+         ! [ -f $DEST/$(basename $j) ] && echo "Linking $j --> $DEST/$(basename $j) ..."
          I_DIR=$(dirname $j)
          O_DIR=$DEST
          [ -e $O_DIR/$(basename $j) ] || ln $j $O_DIR/$(basename $j)
@@ -193,8 +190,7 @@ for i in `find ${JENKINS_HOME}/jobs/LineageOS_Builds -type f -name '*zip' | grep
      [ -e $DEST ] || mkdir -p $DEST
 
      for j in `find $F_DIR -mindepth 1 -maxdepth 1 -type f | grep -iv torrent`; do
-         # ! [ -f $DEST/$(basename $j) ] && 
-         echo "Linking $j --> $DEST/$(basename $j) ..."
+         ! [ -f $DEST/$(basename $j) ] && echo "Linking $j --> $DEST/$(basename $j) ..."
          I_DIR=$(dirname $j)
          O_DIR=$DEST
          [ -e $O_DIR/$(basename $j) ] || ln $j $O_DIR/$(basename $j)
@@ -226,8 +222,7 @@ for i in `find ${JENKINS_HOME}/jobs/LineageOS_GO_Builds -type f -name '*zip' | g
      [ -e $DEST ] || mkdir -p $DEST
 
      for j in `find $F_DIR -mindepth 1 -maxdepth 1 -type f | grep -iv torrent`; do
-         # ! [ -f $DEST/$(basename $j) ] && 
-         echo "Linking $j --> $DEST/$(basename $j) ..."
+         ! [ -f $DEST/$(basename $j) ] && echo "Linking $j --> $DEST/$(basename $j) ..."
          I_DIR=$(dirname $j)
          O_DIR=$DEST
          [ -e $O_DIR/$(basename $j) ] || ln $j $O_DIR/$(basename $j)
