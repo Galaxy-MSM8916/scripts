@@ -128,13 +128,11 @@ function copy_recoveryimage {
 
 function copy_otapackage {
     if [ "x$BUILD_TARGET" == "xotapackage" ]; then
-        OTA_FILE=${ANDROID_PRODUCT_OUT}/${DISTRIBUTION}_${DEVICE_NAME}-ota-${BUILD_NUMBER}.zip
-        if ! [ -e ${ANDROID_PRODUCT_OUT}/${ota_out} ]; then
-            logb "\nSearching for OTA package..."
-            OTA_FILE=`find ${ANDROID_PRODUCT_OUT} -maxdepth 1 -type f -name '*zip' 2>/dev/null | head -1 2>/dev/null`
-        fi
+        OTA_REGEXP='*'"${DEVICE_NAME}"'*'"${BUILD_NUMBER}"'*zip'
+        logb "\nSearching for OTA package..."
+        OTA_FILE=`find ${ANDROID_PRODUCT_OUT} -maxdepth 1 -type f -name ${OTA_REGEXP} 2>/dev/null | head -1 2>/dev/null`
 
-        if [ "x$OTA_FILE" == "x" ]; then
+        if ! [ -e "$OTA_FILE" ]; then
             echoText "Failed to find ota package!!"
         else
             echoTextBlue "Found ota package $OTA_FILE"
