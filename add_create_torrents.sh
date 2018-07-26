@@ -1,37 +1,9 @@
 #!/bin/bash
 
-function acquire_build_lock {
-
-	local lock_name="android_build_lock"
-	local lock="/var/lock/${lock_name}"
-
-	exec 200>${lock}
-
-	echo "Attempting to acquire lock $lock..."
-
-	# loop if we can't get the lock
-	while true; do
-		flock -n 200
-		if [ $? -eq 0 ]; then
-			break
-		else
-			printf "%c" "."
-			sleep 5
-		fi
-	done
-
-	# set the pid
-	pid=$$
-	echo ${pid} 1>&200
-
-	echo "Lock ${lock} acquired. PID is ${pid}"
-}
-
-function remove_build_lock {
-	echo "Removing lock..."
-	exec 200>&-
-}
-
+# source common functions
+for file in `find common -name '*sh'`; do
+    . $file
+done
 
 HTML_HOME=/var/www/download.msm8916.com/public_html
 # | grep -v 'los-15'
