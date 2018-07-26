@@ -1,4 +1,5 @@
 common/arch.sh
+common/print.sh
 common/lock.sh
 build_script/sync_functions.sh
 build_script/misc_functions.sh

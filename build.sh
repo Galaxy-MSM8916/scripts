@@ -13,19 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-############
-#          #
-#  COLORS  #
-#          #
-############
 START_TIME=$( date +%s )
-
-BLUE='\033[1;35m'
-BOLD="\033[1m"
-GREEN="\033[01;32m"
-NC='\033[0m' # No Color
-RED="\033[01;31m"
-RESTORE=$NC
 
 # file transfer retry count
 UPLOAD_RETRY_COUNT=3
@@ -57,22 +45,6 @@ LINEAGE_REPO_PICKS=
 
 LOCAL_REPO_TOPICS=
 LINEAGE_REPO_TOPICS=
-
-function logr {
-    echo -e ${RED} "$@" ${NC}
-}
-
-function logb {
-    echo -e ${BLUE} "$@" ${NC}
-}
-
-function logg {
-    echo -e ${GREEN} "$@" ${NC}
-}
-
-function log {
-    echo -e "$@"
-}
 
 function validate_arg {
     valid=$(echo $1 | sed s'/^[\-][a-z0-9A-Z\-]*/valid/'g)
