@@ -76,11 +76,11 @@ if [ "x$CONFIG_PATH" != "x" ]; then
 
   display_extra=
   if [ "x$JOB_DESCRIPTION" != "x" ]; then
-	display_extra="(${JOB_DESCRIPTION}) "
+    display_extra="(${JOB_DESCRIPTION}) "
   fi
  
   if [ "x$DEVICE_EXTRA_DESC" != "x" ]; then
-	display_extra+="(${DEVICE_EXTRA_DESC}) "
+    display_extra+="(${DEVICE_EXTRA_DESC}) "
   fi
 
   args_extra=
@@ -192,7 +192,7 @@ function print_help() {
 }
 
 if [ "x$1" == "x" ]; then
-	print_help
+    print_help
 fi
 
 while [ "$1" != "" ]; do
@@ -210,157 +210,157 @@ while [ "$1" != "" ]; do
 done
 
 if [ "x$JENKINS_JOB_DIR" == "x" ]; then
-	JENKINS_JOB_DIR="/var/lib/jenkins/jobs"
+    JENKINS_JOB_DIR="/var/lib/jenkins/jobs"
 fi
 
 # clean up the dirs
 for jobs_folder in $(find $JENKINS_JOB_DIR  -name jobs 2>/dev/null| tac); do
-	for job_dir in $(find $jobs_folder -maxdepth 1 -type d 2>/dev/null); do
-		file_count=$(find $job_dir -type f 2>/dev/null | wc -l)
-		if [ $file_count -le 3 ]; then
-			rm -rf $job_dir
-		fi
-	done
+    for job_dir in $(find $jobs_folder -maxdepth 1 -type d 2>/dev/null); do
+        file_count=$(find $job_dir -type f 2>/dev/null | wc -l)
+        if [ $file_count -le 3 ]; then
+            rm -rf $job_dir
+        fi
+    done
 done
 
 rmdir $(find $JENKINS_JOB_DIR -type d -empty 2>/dev/null) 2>/dev/null
 
 # find the job description files
 if [ -f ${JOB_FILE_INPUT} ]; then
-	JOB_DESC_FILES=${JOB_FILE_INPUT}
+    JOB_DESC_FILES=${JOB_FILE_INPUT}
 elif [ -d ${JOB_FILE_INPUT} ]; then
-	JOB_DESC_FILES=$(find ${JOB_FILE_INPUT} -type f)
+    JOB_DESC_FILES=$(find ${JOB_FILE_INPUT} -type f)
 else
-	echo "Invalid --input argument specified"
-	exit 1
+    echo "Invalid --input argument specified"
+    exit 1
 fi
 
 function substitute_string {
 # substitute_string $string
-	new_string=`echo "$@" | sed s'/##/$/'g`
-	eval "echo $new_string"
+    new_string=`echo "$@" | sed s'/##/$/'g`
+    eval "echo $new_string"
 }
 
 function split_variable {
 # split_variable $variable
-	echo $1 | sed s"/$SEPARATOR/ /"g
+    echo $1 | sed s"/$SEPARATOR/ /"g
 }
 
 function extract_field {
 # extract_field string $field_num $separator
-	if [ "x$3" == "x" ]; then
-		separator=':'
-	else
-		separator=$3
-	fi
-	echo $1 | cut -d "$separator" -f $2
+    if [ "x$3" == "x" ]; then
+        separator=':'
+    else
+        separator=$3
+    fi
+    echo $1 | cut -d "$separator" -f $2
 }
 
 function remove_underscores {
-	result=$(echo $@ | sed s'/__/ /'g)
-	result=$(echo $result | sed s'/_/ /'g)
-	echo $result
+    result=$(echo $@ | sed s'/__/ /'g)
+    result=$(echo $result | sed s'/_/ /'g)
+    echo $result
 }
 
 for file in $JOB_DESC_FILES; do
 
-	# clear some variables
-	BUILDS_TO_KEEP=4
-	DEVICES=
-	JOB_DESCRIPTION=
-	JOB_DIR_PROPER=
-	SHELL_COMMANDS_EXTRA=
+    # clear some variables
+    BUILDS_TO_KEEP=4
+    DEVICES=
+    JOB_DESCRIPTION=
+    JOB_DIR_PROPER=
+    SHELL_COMMANDS_EXTRA=
 
-	# source the job description files
-	. $file
+    # source the job description files
+    . $file
 
-	# generate the job dirs
-	while [ $(dirname $JOB_DIR) != "." ]; do
-		JOB_DIR_PROPER="$(basename $JOB_DIR)/jobs/${JOB_DIR_PROPER}"
-		JOB_DIR=$(dirname $JOB_DIR)
-	done
-	JOB_DIR_PROPER="$(basename $JOB_DIR)/jobs/${JOB_DIR_PROPER}"
+    # generate the job dirs
+    while [ $(dirname $JOB_DIR) != "." ]; do
+        JOB_DIR_PROPER="$(basename $JOB_DIR)/jobs/${JOB_DIR_PROPER}"
+        JOB_DIR=$(dirname $JOB_DIR)
+    done
+    JOB_DIR_PROPER="$(basename $JOB_DIR)/jobs/${JOB_DIR_PROPER}"
 
-	# generate the job configs
-	JOB_DIR=$JOB_DIR_PROPER
-	while [ $(dirname $JOB_DIR) != "." ]; do
-		JOB_DIR_NAME=$(basename $JOB_DIR)
-		if [ $JOB_DIR_NAME == "jobs" ]; then
-			JOB_DIR_NAME=$(dirname $JOB_DIR)
-			[ $(basename $JOB_DIR_NAME) != "." ] && JOB_DIR_NAME=$(basename $JOB_DIR_NAME)
+    # generate the job configs
+    JOB_DIR=$JOB_DIR_PROPER
+    while [ $(dirname $JOB_DIR) != "." ]; do
+        JOB_DIR_NAME=$(basename $JOB_DIR)
+        if [ $JOB_DIR_NAME == "jobs" ]; then
+            JOB_DIR_NAME=$(dirname $JOB_DIR)
+            [ $(basename $JOB_DIR_NAME) != "." ] && JOB_DIR_NAME=$(basename $JOB_DIR_NAME)
 
-			generate_folder_config $JOB_DIR_NAME ${JENKINS_JOB_DIR}/$(dirname $JOB_DIR)/config.xml
-		fi
-		JOB_DIR=$(dirname $JOB_DIR)
-	done
+            generate_folder_config $JOB_DIR_NAME ${JENKINS_JOB_DIR}/$(dirname $JOB_DIR)/config.xml
+        fi
+        JOB_DIR=$(dirname $JOB_DIR)
+    done
 
-	# save these variables for later use
-	JOB_EXTENDED_DESCRIPTION_OLD=$JOB_EXTENDED_DESCRIPTION
-	BUILD_DIR_OLD=$BUILD_DIR
+    # save these variables for later use
+    JOB_EXTENDED_DESCRIPTION_OLD=$JOB_EXTENDED_DESCRIPTION
+    BUILD_DIR_OLD=$BUILD_DIR
 
-	SSH="ssh -o StrictHostKeyChecking=no"
+    SSH="ssh -o StrictHostKeyChecking=no"
 
-	for DIST_VERSION in `split_variable $DIST_VERSION`; do
-		for DEVICE_LINE in `split_variable $DEVICES`; do
+    for DIST_VERSION in `split_variable $DIST_VERSION`; do
+        for DEVICE_LINE in `split_variable $DEVICES`; do
 
-			DEVICE_CODENAME=`extract_field $DEVICE_LINE 1`
-			DEVICE_MODEL=`extract_field $DEVICE_LINE 2`
-			DEVICE_EXTRA_DESC=`extract_field $DEVICE_LINE 3`
-			DEVICE_EXTRA_DESC=`remove_underscores $DEVICE_EXTRA_DESC`
+            DEVICE_CODENAME=`extract_field $DEVICE_LINE 1`
+            DEVICE_MODEL=`extract_field $DEVICE_LINE 2`
+            DEVICE_EXTRA_DESC=`extract_field $DEVICE_LINE 3`
+            DEVICE_EXTRA_DESC=`remove_underscores $DEVICE_EXTRA_DESC`
 
-			JOB_EXTENDED_DESCRIPTION=`substitute_string $JOB_EXTENDED_DESCRIPTION_OLD`
-			BUILD_DIR=`substitute_string $BUILD_DIR_OLD`
+            JOB_EXTENDED_DESCRIPTION=`substitute_string $JOB_EXTENDED_DESCRIPTION_OLD`
+            BUILD_DIR=`substitute_string $BUILD_DIR_OLD`
 
-			JOB_BASE_NAME=${JOB_PREFIX}-${DIST_VERSION}-${DEVICE_CODENAME}
-			JOB_DIR_PATH=${JENKINS_JOB_DIR}/${JOB_DIR_PROPER}/${JOB_BASE_NAME}/
-			CONFIG_PATH=${JOB_DIR_PATH}/config.xml
+            JOB_BASE_NAME=${JOB_PREFIX}-${DIST_VERSION}-${DEVICE_CODENAME}
+            JOB_DIR_PATH=${JENKINS_JOB_DIR}/${JOB_DIR_PROPER}/${JOB_BASE_NAME}/
+            CONFIG_PATH=${JOB_DIR_PATH}/config.xml
 
-			mkdir -p $JOB_DIR_PATH
+            mkdir -p $JOB_DIR_PATH
 
-			if [ "$DIST_VERSION" == "14.1" ]; then
-				OTA_VER=14
-			elif [ "$DIST_VERSION" == "15.1" ]; then
-				OTA_VER=15
-			fi
+            if [ "$DIST_VERSION" == "14.1" ]; then
+                OTA_VER=14
+            elif [ "$DIST_VERSION" == "15.1" ]; then
+                OTA_VER=15
+            fi
 
-			if [ "$BUILD_TARGET" == "otapackage" ] || [ "$BUILD_TARGET" == "bootimage" ] || [ "$BUILD_TARGET" == "recoveryimage" ]; then
+            if [ "$BUILD_TARGET" == "otapackage" ] || [ "$BUILD_TARGET" == "bootimage" ] || [ "$BUILD_TARGET" == "recoveryimage" ]; then
 
-				CAN_ROAM=true
+                CAN_ROAM=true
 
-				SHELL_COMMANDS="JOB_URL=https://${HOST_NAME}/job/$(echo ${JOB_DIR_PROPER} | sed s/jobs/job/g)\${JOB_BASE_NAME}/\${BUILD_NUMBER}"
-				SHELL_COMMANDS+=${NEWLINE}
-				SHELL_COMMANDS+="JOB_DESCRIPTION=\"$JOB_EXTENDED_DESCRIPTION\""
-				SHELL_COMMANDS+=${NEWLINE}
-				SHELL_COMMANDS+="\${BUILD_BIN_ROOT}/build.sh --path \${BUILD_ANDROID_ROOT}/${BUILD_DIR} --distro ${DIST} \\"
-				SHELL_COMMANDS+=${NEWLINE}
-				SHELL_COMMANDS+="--device ${DEVICE_CODENAME} --target ${BUILD_TARGET} -j \${MAX_JOB_NUMBER} \\"
-				SHELL_COMMANDS+=${NEWLINE}
-				SHELL_COMMANDS+="--output \${JENKINS_HOME}/jobs/${JOB_DIR_PROPER}\${JOB_BASE_NAME}/builds/\${BUILD_NUMBER}/archive/ \\"
-				SHELL_COMMANDS+=${NEWLINE}
-				SHELL_COMMANDS+="-b \${BUILD_NUMBER} --type=${BUILD_TYPE} -v \\"
-				SHELL_COMMANDS+=${NEWLINE}
-				SHELL_COMMANDS+="--job-url \"\${JOB_URL}\" \\"
-				SHELL_COMMANDS+=${NEWLINE}
-				SHELL_COMMANDS+="--description \"\${JOB_DESCRIPTION}\" \\"
-				SHELL_COMMANDS+=${NEWLINE}
-				SHELL_COMMANDS+="--host ${HOST_USER}@${HOST_NAME} ${SHELL_COMMANDS_EXTRA} \$EXTRA_ARGS"
+                SHELL_COMMANDS="JOB_URL=https://${HOST_NAME}/job/$(echo ${JOB_DIR_PROPER} | sed s/jobs/job/g)\${JOB_BASE_NAME}/\${BUILD_NUMBER}"
+                SHELL_COMMANDS+=${NEWLINE}
+                SHELL_COMMANDS+="JOB_DESCRIPTION=\"$JOB_EXTENDED_DESCRIPTION\""
+                SHELL_COMMANDS+=${NEWLINE}
+                SHELL_COMMANDS+="\${BUILD_BIN_ROOT}/build.sh --path \${BUILD_ANDROID_ROOT}/${BUILD_DIR} --distro ${DIST} \\"
+                SHELL_COMMANDS+=${NEWLINE}
+                SHELL_COMMANDS+="--device ${DEVICE_CODENAME} --target ${BUILD_TARGET} -j \${MAX_JOB_NUMBER} \\"
+                SHELL_COMMANDS+=${NEWLINE}
+                SHELL_COMMANDS+="--output \${JENKINS_HOME}/jobs/${JOB_DIR_PROPER}\${JOB_BASE_NAME}/builds/\${BUILD_NUMBER}/archive/ \\"
+                SHELL_COMMANDS+=${NEWLINE}
+                SHELL_COMMANDS+="-b \${BUILD_NUMBER} --type=${BUILD_TYPE} -v \\"
+                SHELL_COMMANDS+=${NEWLINE}
+                SHELL_COMMANDS+="--job-url \"\${JOB_URL}\" \\"
+                SHELL_COMMANDS+=${NEWLINE}
+                SHELL_COMMANDS+="--description \"\${JOB_DESCRIPTION}\" \\"
+                SHELL_COMMANDS+=${NEWLINE}
+                SHELL_COMMANDS+="--host ${HOST_USER}@${HOST_NAME} ${SHELL_COMMANDS_EXTRA} \$EXTRA_ARGS"
 
-			elif [ "$BUILD_TARGET" == "promote" ]; then
-				CAN_ROAM=false
+            elif [ "$BUILD_TARGET" == "promote" ]; then
+                CAN_ROAM=false
 
-				SHELL_COMMANDS="~/bin/ota.sh -t ${BUILD_TARGET} -d ${DEVICE_CODENAME} -v ${OTA_VER} -j \$JOB_NUM"
-				SHELL_COMMANDS+=${NEWLINE}
-			elif [ "$BUILD_TARGET" == "demote" ]; then
+                SHELL_COMMANDS="~/bin/ota.sh -t ${BUILD_TARGET} -d ${DEVICE_CODENAME} -v ${OTA_VER} -j \$JOB_NUM"
+                SHELL_COMMANDS+=${NEWLINE}
+            elif [ "$BUILD_TARGET" == "demote" ]; then
 
-				CAN_ROAM=false
+                CAN_ROAM=false
 
-				SHELL_COMMANDS="~/bin/ota.sh -t ${BUILD_TARGET} -d ${DEVICE_CODENAME} -v ${OTA_VER}"
-				SHELL_COMMANDS+=${NEWLINE}
-			fi
+                SHELL_COMMANDS="~/bin/ota.sh -t ${BUILD_TARGET} -d ${DEVICE_CODENAME} -v ${OTA_VER}"
+                SHELL_COMMANDS+=${NEWLINE}
+            fi
 
-			echo "Generating job \"$JOB_EXTENDED_DESCRIPTION\"..."
-			generate_job_config $CONFIG_PATH
-		done
-		echo
-	done
+            echo "Generating job \"$JOB_EXTENDED_DESCRIPTION\"..."
+            generate_job_config $CONFIG_PATH
+        done
+        echo
+    done
 done
