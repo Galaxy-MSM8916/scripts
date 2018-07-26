@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-START_TIME=$( date +%s )
-
 # file transfer retry count
 UPLOAD_RETRY_COUNT=3
 
