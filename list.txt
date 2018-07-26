@@ -1,3 +1,4 @@
+common/arch.sh
 build_script/sync_functions.sh
 build_script/misc_functions.sh
 build_script/bootstrap_core.sh

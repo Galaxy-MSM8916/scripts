@@ -1,53 +1,13 @@
 #!/bin/bash
 
-search_path="/home/vincent/jenkins_job_generation_script"
-devices=
-devices_full=
-
-newline="
-"
-
-function update_job_repo() {
-    update_file=$search_path/.updated
-    if ! [ -d $search_path ]; then
-        git clone https://git.msm8953.com/Galaxy-MSM8916/jenkins_job_generation_script.git/ $search_path
-    elif [ "`find $update_file -mtime 0`" != "$update_file" ]; then
-        git -C $search_path pull
-        touch $update_file
-    fi
-}
-
-function optimise_device_list() {
-    [ -d "$search_path" ] || (>&2 update_job_repo)
-    [ -z $devices_full ] && devices_full=`find $search_path -name '*txt' | xargs grep DEVICES`
-
-    for i in $devices_full; do
-	    arch=`echo $i | grep -o -e 'msm[0-9a-zA-Z]*'`;
-	    [ -z $arch ] && arch=`echo $i | grep -o -e 'exynos[0-9a-zA-Z]*'`;
-	    device=`echo $i| cut -d'=' -f 2| cut -d':' -f 1`
-	    if [ "`echo $devices | grep -o $device | uniq`" != "$device" ]; then
-	        devices+="$device:$arch"
-	        devices+=$newline
-            fi
-    done
-    devices=`echo $devices | sort | uniq`
-}
-
-function find_arch() {
-    device=$1
-
-    #arch=`for i in $devices_full; do echo $i|grep $device; done|grep -o -e 'msm[0-9a-zA-Z]*'|sort|uniq`
-
-    arch=`echo $devices|grep -o $device:'[a-zA-Z0-9]*'|uniq|cut -d':' -f2`
-
-    echo $arch #&& (>&2 echo "Arch of device $device is: $arch")
-}
+# source common functions
+for file in `find common -name '*sh'`; do
+    . $file
+done
 
 function get_html_home() {
 # first arg - device name
     local arch=`find_arch $1`
-
-    [ -z $arch ] && arch=msm8916
 
     echo /var/www/download.${arch}.com/public_html
 }
