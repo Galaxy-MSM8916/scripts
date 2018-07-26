@@ -5,6 +5,9 @@ for file in `find common -name '*sh'`; do
     . $file
 done
 
+# update the repo
+update_repo
+
 HTML_HOME=/var/www/download.msm8916.com/public_html
 # | grep -v 'los-15'
 #TRACKERS="http://tracker.msm8916.com:6969/announce,udp://tracker.coppersurfer.tk:6969,udp://tracker.leechers-paradise.org:6969"

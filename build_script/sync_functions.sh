@@ -92,16 +92,6 @@ if [ -n "$SYNC_ALL" ]; then
 fi
 }
 
-function sync_script {
-    logb "Updating build script..."
-    if [ -z "$UPDATE_SCRIPT" ]; then
-        ${CURL} ${SCRIPT_REPO_URL}/$(basename $0) | tee $0 > /dev/null
-    else
-        ${CURL} ${SCRIPT_REPO_URL}/$(basename $0) | tee $0 > /dev/null && exit || exit
-    fi
-    logb "Done."
-}
-
 function apply_repopicks {
     cd ${BUILD_TOP}
     gerrit_url="https://review.${arch}.com"

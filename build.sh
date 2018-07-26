@@ -13,6 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# source common functions
+for file in `find common -name '*sh'`; do
+    . $file
+done
+
+# update the repo
+update_repo
+
+# source build functions
+for file in `find build_script -name '*sh'`; do
+    . $file
+done
+
 # file transfer retry count
 UPLOAD_RETRY_COUNT=3
 
@@ -33,8 +46,6 @@ COPY_FUNCTIONS=();
 POST_COPY_FUNCTIONS=();
 
 REPO_REF_MAP=();
-
-SCRIPT_REPO_URL="https://git.msm8916.com/Galaxy-MSM8916/scripts.git/plain"
 
 SILENT=0
 
@@ -198,7 +209,7 @@ while [ "$1" != "" ]; do
         -u | --su )
             WITH_SU=true
             ;;
-        --update-script )  UPDATE_SCRIPT=1
+        --update-script )  update_repo
             ;;
         -v)
             SYNC_VENDOR=1
@@ -221,115 +232,64 @@ while [ "$1" != "" ]; do
     shift
 done
 
-if [ "x$UPDATE_SCRIPT" == "x" ]; then
-    if [ "x${BUILD_TOP}" == "x" ]; then
-        logr "No android source directory specified!"
-        exit 1
-    fi
-    if [ "x$SYNC_ALL" == "x" ] && [ "x$SYNC_VENDOR" == "x" ]; then
-        if [ "x${DEVICE_NAME}" == "x" ]; then
-            logr "No device name specified!"
-            exit 1
-        fi
-
-        if [ "x${BUILD_VARIANT}" == "x" ]; then
-            logr "No build variant specified!"
-            exit 1
-        fi
-
-        if [ "x${BUILD_TARGET}" == "x" ]; then
-            logr "No build target specified!"
-            exit 1
-        fi
-    fi
+if [ "x${BUILD_TOP}" == "x" ]; then
+    logr "No android source directory specified!"
+    exit 1
 fi
-
-# fetch the critical build scripts
-logb "Getting build script list..."
-script_dir=${BUILD_TEMP}/scripts
-file_list=$(${CURL} ${SCRIPT_REPO_URL}/list.txt 2>/dev/null)
-
-if [ $? -ne 0 ]; then
-    logr "Failed! Checking for local version.."
-    file_list=$(cat $(dirname $0)/list.txt)
-    if [ $? -ne 0 ]; then
-        logr "Fatal! No local version found."
-        exit 1
-    fi
-else
-    ${CURL} ${SCRIPT_REPO_URL}/list.txt 1>$(dirname $0)/list.txt 2>/dev/null
-fi
-
-mkdir -p ${script_dir}
-
-# source the files
-for source_file in ${file_list}; do
-
-    if [ -n "$UPDATE_SCRIPT" ] || ! [ -e $(dirname $0)/${source_file} ]; then
-        logb "Fetching $source_file ..."
-        ${CURL} ${SCRIPT_REPO_URL}/${source_file} 1>${script_dir}/${source_file} 2>/dev/null
-        logg "Updating local version of $source_file ..."
-        mv -f ${script_dir}/${source_file} $(dirname $0)/${source_file}
-    fi
-
-
-    if ! [ -e $(dirname $0)/${source_file} ]; then
-        logr "Failed to fetch file $source_file"
+if [ "x$SYNC_ALL" == "x" ] && [ "x$SYNC_VENDOR" == "x" ]; then
+    if [ "x${DEVICE_NAME}" == "x" ]; then
+        logr "No device name specified!"
         exit 1
     fi
 
-    logb "Sourcing $source_file ..."
-    . $(dirname $0)/${source_file}
+    if [ "x${BUILD_VARIANT}" == "x" ]; then
+        logr "No build variant specified!"
+        exit 1
+    fi
 
-    echo
-done
-
-if [ "x$UPDATE_SCRIPT" == "x" ]; then
-    # setup env vars
-    bootstrap "$@"
-    # check if any other builds are running
-    acquire_build_lock
-    # get the platform info
-    get_platform_info
-    # clean build top
-    clean_out
-    # sync manifests
-    sync_manifests
-    # sync the repos
-    sync_vendor_trees "$@"
-    sync_all_trees "$@"
-
-    if [ "x${BUILD_TARGET}" != "x" ] && [ "x${BUILD_VARIANT}" != "x" ] && [ "x${DEVICE_NAME}" != "x" ]; then
-        # setup the build environment
-        setup_env "$@"
-        # apply repopicks
-        apply_repopicks
-        # print the build start text
-        print_start_build
-        # make the targets
-        make_targets
-        # copy the files
-        copy_files
-        # generate the changes
-        generate_changes
-        # sync the build script
-        sync_script "$@"
-        # remove lock
-        remove_build_lock
-        # upload build artifacts
-        upload_artifacts
-        # end the build
-        print_end_build
+    if [ "x${BUILD_TARGET}" == "x" ]; then
+        logr "No build target specified!"
+        exit 1
     fi
 fi
-# remove temp dir
-remove_temp_dir
-if [ "x${BUILD_TARGET}" == "x" ] || [ "x${BUILD_VARIANT}" == "x" ] || [ "x${DEVICE_NAME}" == "x" ]; then
-    # check if any other builds are running
-    acquire_build_lock
+
+# setup env vars
+bootstrap "$@"
+# check if any other builds are running
+acquire_build_lock
+# get the platform info
+get_platform_info
+# clean build top
+clean_out
+# sync manifests
+sync_manifests
+# sync the repos
+sync_vendor_trees "$@"
+sync_all_trees "$@"
+
+if [ "x${BUILD_TARGET}" != "x" ] && [ "x${BUILD_VARIANT}" != "x" ] && [ "x${DEVICE_NAME}" != "x" ]; then
+    # setup the build environment
+    setup_env "$@"
+    # apply repopicks
+    apply_repopicks
+    # print the build start text
+    print_start_build
+    # make the targets
+    make_targets
+    # copy the files
+    copy_files
+    # generate the changes
+    generate_changes
     # sync the build script
     sync_script "$@"
+    # remove lock
+    remove_build_lock
+    # upload build artifacts
+    upload_artifacts
+    # end the build
+    print_end_build
 fi
+
 # remove lock
 remove_build_lock
 

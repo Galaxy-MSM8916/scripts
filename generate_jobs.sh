@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# source common functions
+for file in `find common -name '*sh'`; do
+    . $file
+done
+
+# update the repo
+update_repo
+
 NEWLINE="
 "
 

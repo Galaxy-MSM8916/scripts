@@ -5,6 +5,9 @@ for file in `find common -name '*sh'`; do
     . $file
 done
 
+# update the repo
+update_repo
+
 if [ "x$GO" == "x" ];then
     GO=0
 fi
@@ -91,7 +94,7 @@ if [ -z "$JENKINS_HOME" ]; then
     JENKINS_HOME=/var/lib/jenkins
 fi
 
-update_job_repo
+update_repo
 generate_device_list
 
 if [ "x$TARGET" == "xpromote" ]; then

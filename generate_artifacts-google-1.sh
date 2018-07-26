@@ -5,6 +5,9 @@ for file in `find common -name '*sh'`; do
     . $file
 done
 
+# update the repo
+update_repo
+
 function get_html_home() {
 # first arg - device name
     local arch=`find_arch $1`
