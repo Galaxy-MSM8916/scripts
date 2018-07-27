@@ -61,10 +61,5 @@ function generate_changes {
         generate_log ${repo_path} >> ${ARTIFACT_OUT_DIR}/${changelog_name}
 
     done
-
-    if [ -e ${ANDROID_BUILD_TOP}/CHANGELOG.mkdn ]; then
-        echo -e "\n\n---------\n" >> ${ARTIFACT_OUT_DIR}/${changelog_name}
-        cat ${ANDROID_BUILD_TOP}/CHANGELOG.mkdn >> ${ARTIFACT_OUT_DIR}/${changelog_name}
-    fi
 }
 
