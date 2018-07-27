@@ -82,23 +82,12 @@ function copy_bootimage {
         exit_on_failure mkdir -p ${revert_pkg_dir}/${install_target_dir}/installend
         exit_on_failure mkdir -p ${revert_pkg_dir}/${install_target_dir}/postvalidate
 
-
-        # download the update binary
-        echoTextBlue "Fetching update binary..."
-        ${CURL} ${SCRIPT_REPO_URL}/updater/update-binary 1>${BUILD_TEMP}/update-binary 2>/dev/null
-        cp ${BUILD_TEMP}/update-binary ${revert_pkg_dir}/${binary_target_dir}
-
-        echoTextBlue "Fetching mkbootimg..."
-        ${CURL} ${SCRIPT_REPO_URL}/bootimg-tools/mkbootimg 1>${BUILD_TEMP}/mkbootimg 2>/dev/null
-
-        echoTextBlue "Fetching unpackbootimg..."
-        ${CURL} ${SCRIPT_REPO_URL}/bootimg-tools/unpackbootimg 1>${BUILD_TEMP}/unpackbootimg 2>/dev/null
-
+	script_dir=`realpath $(dirname $0)`
 
         cp ${ANDROID_PRODUCT_OUT}/boot.img ${boot_pkg_dir}/${blob_dir}
-        cp ${BUILD_TEMP}/update-binary ${boot_pkg_dir}/${binary_target_dir}
-        cp ${BUILD_TEMP}/mkbootimg ${boot_pkg_dir}/${install_target_dir}
-        cp ${BUILD_TEMP}/unpackbootimg ${boot_pkg_dir}/${install_target_dir}
+        cp ${script_dir}/update-binary ${boot_pkg_dir}/${binary_target_dir}
+        cp ${script_dir}/mkbootimg ${boot_pkg_dir}/${install_target_dir}
+        cp ${script_dir}/unpackbootimg ${boot_pkg_dir}/${install_target_dir}
 
         # Create the scripts
         create_scripts
