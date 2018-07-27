@@ -48,25 +48,19 @@ function generate_changes {
 
     changelog_name=changelog-${arc_name}.txt
 
-    echo -e "\n${arch^^}-COMMON\n---------\n" > ${ARTIFACT_OUT_DIR}/${changelog_name}
-    generate_log ${platform_common_dir} >> ${ARTIFACT_OUT_DIR}/${changelog_name}
+    manifest_entries=`cat ${local_manifest} |grep -o 'path="[a-z0-9\_\/\-]*"[ ]*name="[a-zA-Z0-9\_\/\-]*"' | sed s'/ /__/'g`
 
-    echo -e "\nKERNEL\n---------\n" >> ${ARTIFACT_OUT_DIR}/${changelog_name}
-    kernel_dir=${ANDROID_BUILD_TOP}/kernel/${vendors[0]}/${arch}
-    generate_log ${kernel_dir} >> ${ARTIFACT_OUT_DIR}/${changelog_name}
+    for entry in $manifest_entries; do
 
-    echo -e "\nDEVICE\n---------\n" >> ${ARTIFACT_OUT_DIR}/${changelog_name}
-    device_dir=${ANDROID_BUILD_TOP}/device/${vendors[0]}/${DEVICE_NAME}
-    generate_log ${device_dir} >> ${ARTIFACT_OUT_DIR}/${changelog_name}
+        repo_name=`echo $entry | grep -o 'name="[a-zA-Z0-9\_\/\-]*"' | cut -d '=' -f 2 | sed s'/"//'g`
+        repo_path=`echo $entry | grep -o 'path="[a-z0-9\_\/\-]*"' | cut -d '=' -f 2 | sed s'/"//'g`
 
-    echo -e "\nDEVICE-COMMON\n---------\n" >> ${ARTIFACT_OUT_DIR}/${changelog_name}
-    generate_log ${common_dir} >> ${ARTIFACT_OUT_DIR}/${changelog_name}
+        echo -e "\n${repo_name}" >> ${ARTIFACT_OUT_DIR}/${changelog_name}
+        echo -e "$( for i in $( seq 1 `echo $repo_name | wc -c | sed s/[0-9]../100/g` ); do echo -e "=\c"; done )\n" \
+	    >> ${ARTIFACT_OUT_DIR}/${changelog_name}
+        generate_log ${repo_path} >> ${ARTIFACT_OUT_DIR}/${changelog_name}
 
-    if [ "x$BUILD_TARGET" == "xotapackage" ]; then
-        echo -e "\nVENDOR\n---------\n" >> ${ARTIFACT_OUT_DIR}/${changelog_name}
-        vendor_dir=${ANDROID_BUILD_TOP}/vendor/${vendors[0]}
-        generate_log ${vendor_dir} >> ${ARTIFACT_OUT_DIR}/${changelog_name}
-    fi
+    done
 
     if [ -e ${ANDROID_BUILD_TOP}/CHANGELOG.mkdn ]; then
         echo -e "\n\n---------\n" >> ${ARTIFACT_OUT_DIR}/${changelog_name}
