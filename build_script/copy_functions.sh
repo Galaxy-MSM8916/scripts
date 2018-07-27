@@ -82,8 +82,6 @@ function copy_bootimage {
         exit_on_failure mkdir -p ${revert_pkg_dir}/${install_target_dir}/installend
         exit_on_failure mkdir -p ${revert_pkg_dir}/${install_target_dir}/postvalidate
 
-	script_dir=`realpath $(dirname $0)`
-
         cp ${ANDROID_PRODUCT_OUT}/boot.img ${boot_pkg_dir}/${blob_dir}
         cp ${script_dir}/update-binary ${boot_pkg_dir}/${binary_target_dir}
         cp ${script_dir}/mkbootimg ${boot_pkg_dir}/${install_target_dir}

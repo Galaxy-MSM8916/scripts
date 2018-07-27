@@ -1,8 +1,10 @@
 #!/bin/bash
 
+script_dir=`realpath $(dirname $0)`
+
 function update_repo() {
     echo "Finding git repo..."
-    local git_dir=`find -type d -name '.git'`
+    local git_dir=`find $script_dir -type d -name '.git'`
     [ -z $git_dir ] && local git_dir=".git"
 
     if [ -d "$git_dir" ]; then

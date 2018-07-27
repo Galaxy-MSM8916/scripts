@@ -13,8 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+script_dir=`realpath $(dirname $0)`
+
 # source common functions
-for file in `find common -name '*sh'`; do
+for file in `find $script_dir/common -name '*sh'`; do
     . $file
 done
 
@@ -22,7 +24,7 @@ done
 update_repo
 
 # source build functions
-for file in `find build_script -name '*sh'`; do
+for file in `find $script_dir/build_script -name '*sh'`; do
     . $file
 done
 
