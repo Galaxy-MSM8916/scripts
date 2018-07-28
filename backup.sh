@@ -1,3 +1,5 @@
+#!/bin/bash
+
 LIST="
 /etc/apache2
 /etc/crontab
