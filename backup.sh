@@ -12,9 +12,17 @@ LIST="
 "
 
 EXCLUDE="
-download.msm8916.com/public_html
-download.msm8953.com/public_html
 builds/full
+zvikovincent
+AOSPA
+dotOS
+DotOS
+LineageOS
+LineageOS_Go
+MindTheGApps
+OpenGApps
+ResurrectionRemix
+TWRP
 .vim
 .cache
 .local
