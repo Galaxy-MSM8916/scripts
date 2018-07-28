@@ -10,11 +10,11 @@ newline="
 
 function generate_device_list() {
 
-    search_path="`find -type d -name job_lists`"
+    script_dir=`realpath $(dirname $0)`
 
-    [ -z $search_path ] && search_path="job_lists"
+    [ -z $script_dir ] && script_dir="job_lists"
 
-    [ -z "$ARCH_DEVICES_FULL" ] && ARCH_DEVICES_FULL=`find $search_path -name '*txt' | xargs grep DEVICES`
+    [ -z "$ARCH_DEVICES_FULL" ] && ARCH_DEVICES_FULL=`find $script_dir -name '*txt' | xargs grep DEVICES`
 
     for i in $ARCH_DEVICES_FULL; do
 	    arch=`echo $i | grep -o -e 'msm[0-9a-zA-Z]*'`;
