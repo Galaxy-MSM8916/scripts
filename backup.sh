@@ -13,6 +13,7 @@ LIST="
 
 EXCLUDE="
 download.msm8916.com/public_html
+download.msm8953.com/public_html
 builds/full
 .vim
 .cache
