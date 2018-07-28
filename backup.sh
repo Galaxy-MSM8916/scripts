@@ -1,5 +1,15 @@
 #!/bin/bash
 
+script_dir=`realpath $(dirname $0)`
+
+# source common functions
+for file in `find $script_dir/common -name '*sh'`; do
+    . $file
+done
+
+# update the repo
+update_repo
+
 LIST="
 /etc/apache2
 /etc/crontab
