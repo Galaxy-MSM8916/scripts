@@ -1,0 +1,36 @@
+#!/bin/bash
+# format:
+# multiple versions can be specified in DIST_VERSION,
+# separated by $SEPARATOR.
+#
+# '##' followed by a variable name in the JOB_EXTENDED_DESCRIPTION
+# or BUILD_DIR variables will be substituted by that variable
+# at generation time.
+#
+
+# for parsing variables below
+SEPARATOR=,
+
+# job config file variables
+#ASSIGNED_NODE=!master
+BLOCKING_JOBS=administrative/block_all_jobs
+
+DIST=rr
+DIST_LONG=ResurrectionRemix
+DIST_VERSION=oreo
+JOB_DIR=${DIST_LONG}_Builds/Samsung_Galaxy_Tab_E
+JOB_EXTENDED_DESCRIPTION="${DIST_LONG} ##DIST_VERSION for the ##DEVICE_MODEL"
+JOB_PREFIX=rr
+BUILD_DIR=rr-##{DIST_VERSION}
+BUILD_TYPE=eng
+BUILD_TARGET=otapackage
+
+# format: DEVICE_CODENAME:DEVICE_MODEL:DESCRIPTION
+# Use '_' to denote a space.
+DEVICES=gtelwifiue:SM-T560NU,
+DEVICES+=gtesqltespr:SM-T377P,
+DEVICES+=gt58wifi:SM-T350,
+DEVICES+=gt510wifi:SM-T550
+
+# extra commands to pass to build script
+#SHELL_COMMANDS_EXTRA="--clean"
