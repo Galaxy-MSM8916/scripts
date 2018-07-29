@@ -39,6 +39,7 @@ function find_arch() {
 
     # default to msm8916
     [ -z "${arch}" ] && arch=msm8916
+    [ -z "${device_name}" ] && arch=msm8916
 
     echo $arch
 }
