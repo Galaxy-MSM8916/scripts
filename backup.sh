@@ -1,11 +1,9 @@
 #!/bin/bash
 
-script_dir=`realpath $(dirname $0)`
-
-# source common functions
-for file in `find $script_dir/common -name '*sh'`; do
-    . $file
-done
+# source 'script' functions
+. common/source.sh
+# source common scripts
+source_common
 
 # update the repo
 update_repo

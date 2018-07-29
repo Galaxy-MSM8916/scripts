@@ -13,12 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-script_dir=`realpath $(dirname $0)`
 
-# source common functions
-for file in `find $script_dir/common -name '*sh'`; do
-    . $file
-done
+# source 'script' functions
+. common/source.sh
+# source common scripts
+source_common
 
 # file transfer retry count
 UPLOAD_RETRY_COUNT=3
@@ -251,9 +250,7 @@ fi
 update_repo
 
 # source build functions
-for file in `find $script_dir/build_script -name '*sh'`; do
-    . $file
-done
+source_build
 
 # setup env vars
 bootstrap "$@"
