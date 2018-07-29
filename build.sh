@@ -249,6 +249,8 @@ fi
 # update the repo
 update_repo
 
+# source common scripts
+source_common
 # source build functions
 source_build
 
