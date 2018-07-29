@@ -15,7 +15,7 @@
 
 
 # source 'script' functions
-. common/source.sh
+. $(dirname $0)/common/source.sh
 # source common scripts
 source_common
 
