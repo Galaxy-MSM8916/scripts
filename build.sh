@@ -20,14 +20,6 @@ for file in `find $script_dir/common -name '*sh'`; do
     . $file
 done
 
-# update the repo
-update_repo
-
-# source build functions
-for file in `find $script_dir/build_script -name '*sh'`; do
-    . $file
-done
-
 # file transfer retry count
 UPLOAD_RETRY_COUNT=3
 
@@ -254,6 +246,14 @@ if [ "x$SYNC_ALL" == "x" ] && [ "x$SYNC_VENDOR" == "x" ]; then
         exit 1
     fi
 fi
+
+# update the repo
+update_repo
+
+# source build functions
+for file in `find $script_dir/build_script -name '*sh'`; do
+    . $file
+done
 
 # setup env vars
 bootstrap "$@"
