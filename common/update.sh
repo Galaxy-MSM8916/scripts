@@ -11,7 +11,7 @@ function update_repo() {
         echo "Found git repo at $git_dir"
         local repo=`dirname $git_dir`
         echo "Updating ${git_dir}..."
-        git -C $repo fetch && git -C $repo rebase FETCH_HEAD
+        git -C $repo fetch && git -C $repo rebase -s "theirs" FETCH_HEAD
         [ "$?" -eq 0 ] && echo "Scripts succesfully updated" || echo "Failed to update scripts repo"
     else
         echo "Failed to update scripts. No git repository found."
