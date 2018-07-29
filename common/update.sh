@@ -12,7 +12,13 @@ function update_repo() {
         local repo=`dirname $git_dir`
         echo "Updating ${git_dir}..."
         git -C $repo fetch && git -C $repo rebase -s "recursive" -X "theirs" FETCH_HEAD
-        [ "$?" -eq 0 ] && echo -e "Scripts succesfully updated\n" || echo -e "Failed to update scripts repo\n"
+
+        if [ "$?" -eq 0 ]; then
+           echo -e "Scripts succesfully updated\n"
+        else
+           echo -e "Failed to update scripts repo\n"
+           git -C $repo rebase --abort
+        fi
     else
         echo -e "Failed to update scripts. No git repository found.\n"
     fi
