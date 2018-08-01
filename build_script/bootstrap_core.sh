@@ -30,10 +30,7 @@ chipset=`find_chipset $DEVICE_NAME`
 vendor="samsung"
 
 function bootstrap {
-    #setup the path
-    if [ -n ${BUILD_BIN_ROOT} ]; then
-        export PATH=$PATH:${BUILD_BIN_ROOT}
-    fi
+    echo
 }
 
 DISTROS="
