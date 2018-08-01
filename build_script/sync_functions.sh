@@ -78,14 +78,6 @@ if [ -n "$SYNC_ALL" ]; then
         14*)
             sync_substratum;
         ;;
-        15* | oreo )
-            REPOPICK_FILE=${BUILD_TEMP}/repopicks-${ver}.sh
-            wget https://raw.githubusercontent.com/Galaxy-${chipset^^}/repopicks/master/repopicks-${ver}.sh -O $REPOPICK_FILE
-            if [ "$?" -eq 0 ]; then
-                echoText "Picking Lineage gerrit changes..."
-                . $REPOPICK_FILE
-            fi
-        ;;
     esac
 
     cd $OLDPWD
@@ -96,6 +88,9 @@ function apply_repopicks {
     cd ${BUILD_TOP}
     gerrit_url="https://review.${chipset}.com"
 
+    chipset_repopick_file=${script_path}/repopicks/${arch}.txt
+    distro_repopick_file=${script_path}/repopicks/${DISTRIBUTION}-${ver}.txt
+    
     #pick local gerrit changes
     [ -n "$LOCAL_REPO_PICKS" ] && repopick -g $gerrit_url -r $LOCAL_REPO_PICKS
 
