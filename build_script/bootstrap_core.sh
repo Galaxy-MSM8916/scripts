@@ -30,7 +30,19 @@ chipset=`find_chipset $DEVICE_NAME`
 vendor="samsung"
 
 function bootstrap {
-    echo
+    # check repopick tool existence
+    repopick_path=`command -v repopick`
+    if [ "$?" -ne 0 ] || [ -z "$repopick_path"  ]; then
+        PATH=$PATH:${script_path}/tools
+    fi
+
+    # check repo existence
+    repo_path=`command -v repo`
+    if [ "$?" -ne 0 ] || [ -z "$repo_path"  ]; then
+        PATH=$PATH:${script_path}/tools
+    fi
+
+    export PATH
 }
 
 DISTROS="
