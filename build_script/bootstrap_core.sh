@@ -33,16 +33,17 @@ function bootstrap {
     # check repopick tool existence
     repopick_path=`command -v repopick`
     if [ "$?" -ne 0 ] || [ -z "$repopick_path"  ]; then
-        PATH=$PATH:${script_path}/tools
+        PATH=$PATH:${script_dir}/tools
     fi
 
     # check repo existence
     repo_path=`command -v repo`
     if [ "$?" -ne 0 ] || [ -z "$repo_path"  ]; then
-        PATH=$PATH:${script_path}/tools
+        PATH=$PATH:${script_dir}/tools
     fi
 
     export PATH
+    (>&2 echo "Path is: $PATH")
 }
 
 DISTROS="
