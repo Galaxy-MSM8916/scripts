@@ -17,7 +17,6 @@
 # declare some globals
 release_type=""
 ver=""
-distroTxt=""
 recovery_variant=""
 recovery_flavour=""
 
@@ -46,15 +45,6 @@ function bootstrap {
     (>&2 echo "Path is: $PATH")
 }
 
-DISTROS="
-omni
-lineage
-lineage-go
-cm
-rr
-AOSPA
-dotOS"
-
 if [ -z "$recovery_variant" ]; then
     recovery_variant=$(echo $@ | grep -o 'RECOVERY_VARIANT[ ]*:=[ ]*[A-Za-z0-9]*' | sed s'/ //'g |cut -d':' -f2)
 fi
@@ -62,21 +52,6 @@ fi
 function get_platform_info {
     platform_common_dir="${BUILD_TOP}/device/${vendor}/${chipset}-common/"
 
-    # try to get distribution version from path
-    if [ "x$DISTRIBUTION" == "x" ] || [ "x$ver" == "x" ]; then
-        for i in ${DISTROS}; do
-            if [ `echo $BUILD_TOP | grep -o $i | wc -c` -gt 1 ]; then
-                DISTRIBUTION=`echo $BUILD_TOP | grep -o $i`
-                ver=`echo $BUILD_TOP |grep $i | cut -d '-' -f 2`
-                logr "Guessed distribution is ${DISTRIBUTION} ${ver}"
-            fi
-        done
-    fi
-
-    if [ "x$DISTRIBUTION" == "x" ] || [ "x$ver" == "x" ]; then
-        logr "Error: Cannot automatically initialise distribution repo - no distribution specified"
-        exit_error 1
-    fi
 
     if ! [ -d "$BUILD_TOP" ] || ! [ -d "$BUILD_TOP/.repo" ]; then
 
@@ -133,70 +108,52 @@ function get_platform_info {
         fi
         if [ "x$DISTRIBUTION" == "xlineage" ] || [ "x$DISTRIBUTION" == "xlineage-go" ]; then
             ver="15.1"
-            distroTxt="LineageOS"
         elif [ "x$DISTRIBUTION" == "xrr" ]; then
             ver="oreo"
-            distroTxt="ResurrectionRemix"
         elif [ "x$DISTRIBUTION" == "xAOSPA" ]; then
             ver="oreo-mr1"
-            distroTxt="Paranoid Android"
         fi
     elif [ "`echo $platform_version | grep -o "8.0"`" == "8.0" ]; then
         export JACK_SERVER_VM_ARGUMENTS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4g"
         if [ "x$DISTRIBUTION" == "xlineage" ]; then
             ver="15.0"
-            distroTxt="LineageOS"
         elif [ "x$DISTRIBUTION" == "xrr" ]; then
             ver="oreo"
-            distroTxt="ResurrectionRemix"
         elif [ "x$DISTRIBUTION" == "xdotOS" ]; then
             ver="o"
-            distroTxt="dotOS"
         fi
     elif [ "`echo $platform_version | grep -o "7.1"`" == "7.1" ]; then
         export JACK_SERVER_VM_ARGUMENTS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4g"
         if [ "x$DISTRIBUTION" == "xlineage" ]; then
             ver="14.1"
-            distroTxt="LineageOS"
         elif [ "x$DISTRIBUTION" == "xrr" ]; then
             ver="5.8"
-            distroTxt="ResurrectionRemix"
         elif [ "x$DISTRIBUTION" == "xcm" ]; then
             ver="14.1"
-            distroTxt="CyanogenMod"
         elif [ "x$DISTRIBUTION" == "xomni" ]; then
             ver="7.1"
-            distroTxt="Omni"
         fi
     elif [ "`echo $platform_version | grep -o "6.0"`" == "6.0" ]; then
         if [ "x$DISTRIBUTION" == "xlineage" ]; then
             ver="13.0"
-            distroTxt="LineageOS"
         elif [ "x$DISTRIBUTION" == "xcm" ]; then
             ver="13.0"
-            distroTxt="CyanogenMod"
         elif [ "x$DISTRIBUTION" == "xomni" ]; then
             ver="6.0"
-            distroTxt="Omni"
         fi
     elif [ "`echo $platform_version | grep -o "5.1"`" == "5.1" ]; then
         if [ "x$DISTRIBUTION" == "xcm" ]; then
             ver="12.1"
-            distroTxt="CyanogenMod"
         elif [ "x$DISTRIBUTION" == "xRR" ]; then
             ver="5.6"
-            distroTxt="ResurrectionRemix"
         elif [ "x$DISTRIBUTION" == "xomni" ]; then
             ver="5.1"
-            distroTxt="Omni"
         fi
     elif [ "`echo $platform_version | grep -o "5.0"`" == "5.0" ]; then
         if [ "x$DISTRIBUTION" == "xcm" ]; then
             ver="12.0"
-            distroTxt="CyanogenMod"
         elif [ "x$DISTRIBUTION" == "xomni" ]; then
             ver="5.0"
-            distroTxt="Omni"
         fi
 
     fi
