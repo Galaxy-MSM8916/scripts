@@ -18,12 +18,12 @@ TRANSMISSION_ROOT=/var/lib/transmission-daemon/downloads/
 
 function get_ota_root() {
 # first arg - device name
-   arch=`find_arch $1`
+   chipset=`find_chipset $1`
 
     if [ $GO -eq 0 ]; then
-        local ota_root=/var/www/ota${VERSION}.${arch}.com/public_html/
+        local ota_root=/var/www/ota${VERSION}.${chipset}.com/public_html/
     else
-        local ota_root=/var/www/ota${VERSION}-go.${arch}.com/public_html/
+        local ota_root=/var/www/ota${VERSION}-go.${chipset}.com/public_html/
     fi
 
     echo $ota_root

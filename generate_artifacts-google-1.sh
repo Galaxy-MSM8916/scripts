@@ -12,9 +12,9 @@ update_repo
 
 function get_html_home() {
 # first arg - device name
-    local arch=`find_arch $1`
+    local chipset=`find_chipset $1`
 
-    echo /var/www/download.${arch}.com/public_html
+    echo /var/www/download.${chipset}.com/public_html
 }
 
 function sanitize_html_home() {
@@ -92,7 +92,7 @@ for i in `find ${T_OUT} -type f -name 'TWRP*'`; do
 #    echo
 done
 
-# TODO: Generate for all archs
+# TODO: Generate for all chipsets
 for i in `find ${T_OUT} -type f -name 'open_gapps*'`; do
 #    FILE_NAME=$(basename $i | sed s'/.zip//'g);
 #    FILE_NAME=$(basename $i | sed s'/\.[a-z0-9]*\.torrent//'g);

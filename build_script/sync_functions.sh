@@ -18,7 +18,7 @@ function sync_manifests {
         MANIFEST_NAME=${DISTRIBUTION}-${ver}.xml
     fi
     manifest_dir=${BUILD_TOP}/.repo/local_manifests
-    manifest_url="https://git.${arch}.com/Galaxy-${arch^^}/local_manifests.git/plain"
+    manifest_url="https://git.${chipset}.com/Galaxy-${chipset^^}/local_manifests.git/plain"
     local_manifest=${manifest_dir}/${MANIFEST_NAME}
     remote_manifest=${manifest_url}/${MANIFEST_NAME}
 
@@ -31,14 +31,14 @@ function sync_manifests {
     logb "Syncing manifests..."
     ${CURL} ${remote_manifest} | tee ${local_manifest} > /dev/null
 
-    if [ "${arch}" == "msm8916" ]; then
+    if [ "${chipset}" == "msm8916" ]; then
         gerrit_port=29418
-    elif [ "${arch}" == "msm8953" ]; then
+    elif [ "${chipset}" == "msm8953" ]; then
         gerrit_port=29419
     fi
 
     if [ `hostname` == "msm8916.com" ]; then
-        sed -i s/fetch=\"https:\\/\\/github.com\"/fetch=\"ssh:\\/\\/jenkins@review.${arch}.com:${gerrit_port}\"/g ${local_manifest}
+        sed -i s/fetch=\"https:\\/\\/github.com\"/fetch=\"ssh:\\/\\/jenkins@review.${chipset}.com:${gerrit_port}\"/g ${local_manifest}
     fi
 
     # Sync the substratum manifest
@@ -80,7 +80,7 @@ if [ -n "$SYNC_ALL" ]; then
         ;;
         15* | oreo )
             REPOPICK_FILE=${BUILD_TEMP}/repopicks-${ver}.sh
-            wget https://raw.githubusercontent.com/Galaxy-${arch^^}/repopicks/master/repopicks-${ver}.sh -O $REPOPICK_FILE
+            wget https://raw.githubusercontent.com/Galaxy-${chipset^^}/repopicks/master/repopicks-${ver}.sh -O $REPOPICK_FILE
             if [ "$?" -eq 0 ]; then
                 echoText "Picking Lineage gerrit changes..."
                 . $REPOPICK_FILE
@@ -94,7 +94,7 @@ fi
 
 function apply_repopicks {
     cd ${BUILD_TOP}
-    gerrit_url="https://review.${arch}.com"
+    gerrit_url="https://review.${chipset}.com"
 
     #pick local gerrit changes
     [ -n "$LOCAL_REPO_PICKS" ] && repopick -g $gerrit_url -r $LOCAL_REPO_PICKS
