@@ -19,8 +19,6 @@ release_type=""
 ver=""
 distroTxt=""
 recovery_variant=""
-platform_common_dir=""
-common_dir=""
 recovery_flavour=""
 
 arc_name=""
@@ -29,37 +27,9 @@ bimg_name=""
 boot_tar_name=""
 
 chipset=`find_chipset $DEVICE_NAME`
-
-vendors[0]="samsung"
-vendors[1]="qcom"
+vendor="samsung"
 
 function bootstrap {
-    # set the common dir
-    platform_common_dir="$BUILD_TOP/device/${vendors[0]}/${chipset}-common/"
-    case $DEVICE_NAME in
-        a3*)    common_dir="$BUILD_TOP/device/${vendors[0]}/a3-common/"
-                ;;
-        a5*)    common_dir="$BUILD_TOP/device/${vendors[0]}/a5-common/"
-                ;;
-        core*)  common_dir="$BUILD_TOP/device/${vendors[0]}/coreprimelte-common/"
-                ;;
-        fortuna*|gprime*)
-                common_dir="$BUILD_TOP/device/${vendors[0]}/gprimelte-common/"
-                ;;
-        gt*)    common_dir="$BUILD_TOP/device/${vendors[0]}/gte-common/"
-                ;;
-        j5*)    common_dir="$BUILD_TOP/device/${vendors[0]}/j5-common/"
-                ;;
-        o7*|on7*)
-                common_dir="$BUILD_TOP/device/${vendors[0]}/o7-common/"
-                ;;
-        j7*)    common_dir="$BUILD_TOP/device/${vendors[0]}/j7lte-common/"
-                ;;
-        serranove*)
-                common_dir="$BUILD_TOP/device/${vendors[0]}/serranovexx-common/"
-                ;;
-    esac
-
     #setup the path
     if [ -n ${BUILD_BIN_ROOT} ]; then
         export PATH=$PATH:${BUILD_BIN_ROOT}
@@ -80,6 +50,8 @@ if [ -z "$recovery_variant" ]; then
 fi
 
 function get_platform_info {
+    platform_common_dir="${BUILD_TOP}/device/${vendor}/${chipset}-common/"
+
     # try to get distribution version from path
     if [ "x$DISTRIBUTION" == "x" ] || [ "x$ver" == "x" ]; then
         for i in ${DISTROS}; do
@@ -235,7 +207,7 @@ function get_platform_info {
     fi
     # get the release type
     if [ "x${release_type}" == "x" ]; then
-        release_type=$(grep "CM_BUILDTYPE" ${common_dir}/${DISTRIBUTION}.mk 2>/dev/null | cut -d'=' -f2 | sed s'/ //'g)
+        release_type=$(grep "CM_BUILDTYPE" ${platform_common_dir}/${DISTRIBUTION}.mk 2>/dev/null | cut -d'=' -f2 | sed s'/ //'g)
     fi
 
     # check if it was succesfully set, and set it to the default if not
