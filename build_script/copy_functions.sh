@@ -83,9 +83,9 @@ function copy_bootimage {
         exit_on_failure mkdir -p ${revert_pkg_dir}/${install_target_dir}/postvalidate
 
         cp ${ANDROID_PRODUCT_OUT}/boot.img ${boot_pkg_dir}/${blob_dir}
-        cp ${script_dir}/update-binary ${boot_pkg_dir}/${binary_target_dir}
-        cp ${script_dir}/mkbootimg ${boot_pkg_dir}/${install_target_dir}
-        cp ${script_dir}/unpackbootimg ${boot_pkg_dir}/${install_target_dir}
+        cp ${script_dir}/updater/update-binary ${boot_pkg_dir}/${binary_target_dir}
+        cp ${script_dir}/tools/mkbootimg ${boot_pkg_dir}/${install_target_dir}
+        cp ${script_dir}/tools/unpackbootimg ${boot_pkg_dir}/${install_target_dir}
 
         # Create the scripts
         create_scripts

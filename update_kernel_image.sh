@@ -2,7 +2,7 @@
 
 #convert cpio recovery image to bootfs one
 
-export PATH="$PATH:$(dirname `realpath $0`)/bootimg-tools"
+export PATH="$PATH:$(dirname `realpath $0`)/tools"
 
 if [ -z $1 ]; then
     echo "Usage $0 /path/to/image_to_update.tar /path/to/image_with_kernel_dt.img [recovery|boot] [dt|kern]"
