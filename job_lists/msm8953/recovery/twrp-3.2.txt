@@ -34,4 +34,4 @@ DEVICES+=on7xltechn:SM-G6100,
 DEVICES+=c7ltechn:SM-C7000,
 DEVICES+=c7proltedd:SM-C701F
 
-SHELL_COMMANDS_EXTRA=" --pick-topic twrp"
+SHELL_COMMANDS_EXTRA=" --make-args RECOVERY_VARIANT:=twrp"
