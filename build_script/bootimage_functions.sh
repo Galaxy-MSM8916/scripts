@@ -14,20 +14,6 @@
 # limitations under the License.
 
 function create_scripts {
-cat <<A_SCRIPT_F > ${boot_pkg_dir}/${binary_target_dir}/updater-script
-package_extract_dir("install", "/tmp/install");
-set_metadata_recursive("/tmp/install", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644);
-set_metadata_recursive("/tmp/install/bin", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0755);
-ui_print("Extracting files...");
-package_extract_dir("proprietary", "/tmp/proprietary");
-set_metadata_recursive("/tmp/proprietary", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644);
-package_extract_dir("blobs", "/tmp/blobs");
-set_metadata_recursive("/tmp/blobs", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644);
-assert(run_program("/tmp/install/bin/run_scripts.sh", "installbegin") == 0);
-assert(run_program("/tmp/install/bin/run_scripts.sh", "installend") == 0);
-assert(run_program("/tmp/install/bin/run_scripts.sh", "postvalidate") == 0);
-A_SCRIPT_F
-
 
 if [ "x$DISTRIBUTION" == "xlineage" ] ||  [ "x$DISTRIBUTION" == "xlineage-go" ] || [ "x$DISTRIBUTION" == "xrr" ]; then
     kern_base="CAF"
@@ -175,65 +161,4 @@ rm -r \$BOOT_IMG_TMPDIR
 ui_print "Successfully flashed new boot image."
 ui_print ""
 SWAP_K_F
-
-cat <<B_INSTALL_F > ${revert_pkg_dir}/${install_target_dir}/installbegin/revert_boot_img.sh
-#!/sbin/sh
-mount_fs system
-BOOT_PARTITION=/dev/block/bootdevice/by-name/boot
-if [ -e /system/boot.img.bak ]; then
-    ui_print "Restoring boot image..."
-    ui_print ""
-    dd if=/system/boot.img.bak of=\$BOOT_PARTITION
-
-    if [ \$? != 0 ]; then
-        ui_print "Failed to restore boot image."
-        ui_print ""
-        exit 1
-    fi
-    rm /system/boot.img.bak
-else
-        ui_print "No backup boot image found."
-        ui_print ""
-fi
-umount_fs system
-B_INSTALL_F
-
-cat <<CP_VARIANT_F > ${boot_pkg_dir}/${install_target_dir}/postvalidate/copy_variant_blobs.sh
-#!/sbin/sh
-
-BLOBBASE=/tmp/proprietary
-
-# Mount /system
-mount_fs system
-
-if [ -d \$BLOBBASE ]; then
-
-    cd \$BLOBBASE
-
-    # copy all the blobs
-    for FILE in \`find . -type f | cut -c 3-\` ; do
-        mkdir -p \`dirname /system/\$FILE\`
-        ui_print "Copying \$FILE to /system/\$FILE ..."
-        cp \$FILE /system/\$FILE
-    done
-
-    # set permissions on binary files
-    for FILE in \`find bin -type f | cut -c 3-\`; do
-        ui_print "Setting /system/\$FILE executable ..."
-        chmod 755 /system/\$FILE
-    done
-umount_fs system
-fi
-CP_VARIANT_F
-
-logb "\t\tFetching scripts..."
-common_url="https://raw.githubusercontent.com/Galaxy-MSM8916/android_device_samsung_msm8916-common/cm-14.1"
-
-${CURL} ${common_url}/releasetools/functions.sh 1>${boot_pkg_dir}/${install_target_dir}/functions.sh 2>/dev/null
-${CURL} ${common_url}/releasetools/run_scripts.sh 1>${boot_pkg_dir}/${install_target_dir}/run_scripts.sh 2>/dev/null
-
-cp ${boot_pkg_dir}/${install_target_dir}/run_scripts.sh ${revert_pkg_dir}/${install_target_dir}/run_scripts.sh
-cp ${boot_pkg_dir}/${install_target_dir}/postvalidate/copy_variant_blobs.sh ${revert_pkg_dir}/${install_target_dir}/postvalidate/copy_variant_blobs.sh
-cp ${boot_pkg_dir}/${install_target_dir}/functions.sh ${revert_pkg_dir}/${install_target_dir}/functions.sh
-cp ${boot_pkg_dir}/${binary_target_dir}/updater-script ${revert_pkg_dir}/${binary_target_dir}/updater-script
 }

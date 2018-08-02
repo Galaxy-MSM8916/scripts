@@ -82,8 +82,20 @@ function copy_bootimage {
         exit_on_failure mkdir -p ${revert_pkg_dir}/${install_target_dir}/installend
         exit_on_failure mkdir -p ${revert_pkg_dir}/${install_target_dir}/postvalidate
 
+        # copy scripts
+        cp ${script_dir}/templates/copy_variant_blobs.sh ${boot_pkg_dir}/${install_target_dir}/postvalidate/
+        cp ${script_dir}/templates/copy_variant_blobs.sh ${revert_pkg_dir}/${install_target_dir}/postvalidate/
+        cp ${script_dir}/templates/functions.sh ${boot_pkg_dir}/${install_target_dir}/
+        cp ${script_dir}/templates/functions.sh ${revert_pkg_dir}/${install_target_dir}/
+        cp ${script_dir}/templates/revert_boot_img.sh  ${revert_pkg_dir}/${install_target_dir}/installbegin/
+        cp ${script_dir}/templates/run_scripts.sh ${boot_pkg_dir}/${install_target_dir}/
+        cp ${script_dir}/templates/run_scripts.sh ${revert_pkg_dir}/${install_target_dir}/
+        cp ${script_dir}/templates/updater-script ${boot_pkg_dir}/${binary_target_dir}/
+        cp ${script_dir}/templates/updater-script ${revert_pkg_dir}/${binary_target_dir}/
+
         cp ${ANDROID_PRODUCT_OUT}/boot.img ${boot_pkg_dir}/${blob_dir}
         cp ${script_dir}/updater/update-binary ${boot_pkg_dir}/${binary_target_dir}
+        cp ${script_dir}/updater/update-binary ${revert_pkg_dir}/${binary_target_dir}
         cp ${script_dir}/tools/mkbootimg ${boot_pkg_dir}/${install_target_dir}
         cp ${script_dir}/tools/unpackbootimg ${boot_pkg_dir}/${install_target_dir}
 
