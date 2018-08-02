@@ -87,7 +87,6 @@ function print_help {
                 log "  -a, --sync_all\tSync entire build tree";
                 log "  -v, --sync\tSync device/kernel/vendor trees";
                 log "  -u, --su\tAdd SU to build";
-                log "  --update-script\tUpdate build script immediately";
                 log "  -j\tnumber of parallel make jobs to run";
 
         exit
@@ -202,8 +201,6 @@ while [ "$1" != "" ]; do
         -u | --su )
             WITH_SU=true
             ;;
-        --update-script )  update_repo
-            ;;
         -v)
             SYNC_VENDOR=1
             ;;
@@ -281,8 +278,6 @@ if [ "x${BUILD_TARGET}" != "x" ] && [ "x${BUILD_VARIANT}" != "x" ] && [ "x${DEVI
     copy_files
     # generate the changes
     generate_changes
-    # sync the build script
-    sync_script "$@"
     # remove lock
     remove_build_lock
     # upload build artifacts
