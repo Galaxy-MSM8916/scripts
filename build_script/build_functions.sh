@@ -58,7 +58,7 @@ function generate_changes {
         echo -e "\n${repo_name}" >> ${ARTIFACT_OUT_DIR}/${changelog_name}
         echo -e "$( for i in $( seq 1 `echo $repo_name | wc -c | sed s/[0-9]../100/g` ); do echo -e "=\c"; done )\n" \
 	    >> ${ARTIFACT_OUT_DIR}/${changelog_name}
-        generate_log ${repo_path} >> ${ARTIFACT_OUT_DIR}/${changelog_name}
+        generate_log ${BUILD_TOP}/${repo_path} >> ${ARTIFACT_OUT_DIR}/${changelog_name}
 
     done
 }
