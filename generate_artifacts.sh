@@ -197,29 +197,6 @@ for i in `find ${T_OUT} -type f -name 'open_gapps*'`; do
     #echo
 done
 
-for i in `find ${T_OUT} -type f -name 'rr*torrent'`; do
-    #FILE_NAME=$(basename $i | sed s'/.zip//'g);
-    FILE_NAME=$(basename $i | sed s'/\.[a-z0-9]*\.torrent//'g);
-    DEVICE_NAME=$(echo $FILE_NAME | cut -d '-' -f 3)
-    BUILD_DATE=$(echo $FILE_NAME | cut -d '_' -f 3)
-    OUT_DIR=`get_html_home $DEVICE_NAME`/ResurrectionRemix/$DEVICE_NAME/$BUILD_DATE
-    mkdir -p $OUT_DIR
-    #F_DIR="$(dirname $i)"
-    F_DIR=${TRANSMISSION_OUT}/${FILE_NAME}
-
-    #TORRENT=`find $T_OUT/ -name "$FILE_NAME"'*torrent'`
-    TORRENT=$i
-    DEST_TORRENT="$OUT_DIR/${FILE_NAME}.torrent"
-
-    link_artifacts $F_DIR $OUT_DIR $DEVICE_NAME
-
-    if ! [ -e $DEST_TORRENT ] && [ -f $TORRENT ]; then
-        ln $TORRENT $DEST_TORRENT;
-        #chmod og+r $DEST_TORRENT
-    fi
-    #echo
-done
-
 generate_artifacts_from_torrent 'rr*torrent' "ResurrectionRemix" 3 3
 generate_artifacts_from_torrent 'lineage-1*torrent' "LineageOS" 3 3
 generate_artifacts_from_torrent 'lineage-go-1*torrent' "LineageOS_Go" 4 3
