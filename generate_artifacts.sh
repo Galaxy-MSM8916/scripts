@@ -156,24 +156,26 @@ function generate_twrp_artifacts() {
 }
 
 function generate_gapps_artifacts() {
-    # TODO: Generate for all chipsets
     for source_torrent in `find ${TORRENT_SOURCE_DIR} -type f -name 'open_gapps*'`; do
         file_name=$(basename $source_torrent | sed s'/\.zip\.[a-z0-9]*\.torrent//'g);
         version=$(echo $file_name | cut -d '-' -f 3)
         date=$(echo $file_name | cut -d '-' -f 5)
-        html_out_dir=`get_html_home $device`/OpenGApps/$version/$date/
         source_zip=${TRANSMISSION_DOWNLOAD_SOURCE}/${file_name}.zip
         dest_torrent="$html_out_dir/${file_name}.torrent"
 
-        mkdir -p $html_out_dir
+        for doc_root in `find /var/www/ -name 'download.*.com'`; do
+            html_out_dir=${doc_root}/public_html/OpenGApps/$version/$date/
 
-        if ! [ -e $html_out_dir/${file_name}.zip ] && [ -f $source_zip ]; then
-            ln $source_zip $html_out_dir/${file_name}.zip
-        fi
+            mkdir -p $html_out_dir
 
-        if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
-            ln $source_torrent $dest_torrent;
-        fi
+            if ! [ -e $html_out_dir/${file_name}.zip ] && [ -f $source_zip ]; then
+                ln $source_zip $html_out_dir/${file_name}.zip
+            fi
+
+            if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
+                ln $source_torrent $dest_torrent;
+            fi
+        done
     done
 }
 
