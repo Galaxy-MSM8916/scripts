@@ -49,6 +49,11 @@ if [ -e /system/build.prop ]; then
     ui_print ""
     echo "ro.config.zram.size=${zram_size}" >> /system/build.prop
 
+    ui_print "Setting permissions on /system/build.prop .."
+    ui_print ""
+    chmod 0644 /system/build.prop
+    chcon -v u:object_r:system_file:s0 /system/build.prop
+
     if [ $? != 0 ]; then
         ui_print "Failed to add prop."
         ui_print ""
