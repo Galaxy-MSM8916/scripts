@@ -53,6 +53,46 @@ function link_artifacts() {
     done
 }
 
+function generate_artifacts_from_jenkins() {
+    # arg1: find regexp
+    # arg2: dist long (dir) name
+    # arg3: device name offset
+    # arg4: build date offset
+
+    local find_regexp=$1
+    local dist_name=$2
+    local device_offset=$3
+    local date_offset=$4
+
+    # set some reasonable defaults
+    [ -z "$device_offset" ] && device_offset='3'
+    [ -z "$date_offset" ] && date_offset='3'
+
+    for i in `find ${JENKINS_HOME}/jobs/${dist_name}_Builds -type f  -size +100M -name '*zip'`; do
+        file_name=$(basename $i | sed s'/.zip//'g);
+        device_name=$(echo $file_name | cut -d '-' -f ${device_offset})
+        build_date=$(echo $file_name | cut -d '_' -f ${date_offset})
+        out_dir=`get_html_home $device_name`/${dist_name}/$device_name/$build_date
+        f_dir="$(dirname $i)"
+        torrent="${f_dir}/${file_name}.torrent"
+        dest_torrent="$out_dir/${file_name}.torrent"
+        dest=${transmission_out}/${file_name}/
+
+        mkdir -p $out_dir
+	mkdir -p $dest
+
+        #TORRENT=`find $T_OUT/ -name "$FILE_NAME"'*torrent'`
+        dest_torrent="$out_dir/${file_name}.torrent"
+
+        link_artifacts $f_dir $out_dir $device_name
+
+        if ! [ -e $dest_torrent ] && [ -f $torrent ]; then
+            ln $torrent $dest_torrent;
+        fi
+    #echo
+done
+}
+
 function generate_artifacts_from_torrent() {
     # arg1: find regexp; arg2: dist long (dir) name
     # arg3: device name offset; arg4: build date offset
