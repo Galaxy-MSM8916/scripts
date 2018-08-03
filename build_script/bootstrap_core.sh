@@ -128,7 +128,9 @@ function get_platform_info {
     export WITH_SU
 
     if [ "`echo $platform_version | grep -o "8.1"`" == "8.1" ]; then
-        export JACK_SERVER_VM_ARGUMENTS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4g"
+        if ! [ `hostname` == "msm8916.com" ]; then
+            export JACK_SERVER_VM_ARGUMENTS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4g"
+        fi
         if [ "x$DISTRIBUTION" == "xlineage" ] || [ "x$DISTRIBUTION" == "xlineage-go" ]; then
             ver="15.1"
             distroTxt="LineageOS"
