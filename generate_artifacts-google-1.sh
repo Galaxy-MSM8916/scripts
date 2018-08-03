@@ -97,6 +97,52 @@ function generate_artifacts_from_torrent() {
     done
 }
 
+function generate_zram_zip() {
+    #arg1: size (in MiB)
+
+    local zram_size=$1
+
+    local temp_dir=$(mktemp -d)
+    local zip_basename="enable_zram_${zram_size}MiB"
+    local zip_dir=${temp_dir}/${zip_basename}
+    local zram_zip="${temp_dir}/enable_zram_${zram_size}MiB.zip"
+
+    local binary_target_dir=META-INF/com/google/android
+    local install_target_dir=install/bin
+    local blob_dir=blobs
+    local proprietary_dir=proprietary
+
+    mkdir -p ${zip_dir}/${binary_target_dir}
+    mkdir -p ${zip_dir}/${blob_dir}
+    mkdir -p ${zip_dir}/${proprietary_dir}
+    mkdir -p ${zip_dir}/${install_target_dir}/installbegin
+    mkdir -p ${zip_dir}/${install_target_dir}/installend
+    mkdir -p ${zip_dir}/${install_target_dir}/postvalidate
+
+    # copy scripts
+    cp ${script_dir}/templates/enable_zram.sh ${zip_dir}/${install_target_dir}/installbegin
+    cp ${script_dir}/templates/functions.sh ${zip_dir}/${install_target_dir}/
+    cp ${script_dir}/templates/run_scripts.sh ${zip_dir}/${install_target_dir}/
+    cp ${script_dir}/templates/updater-script ${zip_dir}/${binary_target_dir}/
+    cp ${script_dir}/updater/update-binary ${zip_dir}/${binary_target_dir}
+
+    # replace placeholders in template
+    sed -i s/\#\#zram_size/${zram_size}/g ${zip_dir}/${install_target_dir}/installbegin/enable_zram.sh
+
+    #archive the image
+    echo "Creating zip ${zram_zip}..."
+    cd ${zip_dir} && zip ${zram_zip} `find ${zip_dir} -type f | cut -c $(($(echo ${zip_dir}|wc -c)+1))-`
+
+
+    for i in `find /var/www/ -name 'download.*.com'`; do
+        echo "Copying zip ${zram_zip} to ${i} ..."
+	mkdir -p $i/public_html/ZRAM
+        cp ${zram_zip} $i/public_html/ZRAM
+    done
+
+    rm -rf $temp_dir
+}
+
 for i in `find ${T_OUT} -type f -name 'TWRP*'`; do
 #    FILE_NAME=$(basename $i | sed s'/.zip//'g);
 #    FILE_NAME=$(basename $i | sed s'/\.[a-z0-9]*\.torrent//'g);
@@ -177,5 +223,14 @@ done
 generate_artifacts_from_torrent 'rr*torrent' "ResurrectionRemix" 3 3
 generate_artifacts_from_torrent 'lineage-1*torrent' "LineageOS" 3 3
 generate_artifacts_from_torrent 'lineage-go-1*torrent' "LineageOS_Go" 4 3
+
+zram_lower=256
+zram_incr=128
+zram_upper=1024
+
+# generate zram images
+for size in `seq $zram_lower $zram_incr $zram_upper`; do
+    generate_zram_zip $size
+done
 
 fix_html_home_perms
