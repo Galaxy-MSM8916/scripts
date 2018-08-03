@@ -1,11 +1,9 @@
 #!/bin/bash
 
-script_dir=`realpath $(basename $0)`
-
-# source common functions
-for file in `find $script_dir/common -name '*sh'`; do
-    . $file
-done
+# source 'script' functions
+. $(dirname $0)/common/source.sh
+# source common scripts
+source_common
 
 # update the repo
 update_repo
@@ -63,8 +61,6 @@ if [ -z "$JENKINS_HOME" ]; then
 fi
 
 sanitize_html_home
-update_job_repo
-optimise_device_list
 
 for i in `find ${T_OUT} -type f -name 'TWRP*'`; do
 #    FILE_NAME=$(basename $i | sed s'/.zip//'g);
