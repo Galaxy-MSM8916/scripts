@@ -12,9 +12,9 @@ function generate_device_list() {
 
     script_dir=`realpath $(dirname $0)`
 
-    [ -z $script_dir ] && script_dir="job_lists"
+    local job_dir="${script_dir}/job_lists"
 
-    [ -z "$CHIPSET_DEVICES_FULL" ] && CHIPSET_DEVICES_FULL=`find $script_dir -name '*txt' | xargs grep DEVICES`
+    [ -z "$CHIPSET_DEVICES_FULL" ] && CHIPSET_DEVICES_FULL=`find $job_dir -name '*txt' | xargs grep DEVICES`
 
     for i in $CHIPSET_DEVICES_FULL; do
         chipset=`echo $i | grep -o -e 'msm[0-9a-zA-Z]*'`;
@@ -33,8 +33,6 @@ function find_chipset() {
 
     local device_name=$1
 
-    [ -z "$CHIPSET_COMPACT_DEVICE_LIST" ] && generate_device_list
-
     chipset=`echo $CHIPSET_COMPACT_DEVICE_LIST|grep -o ${device_name}:'[a-zA-Z0-9]*'|uniq|cut -d':' -f2`
 
     # default to msm8916
@@ -45,7 +43,7 @@ function find_chipset() {
 }
 
 function print_chipset_map() {
-    [ -z "$CHIPSET_COMPACT_DEVICE_LIST" ] && generate_device_list
-
     (>&2 echo -e "Arch map is: $CHIPSET_COMPACT_DEVICE_LIST\n")
 }
+
+[ -z "$CHIPSET_COMPACT_DEVICE_LIST" ] && generate_device_list
