@@ -1,5 +1,8 @@
 #!/bin/bash
 
+TRANSMISSION_DOWNLOAD_SOURCE=/var/lib/transmission-daemon/downloads/
+TORRENT_SOURCE_DIR=/var/lib/transmission-daemon/.config/transmission-daemon/torrents/
+
 # source 'script' functions
 . $(dirname $0)/common/source.sh
 # source common scripts
@@ -11,56 +14,44 @@ update_repo
 function get_html_home() {
     # first arg - device name
     local chipset=`find_chipset $1`
-
     echo /var/www/download.${chipset}.com/public_html
 }
 
 function sanitize_html_home() {
-    for i in `find /var/www/ -name 'download.*.com'`; do
-        rm -rf `find ${i}/public_html -mindepth 1 -type d | grep -v _h5ai`
+    for doc_root in `find /var/www/ -name 'download.*.com'`; do
+        rm -rf `find ${doc_root}/public_html -mindepth 1 -type d | grep -v _h5ai`
     done
 }
 
 function fix_html_home_perms() {
-    for i in `find /var/www/ -name 'download.*.com'`; do
-        chmod og+r ${i} -R
+    for doc_root in `find /var/www/ -name 'download.*.com'`; do
+        chmod og+r ${doc_root} -R
     done
 }
 
 function link_artifacts() {
-    # arg1: find_dir  arg2: out_dir arg3: device
+    # arg1: find_dir  arg2: html_out_dir arg3: device
     local find_dir=$1
-    local out_dir=$2
+    local html_out_dir=$2
     local device=$3
     for j in `find $find_dir -mindepth 1 -maxdepth 1 -type f| egrep -iv torrent\|\.part`; do
-        # ! [ -f $DEST/$(basename $j) ] && 
+        # ! [ -f $DEST/$(basename $j) ] &&
         #echo "Linking $j --> $DEST/$(basename $j) ..."
         I_DIR=$(dirname $j)
 
-        [ -e $out_dir/$(basename $j) ] || ln $j $out_dir/$(basename $j)
-        if [ $? -ne 0 ] && ! [ -e $out_dir/$(basename $j) ]; then
-            ln -s $j $out_dir/$(basename $j)
+        [ -e $html_out_dir/$(basename $j) ] || ln $j $html_out_dir/$(basename $j)
+        if [ $? -ne 0 ] && ! [ -e $html_out_dir/$(basename $j) ]; then
+            ln -s $j $html_out_dir/$(basename $j)
         fi
 
         if [ -e "$I_DIR/$device" ]; then
             for k in `find "$I_DIR/$device" -type f | egrep -iv torrent\|\.part`; do
-                [ -e "$out_dir/$(basename $k)" ] && ln $k $out_dir
-                [ $? -ne 0 ] && ln -s $k $out_dir
+                [ -e "$html_out_dir/$(basename $k)" ] && ln $k $html_out_dir
+                [ $? -ne 0 ] && ln -s $k $html_out_dir
             done
         fi
     done
 }
-
-
-TRANSMISSION_OUT=/var/lib/transmission-daemon/downloads/
-T_OUT=/var/lib/transmission-daemon/.config/transmission-daemon/torrents/
-T_BIN=/usr/bin/transmission-remote
-
-if [ -z "$JENKINS_HOME" ]; then
-    JENKINS_HOME=/var/lib/jenkins
-fi
-
-sanitize_html_home
 
 function generate_artifacts_from_torrent() {
     # arg1: find regexp; arg2: dist long (dir) name
@@ -74,24 +65,20 @@ function generate_artifacts_from_torrent() {
     [ -z "$device_offset" ] && device_offset='3'
     [ -z "$date_offset" ] && date_offset='3'
 
-    for i in `find ${T_OUT} -type f -name ${find_regexp}`; do
-        #FILE_NAME=$(basename $i | sed s'/.zip//'g);
-        file_name=$(basename $i | sed s'/\.[a-z0-9]*\.torrent//'g);
+    for source_torrent in `find ${TORRENT_SOURCE_DIR} -type f -name ${find_regexp}`; do
+        file_name=$(basename $source_torrent | sed s'/\.[a-z0-9]*\.torrent//'g);
         device_name=$(echo $file_name | cut -d '-' -f ${device_offset})
         build_date=$(echo $file_name | cut -d '_' -f ${date_offset})
-        out_dir=`get_html_home $device_name`/${dist_name}/$device_name/$build_date
-        mkdir -p $out_dir
-        #F_DIR="$(dirname $i)"
-        f_dir=${TRANSMISSION_OUT}/${file_name}
+        html_out_dir=`get_html_home $device_name`/${dist_name}/$device_name/$build_date
+        mkdir -p $html_out_dir
+        transmission_out_dir=${TRANSMISSION_DOWNLOAD_SOURCE}/${file_name}
 
-        #TORRENT=`find $T_OUT/ -name "$FILE_NAME"'*torrent'`
-        torrent=$i
-        dest_torrent="$out_dir/${file_name}.torrent"
+        dest_torrent="$html_out_dir/${file_name}.torrent"
 
-        link_artifacts $f_dir $out_dir $device_name
+        link_artifacts $transmission_out_dir $html_out_dir $device_name
 
-        if ! [ -e $dest_torrent ] && [ -f $torrent ]; then
-            ln $torrent $dest_torrent;
+        if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
+            ln $source_torrent $dest_torrent;
         fi
         #echo
     done
@@ -134,67 +121,56 @@ function generate_zram_zip() {
     cd ${zip_dir} && zip ${zram_zip} `find ${zip_dir} -type f | cut -c $(($(echo ${zip_dir}|wc -c)+1))-`
 
 
-    for i in `find /var/www/ -name 'download.*.com'`; do
-        echo "Copying zip ${zram_zip} to ${i} ..."
-        mkdir -p $i/public_html/ZRAM
-        cp ${zram_zip} $i/public_html/ZRAM
+    for doc_root in `find /var/www/ -name 'download.*.com'`; do
+        echo "Copying zip ${zram_zip} to ${doc_root} ..."
+        mkdir -p $doc_root/public_html/ZRAM
+        cp ${zram_zip} $doc_root/public_html/ZRAM
     done
 
     rm -rf $temp_dir
 }
 
-for i in `find ${T_OUT} -type f -name 'TWRP*'`; do
-    #FILE_NAME=$(basename $i | sed s'/.zip//'g);
-    #FILE_NAME=$(basename $i | sed s'/\.[a-z0-9]*\.torrent//'g);
-    FILE_NAME=$(basename $i | sed s'/\.tar\.[a-z0-9]*\.torrent//'g);
-    DEVICE=$(echo $FILE_NAME | cut -d '_' -f 4)
-    VERSION=$(echo $FILE_NAME | cut -d '-' -f 2)
-    DATE=$(echo $FILE_NAME | cut -d '_' -f 3)
-    OUT_DIR=`get_html_home $DEVICE`/TWRP/$VERSION/$DEVICE/$DATE/
-    TORRENT=$i
-    TAR=$TRANSMISSION_OUT/${FILE_NAME}.tar
-    DEST_TORRENT="$OUT_DIR/${FILE_NAME}.torrent"
+# clear old artifacts
+sanitize_html_home
 
-    mkdir -p $OUT_DIR
+for source_torrent in `find ${TORRENT_SOURCE_DIR} -type f -name 'TWRP*'`; do
+    file_name=$(basename $source_torrent | sed s'/\.tar\.[a-z0-9]*\.torrent//'g);
+    device=$(echo $file_name | cut -d '_' -f 4)
+    version=$(echo $file_name | cut -d '-' -f 2)
+    date=$(echo $file_name | cut -d '_' -f 3)
+    html_out_dir=`get_html_home $device`/TWRP/$version/$device/$date/
+    twrp_source_tar=${TRANSMISSION_DOWNLOAD_SOURCE}/${file_name}.tar
+    dest_torrent="$html_out_dir/${file_name}.torrent"
 
-    if ! [ -e $OUT_DIR/${FILE_NAME}.tar ] && [ -f $TAR ]; then
-        ln $TAR $OUT_DIR/${FILE_NAME}.tar
-        #chmod og+r $OUT_DIR/${FILE_NAME}.tar
+    mkdir -p $html_out_dir
+
+    if ! [ -e $html_out_dir/${file_name}.tar ] && [ -f $twrp_source_tar ]; then
+        ln $twrp_source_tar $html_out_dir/${file_name}.tar
     fi
 
-    if ! [ -e $DEST_TORRENT ] && [ -f $TORRENT ]; then
-        ln $TORRENT $DEST_TORRENT;
-        #chmod og+r $DEST_TORRENT
+    if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
+        ln $source_torrent $dest_torrent;
     fi
-    #echo
 done
 
 # TODO: Generate for all chipsets
-for i in `find ${T_OUT} -type f -name 'open_gapps*'`; do
-    #FILE_NAME=$(basename $i | sed s'/.zip//'g);
-    #FILE_NAME=$(basename $i | sed s'/\.[a-z0-9]*\.torrent//'g);
-    FILE_NAME=$(basename $i | sed s'/\.zip\.[a-z0-9]*\.torrent//'g);
-    VERSION=$(echo $FILE_NAME | cut -d '-' -f 3)
-    DATE=$(echo $FILE_NAME | cut -d '-' -f 5)
-    OUT_DIR=`get_html_home $DEVICE`/OpenGApps/$VERSION/$DATE/
-    TORRENT=$i
-    ZIP=$TRANSMISSION_OUT/${FILE_NAME}.zip
-    DEST_TORRENT="$OUT_DIR/${FILE_NAME}.torrent"
+for source_torrent in `find ${TORRENT_SOURCE_DIR} -type f -name 'open_gapps*'`; do
+    file_name=$(basename $source_torrent | sed s'/\.zip\.[a-z0-9]*\.torrent//'g);
+    version=$(echo $file_name | cut -d '-' -f 3)
+    date=$(echo $file_name | cut -d '-' -f 5)
+    html_out_dir=`get_html_home $device`/OpenGApps/$version/$date/
+    source_zip=${TRANSMISSION_DOWNLOAD_SOURCE}/${file_name}.zip
+    dest_torrent="$html_out_dir/${file_name}.torrent"
 
-    #TORRENT=`find $T_OUT/ -name "$FILE_NAME"'*torrent'`
+    mkdir -p $html_out_dir
 
-    mkdir -p $OUT_DIR
-
-    if ! [ -e $OUT_DIR/${FILE_NAME}.zip ] && [ -f $ZIP ]; then
-        ln $ZIP $OUT_DIR/${FILE_NAME}.zip
-        #chmod og+r $OUT_DIR/${FILE_NAME}.zip
+    if ! [ -e $html_out_dir/${file_name}.zip ] && [ -f $source_zip ]; then
+        ln $source_zip $html_out_dir/${file_name}.zip
     fi
 
-    if ! [ -e $DEST_TORRENT ] && [ -f $TORRENT ]; then
-        ln $TORRENT $DEST_TORRENT;
-        #chmod og+r $DEST_TORRENT
+    if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
+        ln $source_torrent $dest_torrent;
     fi
-    #echo
 done
 
 generate_artifacts_from_torrent 'rr*torrent' "ResurrectionRemix" 3 3
