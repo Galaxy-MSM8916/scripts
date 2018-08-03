@@ -133,45 +133,52 @@ function generate_zram_zip() {
 # clear old artifacts
 sanitize_html_home
 
-for source_torrent in `find ${TORRENT_SOURCE_DIR} -type f -name 'TWRP*'`; do
-    file_name=$(basename $source_torrent | sed s'/\.tar\.[a-z0-9]*\.torrent//'g);
-    device=$(echo $file_name | cut -d '_' -f 4)
-    version=$(echo $file_name | cut -d '-' -f 2)
-    date=$(echo $file_name | cut -d '_' -f 3)
-    html_out_dir=`get_html_home $device`/TWRP/$version/$device/$date/
-    twrp_source_tar=${TRANSMISSION_DOWNLOAD_SOURCE}/${file_name}.tar
-    dest_torrent="$html_out_dir/${file_name}.torrent"
+function generate_twrp_artifacts() {
+    for source_torrent in `find ${TORRENT_SOURCE_DIR} -type f -name 'TWRP*'`; do
+        file_name=$(basename $source_torrent | sed s'/\.tar\.[a-z0-9]*\.torrent//'g);
+        device=$(echo $file_name | cut -d '_' -f 4)
+        version=$(echo $file_name | cut -d '-' -f 2)
+        date=$(echo $file_name | cut -d '_' -f 3)
+        html_out_dir=`get_html_home $device`/TWRP/$version/$device/$date/
+        twrp_source_tar=${TRANSMISSION_DOWNLOAD_SOURCE}/${file_name}.tar
+        dest_torrent="$html_out_dir/${file_name}.torrent"
 
-    mkdir -p $html_out_dir
+        mkdir -p $html_out_dir
 
-    if ! [ -e $html_out_dir/${file_name}.tar ] && [ -f $twrp_source_tar ]; then
-        ln $twrp_source_tar $html_out_dir/${file_name}.tar
-    fi
+        if ! [ -e $html_out_dir/${file_name}.tar ] && [ -f $twrp_source_tar ]; then
+            ln $twrp_source_tar $html_out_dir/${file_name}.tar
+        fi
 
-    if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
-        ln $source_torrent $dest_torrent;
-    fi
-done
+        if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
+            ln $source_torrent $dest_torrent;
+        fi
+    done
+}
 
-# TODO: Generate for all chipsets
-for source_torrent in `find ${TORRENT_SOURCE_DIR} -type f -name 'open_gapps*'`; do
-    file_name=$(basename $source_torrent | sed s'/\.zip\.[a-z0-9]*\.torrent//'g);
-    version=$(echo $file_name | cut -d '-' -f 3)
-    date=$(echo $file_name | cut -d '-' -f 5)
-    html_out_dir=`get_html_home $device`/OpenGApps/$version/$date/
-    source_zip=${TRANSMISSION_DOWNLOAD_SOURCE}/${file_name}.zip
-    dest_torrent="$html_out_dir/${file_name}.torrent"
+function generate_gapps_artifacts() {
+    # TODO: Generate for all chipsets
+    for source_torrent in `find ${TORRENT_SOURCE_DIR} -type f -name 'open_gapps*'`; do
+        file_name=$(basename $source_torrent | sed s'/\.zip\.[a-z0-9]*\.torrent//'g);
+        version=$(echo $file_name | cut -d '-' -f 3)
+        date=$(echo $file_name | cut -d '-' -f 5)
+        html_out_dir=`get_html_home $device`/OpenGApps/$version/$date/
+        source_zip=${TRANSMISSION_DOWNLOAD_SOURCE}/${file_name}.zip
+        dest_torrent="$html_out_dir/${file_name}.torrent"
 
-    mkdir -p $html_out_dir
+        mkdir -p $html_out_dir
 
-    if ! [ -e $html_out_dir/${file_name}.zip ] && [ -f $source_zip ]; then
-        ln $source_zip $html_out_dir/${file_name}.zip
-    fi
+        if ! [ -e $html_out_dir/${file_name}.zip ] && [ -f $source_zip ]; then
+            ln $source_zip $html_out_dir/${file_name}.zip
+        fi
 
-    if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
-        ln $source_torrent $dest_torrent;
-    fi
-done
+        if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
+            ln $source_torrent $dest_torrent;
+        fi
+    done
+}
+
+generate_twrp_artifacts
+generate_gapps_artifacts
 
 generate_artifacts_from_torrent 'rr*torrent' "ResurrectionRemix" 3 3
 generate_artifacts_from_torrent 'lineage-1*torrent' "LineageOS" 3 3
