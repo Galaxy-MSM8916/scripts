@@ -69,6 +69,7 @@ function print_end_build {
 
         END_TIME=$( date +%s )
         buildTime="%0A%0ABuild time: $(format_time ${END_TIME} ${BUILD_START_TIME})"
+        queuedTime="%0AEnqueued time: $(format_time ${BUILD_START_TIME} ${START_TIME})"
         totalTime="%0ATotal time: $(format_time ${END_TIME} ${START_TIME})"
 
 
@@ -97,7 +98,7 @@ function print_end_build {
 
         str_main+=" completed successfully."
 
-        textStr="${str_main}${str_rom}${str_rec}${str_boot}${str_changelog}${str_blurb}${buildTime}${totalTime}"
+        textStr="${str_main}${str_rom}${str_rec}${str_boot}${str_changelog}${str_blurb}${buildTime}${queuedTime}${totalTime}"
 
         textStr=$(echo $textStr |sed s'/\/\//\//'g)
         textStr=$(echo $textStr |sed s'/http:\//http:\/\//'g)
