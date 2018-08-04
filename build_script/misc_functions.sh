@@ -40,6 +40,7 @@ function exit_error {
         if [ "x$SILENT" != "x1" ]; then
             END_TIME=$( date +%s )
             buildTime="%0A%0ABuild time: $(format_time ${END_TIME} ${BUILD_START_TIME})"
+            queuedTime="%0AEnqueued time: $(format_time ${BUILD_START_TIME} ${START_TIME})"
             totalTime="%0ATotal time: $(format_time ${END_TIME} ${START_TIME})"
 
             if [ "x$JOB_DESCRIPTION" != "x" ]; then
@@ -57,7 +58,7 @@ function exit_error {
                 textStr+="%0A${JOB_URL}/console"
             fi
 
-            textStr+="${buildTime}${totalTime}"
+            textStr+="${buildTime}${queuedTime}${totalTime}"
 
             if [ "x$PRINT_VIA_PROXY" != "x" ] && [ "x$SYNC_HOST" != "x" ]; then
                 timeout -s 9 20 ssh $SYNC_HOST wget \'"https://api.telegram.org/bot${BUILD_TELEGRAM_TOKEN}/sendMessage?chat_id=${BUILD_TELEGRAM_CHATID}&text=$textStr"\' -O - > /dev/null 2>/dev/null
