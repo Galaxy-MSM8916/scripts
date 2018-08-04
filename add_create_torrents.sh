@@ -11,7 +11,7 @@ update_repo
 HTML_HOME=/var/www/download.msm8916.com/public_html
 # | grep -v 'los-15'
 #TRACKERS="http://tracker.msm8916.com:6969/announce,udp://tracker.coppersurfer.tk:6969,udp://tracker.leechers-paradise.org:6969"
-TRACKERS="udp://tracker-1.msm8916.com:6970/announce,udp://tracker-2.msm8916.com:6969/announce"
+TRACKERS="http://tracker-1.msm8916.com:6970/announce,http://tracker-2.msm8916.com:6969/announce"
 T_BIN=/usr/bin/transmission-remote
 TRANSMISSION_OUT=/var/lib/transmission-daemon/downloads/
 
