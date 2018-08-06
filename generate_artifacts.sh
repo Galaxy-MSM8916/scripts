@@ -188,7 +188,7 @@ generate_artifacts_from_torrent 'lineage-go-1*torrent' "LineageOS_Go" 4 3
 
 zram_lower=256
 zram_incr=128
-zram_upper=1024
+zram_upper=512
 
 # generate zram images
 for size in `seq $zram_lower $zram_incr $zram_upper`; do
