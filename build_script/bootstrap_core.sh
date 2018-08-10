@@ -13,22 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# declare globals for argv helper
-# declare some globals
-release_type=""
-ver=""
-distroTxt=""
-recovery_variant=""
-recovery_flavour=""
-
-arc_name=""
-rec_name=""
-bimg_name=""
-boot_tar_name=""
-
-chipset=`find_chipset $DEVICE_NAME`
-vendor="samsung"
-
 function bootstrap {
     # check repopick tool existence
     repopick_path=`command -v repopick`
@@ -45,15 +29,6 @@ function bootstrap {
     export PATH
     (>&2 echo "Path is: $PATH")
 }
-
-DISTROS="
-omni
-lineage
-lineage-go
-cm
-rr
-AOSPA
-dotOS"
 
 if [ -z "$recovery_variant" ]; then
     recovery_variant=$(echo $@ | grep -o 'RECOVERY_VARIANT[ ]*:=[ ]*[A-Za-z0-9]*' | sed s'/ //'g |cut -d':' -f2)

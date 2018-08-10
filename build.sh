@@ -19,35 +19,6 @@
 # source common scripts
 source_common
 
-# file transfer retry count
-UPLOAD_RETRY_COUNT=3
-
-# create a temprary working dir
-BUILD_TEMP=$(mktemp -d)
-
-ARTIFACT_OUT_DIR=${BUILD_TEMP}/builds
-
-SAVED_BUILD_JOBS_DIR=/tmp/android_build_jobs
-
-#changelog
-CHANGELOG_DAYS=5
-
-CURL="curl --silent -connect-timeout=10"
-
-# file extraction function names
-COPY_FUNCTIONS=();
-POST_COPY_FUNCTIONS=();
-
-REPO_REF_MAP=();
-
-SILENT=0
-
-LOCAL_REPO_PICKS=
-LINEAGE_REPO_PICKS=
-
-LOCAL_REPO_TOPICS=
-LINEAGE_REPO_TOPICS=
-
 function validate_arg {
     valid=$(echo $1 | sed s'/^[\-][a-z0-9A-Z\-]*/valid/'g)
     [ "x$1" == "x$0" ] && return 0;
