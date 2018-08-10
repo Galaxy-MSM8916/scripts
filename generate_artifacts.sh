@@ -13,8 +13,8 @@ update_repo
 
 function get_html_home() {
     # first arg - device name
-    local chipset=`find_chipset $1`
-    echo /var/www/download.${chipset}.com/public_html
+    local soc=`find_soc $1`
+    echo /var/www/download.${soc}.com/public_html
 }
 
 function sanitize_html_home() {

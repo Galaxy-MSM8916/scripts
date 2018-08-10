@@ -26,7 +26,7 @@ rec_name=""
 bimg_name=""
 boot_tar_name=""
 
-chipset=`find_chipset $DEVICE_NAME`
+soc=`find_soc $DEVICE_NAME`
 vendor="samsung"
 
 function bootstrap {
@@ -60,7 +60,7 @@ if [ -z "$recovery_variant" ]; then
 fi
 
 function get_platform_info {
-    platform_common_dir="${BUILD_TOP}/device/${vendor}/${chipset}-common/"
+    platform_common_dir="${BUILD_TOP}/device/${vendor}/${soc}-common/"
 
     # try to get distribution version from path
     if [ "x$DISTRIBUTION" == "x" ] || [ "x$ver" == "x" ]; then
