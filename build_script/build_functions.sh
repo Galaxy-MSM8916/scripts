@@ -24,7 +24,7 @@ function make_targets {
     elif [ "x$ver" == "x15.1" ]; then
         MAKE_ARGS+="LINEAGE_BUILDTYPE=NIGHTLY"
     fi
-    exit_on_failure make -j${JOB_NUMBER} $BUILD_TARGET $MAKE_ARGS
+    exit_on_failure make -j${MAX_JOB_NUMBER} $BUILD_TARGET $MAKE_ARGS
 }
 
 function generate_log {

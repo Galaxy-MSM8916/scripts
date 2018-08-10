@@ -138,7 +138,7 @@ while [ "$1" != "" ]; do
             BUILD_VARIANT=$next_arg
             ;;
         -j | --jobs )
-            JOB_NUMBER=$next_arg
+            MAX_JOB_NUMBER=$next_arg
             ;;
         -h | --help )
             print_help

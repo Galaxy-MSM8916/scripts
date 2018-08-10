@@ -341,7 +341,7 @@ for file in $JOB_DESC_FILES; do
                 SHELL_COMMANDS+=${NEWLINE}
                 SHELL_COMMANDS+="\${BUILD_BIN_ROOT}/build.sh --path \${BUILD_ANDROID_ROOT}/${BUILD_DIR} --distro ${DIST} \\"
                 SHELL_COMMANDS+=${NEWLINE}
-                SHELL_COMMANDS+="--device ${DEVICE_CODENAME} --target ${BUILD_TARGET} -j \${MAX_JOB_NUMBER} \\"
+                SHELL_COMMANDS+="--device ${DEVICE_CODENAME} --target ${BUILD_TARGET} \\"
                 SHELL_COMMANDS+=${NEWLINE}
                 SHELL_COMMANDS+="--output \${JENKINS_HOME}/jobs/${JOB_DIR_PROPER}\${JOB_BASE_NAME}/builds/\${BUILD_NUMBER}/archive/ \\"
                 SHELL_COMMANDS+=${NEWLINE}
