@@ -23,7 +23,7 @@ source_common
 UPLOAD_RETRY_COUNT=3
 
 # create a temprary working dir
-BUILD_TEMP=$(mktemp -d)
+BUILD_TEMP=$(mktemp -d /tmp/build.tmp.XXXXXXX)
 
 ARTIFACT_OUT_DIR=${BUILD_TEMP}/builds
 
