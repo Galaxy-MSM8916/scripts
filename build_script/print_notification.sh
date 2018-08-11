@@ -59,7 +59,8 @@ function print_start_build {
 function print_end_build {
     logb "Done."
     if [ "x$SILENT" != "x1" ]; then
-        target_str_len=$(echo ${JENKINS_HOME}/jobs | wc -c)
+        home_proper=/var/lib/${soc}-jenkins
+        target_str_len=$(echo ${home_proper}/jobs | wc -c)
         r_dir=$(echo $OUTPUT_DIR | cut -c ${target_str_len}-)
         link="https://artifacts.${soc}.com${r_dir}"
 
