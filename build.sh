@@ -22,9 +22,6 @@ source_common
 # file transfer retry count
 UPLOAD_RETRY_COUNT=3
 
-# create a temprary working dir
-BUILD_TEMP=$(mktemp -d /tmp/build.tmp.XXXXXXX)
-
 ARTIFACT_OUT_DIR=${BUILD_TEMP}/builds
 
 SAVED_BUILD_JOBS_DIR=/tmp/android_build_jobs
@@ -243,6 +240,9 @@ if [ "x$SYNC_ALL" == "x" ] && [ "x$SYNC_VENDOR" == "x" ]; then
     fi
 fi
 
+# create a temprary working dir
+BUILD_TEMP=$(mktemp -d /tmp/build.tmp.XXXXXXX)
+
 # update the repo
 update_repo
 
@@ -288,6 +288,9 @@ fi
 
 # remove lock
 remove_build_lock
+
+# remove temp dir
+remove_temp_dir
 
 END_TIME=$( date +%s )
 
