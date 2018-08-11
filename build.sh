@@ -22,8 +22,6 @@ source_common
 # file transfer retry count
 UPLOAD_RETRY_COUNT=3
 
-SAVED_BUILD_JOBS_DIR=/tmp/android_build_jobs
-
 #changelog
 CHANGELOG_DAYS=5
 
@@ -31,9 +29,6 @@ CURL="curl --silent -connect-timeout=10"
 
 # file extraction function names
 COPY_FUNCTIONS=();
-POST_COPY_FUNCTIONS=();
-
-REPO_REF_MAP=();
 
 SILENT=0
 
@@ -60,14 +55,9 @@ function print_help {
                 log "  --device\tdevice name" ;
                 log "  -H, --host\trsync/ssh host details. In the form [user@]hostname";
                 log "  -p, --path\tbuild top path" ;
-                log "  -P, --print-via-proxy\tConnect to telegram via host specified above." ;
                 log "  -o, --output\toutput path (path to jenkins archive dir)";
                 log "\nOptional commands:";
                 log "  -b\tbuild number";
-                log "\n  --branch-map --ref-map\tSpecify branches to check out for particular repositories";
-                log "              \tin the form repo directory:branch, for example,";
-                log "              \t--branch-map vendor/samsung:cm-14.1-experimental ";
-                log "              \tThis option can be specified multiple times.\n ";
                 log "--pick-lineage --pick-lineage-topic \t Pick specified lineage gerrit changes.";
                 log "--pick  --pick-topic \t Pick specified local (msm8916) gerrit changes.";
                 log "              \tChanges can be comma separated, or the flag";
@@ -157,9 +147,6 @@ while [ "$1" != "" ]; do
         -p | --path )
             BUILD_TOP=`realpath $next_arg`
             ;;
-        -P)
-            PRINT_VIA_PROXY=y
-            ;;
         --pick )
             logb "\t\tChange(s) $next_arg specified"
             LOCAL_REPO_PICKS="${LOCAL_REPO_PICKS} `echo $next_arg|sed s'/,/ /'g`"
@@ -175,8 +162,6 @@ while [ "$1" != "" ]; do
         --pick-topic )
             logb "\t\tTopic(s) $next_arg specified"
             LOCAL_REPO_TOPICS="${LOCAL_REPO_TOPICS} `echo $next_arg|sed s'/,/ /'g`"
-            ;;
-        --print-via-proxy ) PRINT_VIA_PROXY=y
             ;;
         -r)
             CLEAN_TARGET_OUT=1
