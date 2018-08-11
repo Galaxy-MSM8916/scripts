@@ -94,7 +94,7 @@ fi
 
 function apply_repopicks {
     cd ${BUILD_TOP}
-    gerrit_url="https://review.${soc}.com"
+    gerrit_url="ssh://jenkins@review.${soc}.com"
 
     #pick local gerrit changes
     [ -n "$LOCAL_REPO_PICKS" ] && repopick -g $gerrit_url -r $LOCAL_REPO_PICKS
