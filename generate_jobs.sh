@@ -11,9 +11,6 @@ update_repo
 NEWLINE="
 "
 
-HOST_USER=jenkins
-HOST_NAME=jenkins.msm8916.com
-
 function generate_folder_config() {
 # generate_folder_config FOLDER_NAME CONFIG_PATH
 local FOLDER_NAME=`remove_underscores $1`
@@ -95,6 +92,10 @@ if [ "x$CONFIG_PATH" != "x" ]; then
   gen_torrents=
 
   if [ "$BUILD_TARGET" == "otapackage" ] || [ "$BUILD_TARGET" == "bootimage" ] || [ "$BUILD_TARGET" == "recoveryimage" ]; then
+    soc=`find_soc $DEVICE_CODENAME`
+    HOST_NAME=jenkins.${soc}.com
+    HOST_USER=${soc}-jenkins
+
     args_extra="   <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
         <hudson.model.StringParameterDefinition>
@@ -105,7 +106,7 @@ if [ "x$CONFIG_PATH" != "x" ]; then
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>"
     gen_torrents="    <hudson.tasks.Shell>
-      <command>ssh jenkins@msm8916.com &quot;~/bin/add_create_torrents.sh&quot;</command>
+      <command>ssh ${HOST_USER}@${HOST_NAME} &quot;~/bin/add_create_torrents.sh&quot;</command>
     </hudson.tasks.Shell>"
   elif [ "$BUILD_TARGET" == "promote" ]; then
     args_extra="   <hudson.model.ParametersDefinitionProperty>
@@ -322,6 +323,10 @@ for file in $JOB_DESC_FILES; do
             JOB_BASE_NAME=${JOB_PREFIX}-${DIST_VERSION}-${DEVICE_CODENAME}
             JOB_DIR_PATH=${JENKINS_JOB_DIR}/${JOB_DIR_PROPER}/${JOB_BASE_NAME}/
             CONFIG_PATH=${JOB_DIR_PATH}/config.xml
+
+            soc=`find_soc $DEVICE_CODENAME`
+            HOST_NAME=jenkins.${soc}.com
+            HOST_USER=${soc}-jenkins
 
             mkdir -p $JOB_DIR_PATH
 
