@@ -3,7 +3,7 @@
 function acquire_build_lock {
 
     local lock_name="android_build_lock"
-    local lock="/var/lock/${lock_name}"
+    local lock="/tmp/${lock_name}"
 
     exec 200>${lock}
 
