@@ -14,10 +14,9 @@
 # limitations under the License.
 
 function clean_out {
-    cd $BUILD_TOP/
-    if [ "x${CLEAN_TARGET_OUT}" != "x" ] && [ ${CLEAN_TARGET_OUT} -eq 1 ]; then
+    if [ "${CLEAN_TARGET_OUT}" -eq 1 ]; then
         echoText "Cleaning build dir..."
-        rm -rf out
+        rm -rf ${BUILD_TOP}/out
     fi
 }
 
