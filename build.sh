@@ -22,8 +22,6 @@ source_common
 # file transfer retry count
 UPLOAD_RETRY_COUNT=3
 
-ARTIFACT_OUT_DIR=${BUILD_TEMP}/builds
-
 SAVED_BUILD_JOBS_DIR=/tmp/android_build_jobs
 
 #changelog
@@ -242,6 +240,8 @@ fi
 
 # create a temprary working dir
 BUILD_TEMP=$(mktemp -d /tmp/build.tmp.XXXXXXX)
+
+ARTIFACT_OUT_DIR=${BUILD_TEMP}/builds
 
 # update the repo
 update_repo
