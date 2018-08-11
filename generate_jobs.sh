@@ -95,6 +95,7 @@ if [ "x$CONFIG_PATH" != "x" ]; then
     soc=`find_soc $DEVICE_CODENAME`
     HOST_NAME=jenkins.${soc}.com
     HOST_USER=${soc}-jenkins
+    SSH="ssh -o StrictHostKeyChecking=no"
 
     args_extra="   <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
@@ -106,7 +107,7 @@ if [ "x$CONFIG_PATH" != "x" ]; then
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>"
     gen_torrents="    <hudson.tasks.Shell>
-      <command>ssh ${HOST_USER}@${HOST_NAME} &quot;~/bin/add_create_torrents.sh&quot;</command>
+      <command>${SSH} ${HOST_USER}@${HOST_NAME} &quot;~/bin/add_create_torrents.sh&quot;</command>
     </hudson.tasks.Shell>"
   elif [ "$BUILD_TARGET" == "promote" ]; then
     args_extra="   <hudson.model.ParametersDefinitionProperty>
@@ -306,8 +307,6 @@ for file in $JOB_DESC_FILES; do
     # save these variables for later use
     JOB_EXTENDED_DESCRIPTION_OLD=$JOB_EXTENDED_DESCRIPTION
     BUILD_DIR_OLD=$BUILD_DIR
-
-    SSH="ssh -o StrictHostKeyChecking=no"
 
     for DIST_VERSION in `split_variable $DIST_VERSION`; do
         for DEVICE_LINE in `split_variable $DEVICES`; do
