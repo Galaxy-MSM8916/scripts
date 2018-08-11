@@ -17,6 +17,7 @@ function generate_device_list() {
     [ -z "$SOC_DEVICES_FULL" ] && SOC_DEVICES_FULL=`find $job_dir -name '*txt' | xargs grep DEVICES`
 
     for i in $SOC_DEVICES_FULL; do
+        i=`echo $i | cut -c $(($(echo ${job_dir}|wc -c)+1))-`
         soc=`echo $i | grep -o -e 'msm[0-9a-zA-Z]*'`;
         [ -z "$soc" ] && soc=`echo $i | grep -o -e 'exynos[0-9a-zA-Z]*'`;
         local device_name=`echo $i| cut -d'=' -f 2| cut -d':' -f 1`
