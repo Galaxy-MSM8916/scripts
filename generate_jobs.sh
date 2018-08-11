@@ -218,7 +218,7 @@ while [ "$1" != "" ]; do
 done
 
 if [ "x$JENKINS_JOB_DIR" == "x" ]; then
-    JENKINS_JOB_DIR="/var/lib/jenkins/jobs"
+    JENKINS_JOB_DIR="${JENKINS_HOME}/jobs"
 fi
 
 # clean up the dirs

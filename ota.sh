@@ -90,10 +90,6 @@ if [ "x$TARGET" != "xpromote" ] && [ "x$TARGET" != "xdemote" ]; then
     print_help
 fi
 
-if [ -z "$JENKINS_HOME" ]; then
-    JENKINS_HOME=/var/lib/jenkins
-fi
-
 update_repo
 generate_device_list
 

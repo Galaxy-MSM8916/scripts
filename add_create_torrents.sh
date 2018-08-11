@@ -8,7 +8,6 @@ source_common
 # update the repo
 update_repo
 
-HTML_HOME=/var/www/download.msm8916.com/public_html
 # | grep -v 'los-15'
 #TRACKERS="http://tracker.msm8916.com:6969/announce,udp://tracker.coppersurfer.tk:6969,udp://tracker.leechers-paradise.org:6969"
 TRACKERS="http://tracker-2.msm8916.com:6969/announce,http://tracker-1.msm8916.com:6970/announce"
@@ -19,15 +18,6 @@ TORRENT_HOSTS="
 jenkins.msm8916.com
 google-1.msm8916.com
 "
-#tracker.msm8916.com
-
-if [ -z "$JENKINS_HOME" ]; then
-	JENKINS_HOME=$HOME
-fi
-
-if [ -z "$TRANSMISSION_USERNAME" ]; then
-	TRANSMISSION_USERNAME="transmission"
-fi
 
 #acquire_build_lock
 
