@@ -347,7 +347,7 @@ for file in $JOB_DESC_FILES; do
                 SHELL_COMMANDS+=${NEWLINE}
                 SHELL_COMMANDS+="--device ${DEVICE_CODENAME} --target ${BUILD_TARGET} \\"
                 SHELL_COMMANDS+=${NEWLINE}
-                SHELL_COMMANDS+="--output \${JENKINS_HOME}/jobs/${JOB_DIR_PROPER}\${JOB_BASE_NAME}/builds/\${BUILD_NUMBER}/archive/ \\"
+                SHELL_COMMANDS+="--output /var/lib/${soc}-jenkins/jobs/${JOB_DIR_PROPER}\${JOB_BASE_NAME}/builds/\${BUILD_NUMBER}/archive/ \\"
                 SHELL_COMMANDS+=${NEWLINE}
                 SHELL_COMMANDS+="-b \${BUILD_NUMBER} --type=${BUILD_TYPE} -v \\"
                 SHELL_COMMANDS+=${NEWLINE}
