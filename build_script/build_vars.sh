@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# locale
+export LC_ALL=C
+
 # telegram
 BUILD_TELEGRAM_CHATID="@Samsung_MSM89XX"
 BUILD_TELEGRAM_TOKEN=""
