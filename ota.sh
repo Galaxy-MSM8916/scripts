@@ -96,10 +96,10 @@ generate_device_list
 if [ "x$TARGET" == "xpromote" ]; then
     if [ $GO -eq 0 ]; then
         JENKINS_JOB_DIR="${JENKINS_HOME}/jobs/LineageOS_Builds"
-        JOB_REGEXP="lineage-${VERSION}"'*'"_j${JOB_NUM}_"'*'"${DEVICE}"'*'
+        JOB_REGEXP="lineage-${VERSION}"'*'"j${JOB_NUM}"'*'"${DEVICE}"'*'
     else
         JENKINS_JOB_DIR="${JENKINS_HOME}/jobs/LineageOS_GO_Builds"
-        JOB_REGEXP="lineage-go-${VERSION}"'*'"_j${JOB_NUM}_"'*'"${DEVICE}"'*'
+        JOB_REGEXP="lineage-go-${VERSION}"'*'"j${JOB_NUM}"'*'"${DEVICE}"'*'
     fi
 
     SEARCH_PATH="
@@ -117,12 +117,10 @@ if [ "x$TARGET" == "xpromote" ]; then
         find ${path} -name 'changelog-'${JOB_REGEXP}'*txt' -type f -execdir ln '{}' ${OTA_ROOT}/builds/full/ \; || continue
         find ${path} -name ${JOB_REGEXP}'*md5' -type f -execdir cp '{}' ${OTA_ROOT}/builds/full/ \; || continue
         rename s'/-go//'g ${OTA_ROOT}/builds/full/*
-        rename s'/_j[0-9]*_/-/'g ${OTA_ROOT}/builds/full/*
-        find ${OTA_ROOT}/builds/full/ -type f -execdir rename s'/_/-/'g '{}' \; || true
+        rename s'/-j[0-9]*-/-/'g ${OTA_ROOT}/builds/full/*
         rename s'/changelog-//'g ${OTA_ROOT}/builds/full/*
         rename s'/zip\.md5/md5sum/'g  ${OTA_ROOT}/builds/full/*
-        sed -i s'/_j[0-9]*_/-/'g ${OTA_ROOT}/builds/full/*md5sum
-        sed -i s'/_/-/'g ${OTA_ROOT}/builds/full/*md5sum
+        sed -i s'/-j[0-9]*-/-/'g ${OTA_ROOT}/builds/full/*md5sum
         SUCCESS=1
     done
 else
