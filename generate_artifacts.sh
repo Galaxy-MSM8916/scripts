@@ -70,9 +70,10 @@ function generate_artifacts_from_torrent() {
 
     for source_torrent in `find ${TORRENT_SOURCE_DIR} -type f -name ${find_regexp}`; do
         file_name=$(basename $source_torrent | sed s'/\.[a-z0-9]*\.torrent//'g);
-        version=$(echo $file_name | cut -d '-' -f ${version_offset})
-        device_name=$(echo $file_name | cut -d '-' -f ${device_offset})
-        build_date=$(echo $file_name | cut -d '_' -f ${date_offset})
+        file_name_std=$(echo $file_name|sed s'/_/-/'g)
+        version=$(echo $file_name_std | cut -d '-' -f ${version_offset})
+        device_name=$(echo $file_name_std | cut -d '-' -f ${device_offset})
+        build_date=$(echo $file_name_std | cut -d '-' -f ${date_offset})
         html_out_dir=`get_html_home $device_name`/${dist_name}/$version/$device_name/$build_date
         mkdir -p $html_out_dir
         transmission_out_dir=${TRANSMISSION_DOWNLOAD_SOURCE}/${file_name}
@@ -186,9 +187,9 @@ function generate_gapps_artifacts() {
 generate_twrp_artifacts
 generate_gapps_artifacts
 
-generate_artifacts_from_torrent 'rr*torrent' "ResurrectionRemix" 3 3
-generate_artifacts_from_torrent 'lineage-1*torrent' "LineageOS" 3 3
-generate_artifacts_from_torrent 'lineage-go-1*torrent' "LineageOS_Go" 4 3
+generate_artifacts_from_torrent 'rr*torrent' "ResurrectionRemix" 2 6 4
+generate_artifacts_from_torrent 'lineage-1*torrent' "LineageOS" 2 6 4
+generate_artifacts_from_torrent 'lineage-go-1*torrent' "LineageOS_Go" 3 7 5
 
 zram_lower=256
 zram_incr=128
