@@ -141,9 +141,10 @@ sanitize_html_home
 function generate_twrp_artifacts() {
     for source_torrent in `find ${TORRENT_SOURCE_DIR} -type f -name 'TWRP*'`; do
         file_name=$(basename $source_torrent | sed s'/\.tar\.[a-z0-9]*\.torrent//'g);
-        device=$(echo $file_name | cut -d '_' -f 4)
-        version=$(echo $file_name | cut -d '-' -f 2)
-        date=$(echo $file_name | cut -d '_' -f 3)
+        file_name_std=$(echo $file_name|sed s'/_/-/'g)
+        date=$(echo $file_name_std | rev | cut -d '-' -f 2 | rev) # reverse/cut/reverse
+        device=$(echo $file_name_std | rev | cut -d '-' -f 1 | rev)
+        version=$(echo $file_name_std | cut -d '-' -f 2)
         html_out_dir=`get_html_home $device`/TWRP/$version/$device/$date/
         twrp_source_tar=${TRANSMISSION_DOWNLOAD_SOURCE}/${file_name}.tar
         dest_torrent="$html_out_dir/${file_name}.torrent"
