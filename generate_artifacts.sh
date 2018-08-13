@@ -161,15 +161,40 @@ function generate_twrp_artifacts() {
 }
 
 function generate_gapps_artifacts() {
+    # e. - MindTheGapps-8.1.0-arm-20180813_031926.zip
+    for source_torrent in `find ${TORRENT_SOURCE_DIR} -type f -name 'MindTheGapps*'`; do
+        file_name=$(basename $source_torrent | sed s'/\.zip\.[a-z0-9]*\.torrent//'g);
+        version=$(echo $file_name | cut -d '-' -f 2)
+        arch=$(echo $file_name | cut -d '-' -f 3)
+        date=$(echo $file_name | sed s'/_/-/'g | cut -d '-' -f 4)
+        source_zip=${TRANSMISSION_DOWNLOAD_SOURCE}/${file_name}.zip
+
+        for doc_root in `find /var/www/ -name 'download.*.com'`; do
+            html_out_dir=${doc_root}/public_html/MindTheGapps/$version/$arch/$date/
+            dest_torrent="$html_out_dir/${file_name}.torrent"
+
+            mkdir -p $html_out_dir
+
+            if ! [ -e $html_out_dir/${file_name}.zip ] && [ -f $source_zip ]; then
+                ln $source_zip $html_out_dir/${file_name}.zip
+            fi
+
+            if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
+                ln $source_torrent $dest_torrent;
+            fi
+        done
+    done
+    #e.g - open_gapps-arm-8.1-aroma-20180715-UNOFFICIAL.zip
     for source_torrent in `find ${TORRENT_SOURCE_DIR} -type f -name 'open_gapps*'`; do
         file_name=$(basename $source_torrent | sed s'/\.zip\.[a-z0-9]*\.torrent//'g);
+        arch=$(echo $file_name | cut -d '-' -f 2)
         version=$(echo $file_name | cut -d '-' -f 3)
         date=$(echo $file_name | cut -d '-' -f 5)
         source_zip=${TRANSMISSION_DOWNLOAD_SOURCE}/${file_name}.zip
-        dest_torrent="$html_out_dir/${file_name}.torrent"
 
         for doc_root in `find /var/www/ -name 'download.*.com'`; do
-            html_out_dir=${doc_root}/public_html/OpenGApps/$version/$date/
+            html_out_dir=${doc_root}/public_html/OpenGApps/$version/$arch/$date/
+            dest_torrent="$html_out_dir/${file_name}.torrent"
 
             mkdir -p $html_out_dir
 
