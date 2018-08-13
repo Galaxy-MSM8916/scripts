@@ -270,16 +270,16 @@ function get_platform_info {
      #define archive naming variables
     if [ "x${JOB_BUILD_NUMBER}" == "x" ]; then
         arc_name=${DISTRIBUTION}-${ver}-$(date +%Y%m%d)-${release_type}-${DEVICE_NAME}
-        rec_name=${recovery_flavour}-${DISTRIBUTION}-${ver}_$(date +%Y%m%d)_${DEVICE_NAME}
-        bimg_name=bootimage-${DISTRIBUTION}-${ver}_$(date +%Y%m%d)_${DEVICE_NAME}
+        rec_name=${recovery_flavour}-${DISTRIBUTION}-${ver}-$(date +%Y%m%d)-${DEVICE_NAME}
+        bimg_name=bootimage-${DISTRIBUTION}-${ver}-$(date +%Y%m%d)-${DEVICE_NAME}
         #bimg_name=boot_caf-based_$(date +%Y%m%d)-${DEVICE_NAME}
         boot_tar_name=bootimage_$(date +%Y%m%d)-${DEVICE_NAME}.tar
     else
-        arc_name=${DISTRIBUTION}-${ver}_j${JOB_BUILD_NUMBER}_$(date +%Y%m%d)_${release_type}-${DEVICE_NAME}
-        rec_name=${recovery_flavour}-${DISTRIBUTION}-${ver}_j${JOB_BUILD_NUMBER}_$(date +%Y%m%d)_${DEVICE_NAME}
-        bimg_name=bootimage-${DISTRIBUTION}-${ver}_j${JOB_BUILD_NUMBER}_$(date +%Y%m%d)_${DEVICE_NAME}
+        arc_name=${DISTRIBUTION}-${ver}-j${JOB_BUILD_NUMBER}-$(date +%Y%m%d)-${release_type}-${DEVICE_NAME}
+        rec_name=${recovery_flavour}-${DISTRIBUTION}-${ver}-j${JOB_BUILD_NUMBER}-$(date +%Y%m%d)-${DEVICE_NAME}
+        bimg_name=bootimage-${DISTRIBUTION}-${ver}-j${JOB_BUILD_NUMBER}-$(date +%Y%m%d)-${DEVICE_NAME}
         #bimg_name=boot_caf-based_j${JOB_BUILD_NUMBER}_$(date +%Y%m%d)-${DEVICE_NAME}
-        boot_tar_name=bootimage_j${JOB_BUILD_NUMBER}_$(date +%Y%m%d)-${DEVICE_NAME}.tar
+        boot_tar_name=bootimage-j${JOB_BUILD_NUMBER}-$(date +%Y%m%d)-${DEVICE_NAME}.tar
     fi
 
 }
