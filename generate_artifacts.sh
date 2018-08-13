@@ -55,21 +55,25 @@ function link_artifacts() {
 
 function generate_artifacts_from_torrent() {
     # arg1: find regexp; arg2: dist long (dir) name
-    # arg3: device name offset; arg4: build date offset
+    # arg3: version offset; arg4:device name offset;
+    # arg5: build date offset
     local find_regexp=$1
     local dist_name=$2
-    local device_offset=$3
-    local date_offset=$4
+    local version_offset=$3
+    local device_offset=$4
+    local date_offset=$5
 
     # set some reasonable defaults
+    [ -z "$version_offset" ] && version_offset='2'
     [ -z "$device_offset" ] && device_offset='3'
     [ -z "$date_offset" ] && date_offset='3'
 
     for source_torrent in `find ${TORRENT_SOURCE_DIR} -type f -name ${find_regexp}`; do
         file_name=$(basename $source_torrent | sed s'/\.[a-z0-9]*\.torrent//'g);
+        version=$(echo $file_name | cut -d '-' -f ${version_offset})
         device_name=$(echo $file_name | cut -d '-' -f ${device_offset})
         build_date=$(echo $file_name | cut -d '_' -f ${date_offset})
-        html_out_dir=`get_html_home $device_name`/${dist_name}/$device_name/$build_date
+        html_out_dir=`get_html_home $device_name`/${dist_name}/$version/$device_name/$build_date
         mkdir -p $html_out_dir
         transmission_out_dir=${TRANSMISSION_DOWNLOAD_SOURCE}/${file_name}
 
