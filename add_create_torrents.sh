@@ -38,6 +38,24 @@ for i in `find ${JENKINS_HOME}/jobs/TWRP_Builds -type f -name 'TWRP*.tar'`; do
     fi
 done
 
+for i in `find ${JENKINS_HOME}/jobs/MindTheGapps -type f -name '*.zip'`; do
+    FILE_NAME=$(basename $i | sed s'/.zip//'g);
+    F_DIR="$(dirname $i)"
+    TORRENT="$(dirname $i)/${FILE_NAME}.torrent"
+
+    [ -e $TRANSMISSION_OUT/${FILE_NAME}.zip ] || ln $i $TRANSMISSION_OUT || ln -s $i $TRANSMISSION_OUT
+
+    if ! [ -f $TORRENT ]; then
+        echo "Generating torrent ${TORRENT} ..."
+        mktorrent -a $TRACKERS -o $TORRENT $F_DIR/${FILE_NAME}.zip
+
+        for host in $TORRENT_HOSTS; do
+            [ -e $T_BIN ] && $T_BIN "$host:9091" -n "${TRANSMISSION_USERNAME}:${TRANSMISSION_PASSWORD}" -a $TORRENT
+        done
+    fi
+
+done
+
 for i in `find ${JENKINS_HOME}/jobs/GApps -type f -name '*.zip'`; do
     FILE_NAME=$(basename $i | sed s'/.zip//'g);
     F_DIR="$(dirname $i)"
