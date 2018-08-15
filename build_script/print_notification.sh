@@ -76,8 +76,8 @@ function print_end_build {
             if [ "$BUILD_TARGET" == "recoveryimage" ]; then
                 str_rec="%0A%0ARecovery: ${link}/builds/${rec_name}.tar"
             elif [ "$BUILD_TARGET" == "bootimage" ]; then
-                str_boot1="%0A%0ABoot zip package: ${link}/builds/${bimg_name}.zip"
-                str_boot2="%0A%0ABoot (ODIN package): ${link}/builds/${boot_tar_name}"
+                str_boot1="%0A%0ABoot zip package: ${JOB_URL}/artifact/builds/${bimg_name}.zip"
+                str_boot2="%0A%0ABoot (ODIN package): ${JOB_URL}/artifact/builds/${boot_tar_name}"
                 str_boot=${str_boot1}${str_boot2}
             elif [ "$BUILD_TARGET" == "otapackage" ]; then
                 str_rom="%0A%0A ROM: ${link}/builds/${arc_name}.zip"
