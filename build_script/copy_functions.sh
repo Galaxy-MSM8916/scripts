@@ -49,16 +49,10 @@ function remote_mkdir {
 function copy_bootimage {
     if [ "x$BUILD_TARGET" == "xbootimage" ] && [ "x$NO_PACK_BOOTIMAGE" == "x" ]; then
         boot_pkg_dir=${BUILD_TEMP}/boot_pkg
-        if [ "x$DISTRIBUTION" == "xlineage" ] || [ "x$DISTRIBUTION" == "xrr" ]; then
-            boot_pkg_zip=${ARTIFACT_OUT_DIR}/boot_caf-based_j${JOB_BUILD_NUMBER}_$(date +%Y%m%d)-${DEVICE_NAME}.zip
-        else
-            boot_pkg_zip=${ARTIFACT_OUT_DIR}/boot_aosp-based_j${JOB_BUILD_NUMBER}_$(date +%Y%m%d)-${DEVICE_NAME}.zip
-        fi
-
-        boot_tar_name=bootimage_j${JOB_BUILD_NUMBER}_$(date +%Y%m%d)-${DEVICE_NAME}.tar
+        boot_pkg_zip=${ARTIFACT_OUT_DIR}/${bimg_name}.zip
 
         revert_pkg_dir=${BUILD_TEMP}/boot_pkg_revert
-        revert_zip=${ARTIFACT_OUT_DIR}/revert_boot_image_j${JOB_BUILD_NUMBER}_$(date +%Y%m%d)-${DEVICE_NAME}.zip
+        revert_zip=${ARTIFACT_OUT_DIR}/revert_${bimg_name}.zip
         binary_target_dir=META-INF/com/google/android
         install_target_dir=install/bin
         blob_dir=blobs
