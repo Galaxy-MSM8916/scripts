@@ -74,6 +74,35 @@ for i in `find ${JENKINS_HOME}/jobs/GApps -type f -name '*.zip'`; do
 
 done
 
+for i in `find ${JENKINS_HOME}/jobs/Kernels -type f -name 'oc_hotplug*zip'`; do
+    FILE_NAME=$(basename $i | sed s'/.zip//'g);
+    F_DIR="$(dirname $i)"
+    TORRENT="${F_DIR}/${FILE_NAME}.torrent"
+    DEST=$TRANSMISSION_OUT/$FILE_NAME
+
+     [ -e $DEST ] || mkdir -p $DEST
+
+     for j in `find $F_DIR -mindepth 1 -maxdepth 1 -type f | grep -iv torrent`; do
+         ! [ -f $DEST/$(basename $j) ] && echo "Linking $j --> $DEST/$(basename $j) ..."
+         I_DIR=$(dirname $j)
+         O_DIR=$DEST
+         [ -e $O_DIR/$(basename $j) ] || ln $j $O_DIR/$(basename $j)
+         if [ $? -ne 0 ] && ! [ -e $O_DIR/$(basename $j) ]; then
+             ln -s $j $O_DIR/$(basename $j)
+         fi
+     done
+
+    if ! [ -f $TORRENT ]; then
+        echo "Generating torrent ${TORRENT} ..."
+        mktorrent -a $TRACKERS -o $TORRENT $F_DIR
+
+        for host in $TORRENT_HOSTS; do
+            [ -e $T_BIN ] && $T_BIN "$host:9091" -n "${TRANSMISSION_USERNAME}:${TRANSMISSION_PASSWORD}" -a $TORRENT
+        done
+    fi
+
+done
+
 for i in `find ${JENKINS_HOME}/jobs/AOSPA_Builds -type f -name '*zip' | grep -i aospa | grep -v boot`; do
     FILE_NAME=$(basename $i | sed s'/.zip//'g);
     F_DIR="$(dirname $i)"
