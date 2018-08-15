@@ -281,6 +281,14 @@ function get_platform_info {
         #bimg_name=boot_caf-based_j${JOB_BUILD_NUMBER}_$(date +%Y%m%d)-${DEVICE_NAME}
         boot_tar_name=bootimage-j${JOB_BUILD_NUMBER}-$(date +%Y%m%d)-${DEVICE_NAME}.tar
     fi
+    # add prefix
+    if [ "x${ARTIFACT_PREFIX}" != "x" ]; then
+        arc_name=${ARTIFACT_PREFIX}-${arc_name}
+        rec_name=${ARTIFACT_PREFIX}-${rec_name}
+        bimg_name=${ARTIFACT_PREFIX}-${bimg_name}
+        boot_tar_name=${ARTIFACT_PREFIX}-${boot_tar_name}
+    fi
+
 
 }
 

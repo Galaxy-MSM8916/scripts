@@ -58,6 +58,7 @@ function print_help {
                 log "  -o, --output\toutput path (path to jenkins archive dir)";
                 log "\nOptional commands:";
                 log "  -b\tbuild number";
+                log "--prefix \t Prefix build artifacts with this string.";
                 log "--pick-lineage --pick-lineage-topic \t Pick specified lineage gerrit changes.";
                 log "--pick  --pick-topic \t Pick specified local (msm8916) gerrit changes.";
                 log "              \tChanges can be comma separated, or the flag";
@@ -146,6 +147,9 @@ while [ "$1" != "" ]; do
             ;;
         -p | --path )
             BUILD_TOP=`realpath $next_arg`
+            ;;
+        --prefix )
+            ARTIFACT_PREFIX="$next_arg"
             ;;
         --pick )
             logb "\t\tChange(s) $next_arg specified"
