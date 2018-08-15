@@ -54,14 +54,18 @@ function link_artifacts() {
 }
 
 function generate_artifacts_from_torrent() {
-    # arg1: find regexp; arg2: dist long (dir) name
-    # arg3: version offset; arg4:device name offset;
-    # arg5: build date offset
+    # arg1: find regexp
+    # arg2: dist long (dir) name
+    # arg3: sed underscores to dashes
+    # arg4: version offset
+    # arg5:device name offset;
+    # arg6: build date offset
     local find_regexp=$1
     local dist_name=$2
-    local version_offset=$3
-    local device_offset=$4
-    local date_offset=$5
+    local sed_underscores=$3
+    local version_offset=$4
+    local device_offset=$5
+    local date_offset=$6
 
     # set some reasonable defaults
     [ -z "$version_offset" ] && version_offset='2'
@@ -70,7 +74,7 @@ function generate_artifacts_from_torrent() {
 
     for source_torrent in `find ${TORRENT_SOURCE_DIR} -type f -name ${find_regexp}`; do
         file_name=$(basename $source_torrent | sed s'/\.[a-z0-9]*\.torrent//'g);
-        file_name_std=$(echo $file_name|sed s'/_/-/'g)
+        [ "$sed_underscores" -eq 1 ] && file_name_std=$(echo $file_name|sed s'/_/-/'g) || file_name_std=$file_name
         version=$(echo $file_name_std | cut -d '-' -f ${version_offset})
         device_name=$(echo $file_name_std | cut -d '-' -f ${device_offset})
         build_date=$(echo $file_name_std | cut -d '-' -f ${date_offset})
@@ -213,10 +217,10 @@ function generate_gapps_artifacts() {
 generate_twrp_artifacts
 generate_gapps_artifacts
 
-generate_artifacts_from_torrent 'oc_hotplug*torrent' "Kernels" 5 8 7
-generate_artifacts_from_torrent 'rr*torrent' "ResurrectionRemix" 2 6 4
-generate_artifacts_from_torrent 'lineage-1*torrent' "LineageOS" 2 6 4
-generate_artifacts_from_torrent 'lineage-go-1*torrent' "LineageOS_Go" 3 7 5
+generate_artifacts_from_torrent 'oc_hotplug*torrent' "Kernels" 0 1 7 6
+generate_artifacts_from_torrent 'rr*torrent' "ResurrectionRemix" 1 2 6 4
+generate_artifacts_from_torrent 'lineage-1*torrent' "LineageOS" 1 2 6 4
+generate_artifacts_from_torrent 'lineage-go-1*torrent' "LineageOS_Go" 1 3 7 5
 
 zram_lower=256
 zram_incr=128
