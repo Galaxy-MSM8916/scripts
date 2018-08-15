@@ -354,7 +354,7 @@ for file in $JOB_DESC_FILES; do
                 SHELL_COMMANDS+="--job-url \"\${JOB_URL}\" \\"
                 SHELL_COMMANDS+=${NEWLINE}
                 SHELL_COMMANDS+="--description \"\${JOB_DESCRIPTION}\" \\"
-                SHELL_COMMANDS+=${NEWLINE}
+                [ "$BUILD_TARGET" == "bootimage" ] && SHELL_COMMANDS+="--prefix ${JOB_PREFIX} "
                 SHELL_COMMANDS+="--host ${HOST_USER}@${HOST_NAME} ${SHELL_COMMANDS_EXTRA} \$EXTRA_ARGS"
 
             elif [ "$BUILD_TARGET" == "promote" ]; then
