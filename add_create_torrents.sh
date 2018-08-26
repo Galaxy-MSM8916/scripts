@@ -103,7 +103,7 @@ for i in `find ${JENKINS_HOME}/jobs/Kernels -type f -name 'oc_hotplug*img'`; do
 
 done
 
-for i in `find ${JENKINS_HOME}/jobs/AOSPA_Builds -type f -name '*zip' | grep -i aospa | grep -v boot`; do
+for i in `find ${JENKINS_HOME}/jobs/AOSPA_Builds -type f -name 'aospa*zip'`; do
     FILE_NAME=$(basename $i | sed s'/.zip//'g);
     F_DIR="$(dirname $i)"
     TORRENT="${F_DIR}/${FILE_NAME}.torrent"
@@ -133,7 +133,7 @@ for i in `find ${JENKINS_HOME}/jobs/AOSPA_Builds -type f -name '*zip' | grep -i 
     fi
 done
 
-for i in `find ${JENKINS_HOME}/jobs/dotOS_Builds -type f -name '*zip' | grep -i dotOS | grep -v boot`; do
+for i in `find ${JENKINS_HOME}/jobs/dotOS_Builds -type f -name 'dotOS*zip'`; do
     FILE_NAME=$(basename $i | sed s'/.zip//'g);
     F_DIR="$(dirname $i)"
     TORRENT="${F_DIR}/${FILE_NAME}.torrent"
@@ -163,7 +163,7 @@ for i in `find ${JENKINS_HOME}/jobs/dotOS_Builds -type f -name '*zip' | grep -i 
     fi
 done
 
-for i in `find ${JENKINS_HOME}/jobs/ResurrectionRemix_Builds -type f -name '*zip' | grep rr | grep -v boot`; do
+for i in `find ${JENKINS_HOME}/jobs/ResurrectionRemix_Builds -type f -name 'rr*zip'`; do
     FILE_NAME=$(basename $i | sed s'/.zip//'g);
     F_DIR="$(dirname $i)"
     TORRENT="${F_DIR}/${FILE_NAME}.torrent"
@@ -193,7 +193,7 @@ for i in `find ${JENKINS_HOME}/jobs/ResurrectionRemix_Builds -type f -name '*zip
     fi
 done
 
-for i in `find ${JENKINS_HOME}/jobs/LineageOS_Builds -type f -name '*zip' | grep lineage | grep -v boot`; do
+for i in `find ${JENKINS_HOME}/jobs/LineageOS_Builds -type f -name 'lineage*zip'`; do
     FILE_NAME=$(basename $i | sed s'/.zip//'g);
     F_DIR="$(dirname $i)"
     TORRENT="${F_DIR}/${FILE_NAME}.torrent"
@@ -225,7 +225,7 @@ done
 
 find ${JENKINS_HOME}/jobs/LineageOS_GO_Builds -type f -name '*lineage-1*' | xargs rename s'/lineage-1/lineage-go-1/'g
 
-for i in `find ${JENKINS_HOME}/jobs/LineageOS_GO_Builds -type f -name '*zip' | grep lineage | grep -v boot`; do
+for i in `find ${JENKINS_HOME}/jobs/LineageOS_GO_Builds -type f -name 'lineage*zip'`; do
     FILE_NAME=$(basename $i | sed s'/.zip//'g);
     F_DIR="$(dirname $i)"
     TORRENT="${F_DIR}/${FILE_NAME}.torrent"
