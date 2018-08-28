@@ -1,27 +1,76 @@
 #!/bin/bash
 
-tags_file="tags.txt"
-remotes_file="remotes.txt"
-out_file="report.txt"
+function print_help() {
+    echo "Usage: `basename $0` [OPTIONS] "
+    echo "  -d | --path       Path to git repo directory"
+    echo "  -o | --out        Path to output file (for report)"
+    echo "                    if none is specified, print to stdout"
+    echo "  -r | --remote     Remote to use for fetching tags/branches"
+    echo "  -t | --tag-regexp regexp to use for searching tags. Default is '\*LA\.BR\.\*8x16\*[0-9]'"
+    echo "  -h | --help       Print this message"
+    exit 0
+}
 
-echo "Merge report" >> ${out_file}
-echo -e "============\n" >> ${out_file}
+if [ "x$1" == "x" ]; then
+    print_help
+fi
 
-
-for tag in `cat ${tags_file}`; do
-	git fetch caf ${tag}
-	git pull --no-commit caf ${tag}
-	conflict_count=`git status | grep 'both modified' | wc -l`
-	git merge --abort
-	echo -e "\tTag ${tag} has ${conflict_count} conflicts." >> ${out_file}
+while [ "$1" != "" ]; do
+    case $1 in
+        -d | --path )           shift
+                                REPO_DIR=$1
+                                ;;
+        -o | --out)             shift
+                                REPORT_OUT_FILE=$1
+                                ;;
+        -r | --remote)          shift
+                                REMOTE=$1
+                                ;;
+       -t | --tag-regexp)       shift
+                                TAG_REGEXP=$1
+                                ;;
+        *)                      print_help
+                                ;;
+    esac
+    shift
 done
 
-echo -e "\n==================\n" >> ${out_file}
+BEST_TAG=
+BEST_COUNT=246913578246644640
 
-for remote in `cat ${remotes_file}`; do
-	git fetch caf ${remote}
-	git pull --no-commit caf ${remote}
-	conflict_count=`git status | grep 'both modified' | wc -l`
-	git merge --abort
-	echo -e "\tBranch ${remote} has ${conflict_count} conflicts." >> ${out_file}
+if [ "x${REPO_DIR}" == "x" ]; then
+    REPO_DIR=$PWD
+fi
+
+if [ "x${REPORT_OUT_FILE}" == "x" ]; then
+    REPORT_OUT_FILE=/dev/stdout
+fi
+
+if [ "x${TAG_REGEXP}" == "x" ]; then
+    TAG_REGEXP='*LA\.BR\.*8x16*[0-9]'
+fi
+
+echo "Merge report" >> ${REPORT_OUT_FILE}
+echo -e "============\n" >> ${REPORT_OUT_FILE}
+
+git -C ${REPO_DIR} fetch -t ${REMOTE}
+TAGS=`git -C ${REPO_DIR} ls-remote --tags ${REMOTE} ${TAG_REGEXP} | sed s'/[ \t]\+/ /'g | cut -d' ' -f2`
+
+for tag in ${TAGS}; do
+	git -C ${REPO_DIR} fetch ${REMOTE} ${tag}
+	git -C ${REPO_DIR} clean -df
+	git -C ${REPO_DIR} pull  --no-commit ${REMOTE} ${tag} --allow-unrelated-histories
+	conflict_count=`git -C ${REPO_DIR} status | grep 'both modified' | wc -l`
+	git -C ${REPO_DIR} merge --abort
+	echo -e "\tTag ${tag} has ${conflict_count} conflicts." >> ${REPORT_OUT_FILE}
+
+	if [ ${conflict_count} -le ${BEST_COUNT} ]; then
+		BEST_TAG=${tag}
+		BEST_COUNT=${conflict_count}
+	fi
 done
+
+echo -e "\n==================\n" >> ${REPORT_OUT_FILE}
+
+echo -e "\nBest tag is ${BEST_TAG} with ${BEST_COUNT} merge conflicts\n" >> ${REPORT_OUT_FILE}
+
