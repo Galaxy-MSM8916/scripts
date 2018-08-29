@@ -74,8 +74,8 @@ for i in `find ${JENKINS_HOME}/jobs/GApps -type f -name '*.zip'`; do
 
 done
 
-for i in `find ${JENKINS_HOME}/jobs/Kernels -type f -name 'oc_hotplug*zip'`; do
-    FILE_NAME=$(basename $i | sed s'/.zip//'g);
+for i in `find ${JENKINS_HOME}/jobs/Kernels -type f -name 'oc_hotplug*img'`; do
+    FILE_NAME=$(basename $i | sed s'/\.img//'g);
     F_DIR="$(dirname $i)"
     TORRENT="${F_DIR}/${FILE_NAME}.torrent"
     DEST=$TRANSMISSION_OUT/$FILE_NAME
