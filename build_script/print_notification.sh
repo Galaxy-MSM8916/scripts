@@ -76,7 +76,7 @@ function print_end_build {
             if [ "$BUILD_TARGET" == "recoveryimage" ]; then
                 str_rec="%0A%0ARecovery: ${link}/builds/${rec_name}.tar"
             elif [ "$BUILD_TARGET" == "bootimage" ]; then
-                str_boot1="%0A%0ABoot zip package: ${JOB_URL}/artifact/builds/${bimg_name}.zip"
+                str_boot1="%0A%0ABoot image: ${JOB_URL}/artifact/builds/${bimg_name}.img"
                 str_boot2="%0A%0ABoot (ODIN package): ${JOB_URL}/artifact/builds/${boot_tar_name}"
                 str_boot=${str_boot1}${str_boot2}
             elif [ "$BUILD_TARGET" == "otapackage" ]; then
@@ -87,7 +87,7 @@ function print_end_build {
             if [ "$BUILD_TARGET" == "otapackage" ]; then
                 str_blurb="%0A%0ANote: Large artifact links are password protected, and restricted to testers only for faster access. %0AYou can still use the download server to download artifacts otherwise."
             fi
-            str_blurb+="%0A%0AYou can flash boot/recovery images using ODIN or you can extract them using 7zip on Windows or tar under Linux and flash using TWRP."
+	    str_blurb+="%0A%0AYou can flash boot/recovery images using ODIN or you can flash the .img files directly using TWRP."
         fi
 
         if [ "x$JOB_DESCRIPTION" != "x" ]; then

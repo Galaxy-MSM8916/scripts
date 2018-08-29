@@ -67,7 +67,6 @@ function print_help {
                 log "  --days\tNumber of days of changelogs to generate";
                 log "  -r, --clean\tclean build directory on completion";
                 log "  --make-args\tArguments to pass to make at build time.";
-                log "  -N, --no-pack-bootimage\tDon't pack the bootimage into a zip.\n";
                 log "  -U, --upload-retry\tRetry file upload this many times upon failure before giving up.";
                 log "              \tDefault is 3 ";
                 log "  -a, --sync_all\tSync entire build tree";
@@ -138,9 +137,6 @@ while [ "$1" != "" ]; do
             ;;
         --manifest )
             MANIFEST_NAME=$next_arg
-            ;;
-        -N | --no-pack-bootimage)
-            NO_PACK_BOOTIMAGE=1
             ;;
         -o | --output )
             OUTPUT_DIR=$next_arg
