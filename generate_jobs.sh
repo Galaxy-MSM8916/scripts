@@ -333,6 +333,8 @@ for file in $JOB_DESC_FILES; do
                 OTA_VER=14
             elif [ "$DIST_VERSION" == "15.1" ]; then
                 OTA_VER=15
+            elif [ "$DIST_VERSION" == "16.0" ]; then
+                OTA_VER=16
             fi
 
             if [ "$BUILD_TARGET" == "otapackage" ] || [ "$BUILD_TARGET" == "bootimage" ] || [ "$BUILD_TARGET" == "recoveryimage" ]; then
