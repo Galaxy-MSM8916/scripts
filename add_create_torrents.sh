@@ -10,14 +10,14 @@ update_repo
 
 # | grep -v 'los-15'
 #TRACKERS="http://tracker.msm8916.com:6969/announce,udp://tracker.coppersurfer.tk:6969,udp://tracker.leechers-paradise.org:6969"
-TRACKERS="http://tracker-1.msm8916.com:6969/announce,http://tracker-2.msm8916.com:6969/announce"
+TRACKERS="http://tracker-2.msm8916.com:6969/announce"
 T_BIN=/usr/bin/transmission-remote
 TRANSMISSION_OUT=/var/lib/transmission-daemon/downloads/
 
 TORRENT_HOSTS="
 jenkins.msm8916.com
-google-1.msm8916.com
 "
+#google-1.msm8916.com
 
 #acquire_build_lock
 
