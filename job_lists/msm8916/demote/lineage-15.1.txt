@@ -12,7 +12,7 @@
 SEPARATOR=,
 
 # job config file variables
-ASSIGNED_NODE=google-1
+ASSIGNED_NODE=master
 BLOCKING_JOBS=administrative/block_all_jobs
 
 DIST=lineage
