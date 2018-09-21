@@ -93,7 +93,7 @@ function generate_artifacts_from_torrent() {
         link_artifacts $transmission_out_dir $html_out_dir $device_name
 
         if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
-            ln $source_torrent $dest_torrent;
+            ln $source_torrent $dest_torrent || ln -s $source_torrent $dest_torrent
         fi
         #echo
     done
@@ -163,11 +163,11 @@ function generate_twrp_artifacts() {
         mkdir -p $html_out_dir
 
         if ! [ -e $html_out_dir/${file_name}.tar ] && [ -f $twrp_source_tar ]; then
-            ln $twrp_source_tar $html_out_dir/${file_name}.tar
+            ln $twrp_source_tar $html_out_dir/${file_name}.tar || ln -s $twrp_source_tar $html_out_dir/${file_name}.tar
         fi
 
         if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
-            ln $source_torrent $dest_torrent;
+            ln $source_torrent $dest_torrent || ln -s $source_torrent $dest_torrent
         fi
     done
 }
@@ -188,11 +188,11 @@ function generate_gapps_artifacts() {
             mkdir -p $html_out_dir
 
             if ! [ -e $html_out_dir/${file_name}.zip ] && [ -f $source_zip ]; then
-                ln $source_zip $html_out_dir/${file_name}.zip
+                ln $source_zip $html_out_dir/${file_name}.zip || ln -s $source_zip $html_out_dir/${file_name}.zip
             fi
 
             if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
-                ln $source_torrent $dest_torrent;
+                ln $source_torrent $dest_torrent || ln -s $source_torrent $dest_torrent
             fi
         done
     done
@@ -211,11 +211,11 @@ function generate_gapps_artifacts() {
             mkdir -p $html_out_dir
 
             if ! [ -e $html_out_dir/${file_name}.zip ] && [ -f $source_zip ]; then
-                ln $source_zip $html_out_dir/${file_name}.zip
+                ln $source_zip $html_out_dir/${file_name}.zip || ln -s $source_zip $html_out_dir/${file_name}.zip
             fi
 
             if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
-                ln $source_torrent $dest_torrent;
+                ln $source_torrent $dest_torrent || ln -s $source_torrent $dest_torrent
             fi
         done
     done
