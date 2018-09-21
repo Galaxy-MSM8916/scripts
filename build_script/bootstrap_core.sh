@@ -127,7 +127,21 @@ function get_platform_info {
 
     export WITH_SU
 
-    if [ "`echo $platform_version | grep -o "8.1"`" == "8.1" ]; then
+    if [ "`echo $platform_version | grep -o "9"`" == "9" ]; then
+        if ! [ `hostname` == "msm8916.com" ]; then
+            export JACK_SERVER_VM_ARGUMENTS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4g"
+        fi
+        if [ "x$DISTRIBUTION" == "xlineage" ] || [ "x$DISTRIBUTION" == "xlineage-go" ]; then
+            ver="16.0"
+            distroTxt="LineageOS"
+        elif [ "x$DISTRIBUTION" == "xrr" ]; then
+            ver="pie"
+            distroTxt="ResurrectionRemix"
+        elif [ "x$DISTRIBUTION" == "xAOSPA" ]; then
+            ver="pie"
+            distroTxt="Paranoid Android"
+        fi
+    elif [ "`echo $platform_version | grep -o "8.1"`" == "8.1" ]; then
         if ! [ `hostname` == "msm8916.com" ]; then
             export JACK_SERVER_VM_ARGUMENTS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4g"
         fi
