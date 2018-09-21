@@ -222,9 +222,9 @@ generate_artifacts_from_torrent 'rr*torrent' "ResurrectionRemix" 1 2 6 4
 generate_artifacts_from_torrent 'lineage-1*torrent' "LineageOS" 1 2 6 4
 generate_artifacts_from_torrent 'lineage-go-1*torrent' "LineageOS_Go" 1 3 7 5
 
-zram_lower=256
+zram_lower=128
 zram_incr=128
-zram_upper=512
+zram_upper=384
 
 # generate zram images
 for size in `seq $zram_lower $zram_incr $zram_upper`; do
