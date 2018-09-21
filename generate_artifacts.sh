@@ -23,6 +23,14 @@ function sanitize_html_home() {
     done
 }
 
+function restore_h5ai() {
+    if [ -f $script_dir/h5ai.zip ]; then
+        for doc_root in `find /var/www/ -name 'download.*.com'`; do
+            [ -d $doc_root/public_html/_h5ai ] || unzip $script_dir/h5ai.zip -d $doc_root/public_html/
+        done
+    fi
+}
+
 function fix_html_home_perms() {
     for doc_root in `find /var/www/ -name 'download.*.com'`; do
         chmod og+r ${doc_root} -R
@@ -141,6 +149,7 @@ function generate_zram_zip() {
 
 # clear old artifacts
 sanitize_html_home
+restore_h5ai
 
 function generate_twrp_artifacts() {
     for source_torrent in `find ${TORRENT_SOURCE_DIR} -type f -name 'TWRP*'`; do
