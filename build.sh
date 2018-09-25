@@ -257,10 +257,10 @@ sync_vendor_trees "$@"
 sync_all_trees "$@"
 
 if [ "x${BUILD_TARGET}" != "x" ] && [ "x${BUILD_VARIANT}" != "x" ] && [ "x${DEVICE_NAME}" != "x" ]; then
-    # setup the build environment
-    setup_env "$@"
     # apply repopicks
     apply_repopicks
+    # setup the build environment
+    setup_env "$@"
     # print the build start text
     print_start_build
     # make the targets
