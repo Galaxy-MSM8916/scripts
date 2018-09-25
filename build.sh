@@ -242,8 +242,6 @@ source_common
 # source build functions
 source_build
 
-# setup env vars
-bootstrap "$@"
 # check if any other builds are running
 acquire_build_lock
 # get the platform info

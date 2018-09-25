@@ -96,17 +96,26 @@ function apply_repopicks {
     cd ${BUILD_TOP}
     gerrit_url="ssh://jenkins@review.${soc}.com"
 
+
+    # check repopick tool existence
+    repopick_path=`command -v repopick`
+    if [ "$?" -ne 0 ] || [ -z "$repopick_path"  ]; then
+        REPOPICK=${script_dir}/tools/repopick.py
+    else
+        REPOPICK=repopick
+    fi
+
     #pick local gerrit changes
-    [ -n "$LOCAL_REPO_PICKS" ] && repopick -g $gerrit_url -r $LOCAL_REPO_PICKS
+    [ -n "$LOCAL_REPO_PICKS" ] && $REPOPICK -g $gerrit_url -r $LOCAL_REPO_PICKS
 
     for topic in $LOCAL_REPO_TOPICS; do
-        repopick -g $gerrit_url -r -t $topic
+        $REPOPICK -g $gerrit_url -r -t $topic
     done
 
     #pick lineage gerrit changes
-    [ -n "$LINEAGE_REPO_PICKS" ] && repopick -r $LINEAGE_REPO_PICKS
+    [ -n "$LINEAGE_REPO_PICKS" ] && $REPOPICK -r $LINEAGE_REPO_PICKS
 
     for topic in $LINEAGE_REPO_TOPICS; do
-        repopick -r -t $topic
+        $REPOPICK -r -t $topic
     done
 }

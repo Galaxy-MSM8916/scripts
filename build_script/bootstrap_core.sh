@@ -29,23 +29,6 @@ boot_tar_name=""
 soc=`find_soc $DEVICE_NAME`
 vendor="samsung"
 
-function bootstrap {
-    # check repopick tool existence
-    repopick_path=`command -v repopick`
-    if [ "$?" -ne 0 ] || [ -z "$repopick_path"  ]; then
-        PATH=$PATH:${script_dir}/tools
-    fi
-
-    # check repo existence
-    repo_path=`command -v repo`
-    if [ "$?" -ne 0 ] || [ -z "$repo_path"  ]; then
-        PATH=$PATH:${script_dir}/tools
-    fi
-
-    export PATH
-    (>&2 echo "Path is: $PATH")
-}
-
 DISTROS="
 omni
 lineage
@@ -91,19 +74,28 @@ function get_platform_info {
 		DEPTH="--depth=${SYNC_DEPTH}"
 	fi
 
+
+    # check repo existence
+        repo_path=`command -v repo`
+        if [ "$?" -ne 0 ] || [ -z "$repo_path"  ]; then
+            REPO=${script_dir}/tools
+        else
+            REPO=repo
+        fi
+
         echo "Initialising distribution source repo..."
         if [ "x$DISTRIBUTION" == "xlineage" ] ||  [ "x$DISTRIBUTION" == "xlineage-go" ]; then
              if [ "x$ver" == "x14.1" ]; then
-                 exit_on_failure repo init -u git://github.com/LineageOS/android.git -b cm-${ver} $DEPTH
+                 exit_on_failure $REPO init -u git://github.com/LineageOS/android.git -b cm-${ver} $DEPTH
              else
-                 exit_on_failure repo init -u git://github.com/LineageOS/android.git -b lineage-${ver} $DEPTH
+                 exit_on_failure $REPO init -u git://github.com/LineageOS/android.git -b lineage-${ver} $DEPTH
              fi
         elif [ "x$DISTRIBUTION" == "xrr" ]; then
-             exit_on_failure repo init -u https://github.com/ResurrectionRemix/platform_manifest.git -b ${ver} $DEPTH
+             exit_on_failure $REPO init -u https://github.com/ResurrectionRemix/platform_manifest.git -b ${ver} $DEPTH
         elif [ "x$DISTRIBUTION" == "xdotOS" ]; then
-             exit_on_failure repo init -u git://github.com/DotOS/manifest.git -b dot-${ver} $DEPTH
+             exit_on_failure $REPO init -u git://github.com/DotOS/manifest.git -b dot-${ver} $DEPTH
         elif [ "x$DISTRIBUTION" == "xAOSPA" ]; then
-	     exit_on_failure repo init -u git://github.com/AOSPA/manifest -b ${ver} $DEPTH
+	     exit_on_failure $REPO init -u git://github.com/AOSPA/manifest -b ${ver} $DEPTH
         fi
 
         sync_manifests
