@@ -29,7 +29,7 @@ function sync_manifests {
     rm ${manifest_dir}/*xml
 
     logb "Syncing manifests..."
-    ${CURL} ${remote_manifest} | tee ${local_manifest} > /dev/null
+    ${CURL} ${remote_manifest} | grep -v '<!--' | tee ${local_manifest} > /dev/null
 
     if [ "${soc}" == "msm8916" ]; then
         gerrit_port=29418
