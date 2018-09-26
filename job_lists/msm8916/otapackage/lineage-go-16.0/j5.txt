@@ -33,5 +33,9 @@ DEVICES+=j5ltechn:SM-J5008,
 DEVICES+=j5nlte:SM-J500FN,
 DEVICES+=j5xnlte:SM-J510FN
 
+LOCAL_TOPICS="android-go,wifi-p,bt-p,8916-audio-p,rmnet-p,hwc-p,pie-bringup"
+LINEAGE_CHANGES="230240,223442,225974,226075,226076,226077,227453,227454,225628,225629,225630,225631,225632,225633,225634,225635,226080,230047"
+LINEAGE_TOPICS="tinycompress-p,8916-display-p,pie-dataservices,pie-buttons,pie-bt-caf"
+
 # extra commands to pass to build script
-SHELL_COMMANDS_EXTRA="--pick-topic android-go"
+SHELL_COMMANDS_EXTRA=" --pick-topic $LOCAL_TOPICS  --pick-lineage $LINEAGE_CHANGES --pick-lineage-topic $LINEAGE_TOPICS"
