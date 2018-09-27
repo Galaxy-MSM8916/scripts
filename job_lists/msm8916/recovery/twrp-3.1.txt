@@ -30,4 +30,4 @@ BUILD_TARGET=recoveryimage
 # Use '_' to denote a space.
 DEVICES=j5xnlte:SM-J510FN
 
-SHELL_COMMANDS_EXTRA=" --make-args RECOVERY_VARIANT:=twrp --pick-topic twrp"
+SHELL_COMMANDS_EXTRA=" --make-args RECOVERY_VARIANT:=twrp --pick $LOCAL_CHANGES --pick-topic twrp"
