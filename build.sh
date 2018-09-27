@@ -38,6 +38,8 @@ LINEAGE_REPO_PICKS=
 LOCAL_REPO_TOPICS=
 LINEAGE_REPO_TOPICS=
 
+SYNC_DEPTH=0
+
 function validate_arg {
     valid=$(echo $1 | sed s'/^[\-][a-z0-9A-Z\-]*/valid/'g)
     [ "x$1" == "x$0" ] && return 0;
@@ -71,6 +73,7 @@ function print_help {
                 log "              \tDefault is 3 ";
                 log "  -a, --sync_all\tSync entire build tree";
                 log "  -v, --sync\tSync device/kernel/vendor trees";
+                log "  --sync-depth\tRepo sync depth. Any number < 1 will trigger full sync. DEfault is 0";
                 log "  -u, --su\tAdd SU to build";
                 log "  -j\tnumber of parallel make jobs to run";
 
@@ -171,6 +174,9 @@ while [ "$1" != "" ]; do
             ;;
         --sync)
             SYNC_VENDOR=1
+            ;;
+        --sync-depth)
+            SYNC_DEPTH=$next_arg
             ;;
         -t | --target )
             BUILD_TARGET=$next_arg

@@ -84,19 +84,26 @@ function get_platform_info {
 
         cd $BUILD_TOP
 
+
+	if [ "$SYNC_DEPTH" -lt 1 ]; then
+		DEPTH=
+	else
+		DEPTH="--depth=${SYNC_DEPTH}"
+	fi
+
         echo "Initialising distribution source repo..."
         if [ "x$DISTRIBUTION" == "xlineage" ] ||  [ "x$DISTRIBUTION" == "xlineage-go" ]; then
              if [ "x$ver" == "x14.1" ]; then
-                 exit_on_failure repo init -u git://github.com/LineageOS/android.git -b cm-${ver} --depth=1
+                 exit_on_failure repo init -u git://github.com/LineageOS/android.git -b cm-${ver} $DEPTH
              else
-                 exit_on_failure repo init -u git://github.com/LineageOS/android.git -b lineage-${ver} --depth=1
+                 exit_on_failure repo init -u git://github.com/LineageOS/android.git -b lineage-${ver} $DEPTH
              fi
         elif [ "x$DISTRIBUTION" == "xrr" ]; then
-             exit_on_failure repo init -u https://github.com/ResurrectionRemix/platform_manifest.git -b ${ver} --depth=1
+             exit_on_failure repo init -u https://github.com/ResurrectionRemix/platform_manifest.git -b ${ver} $DEPTH
         elif [ "x$DISTRIBUTION" == "xdotOS" ]; then
-             exit_on_failure repo init -u git://github.com/DotOS/manifest.git -b dot-${ver} --depth=1
+             exit_on_failure repo init -u git://github.com/DotOS/manifest.git -b dot-${ver} $DEPTH
         elif [ "x$DISTRIBUTION" == "xAOSPA" ]; then
-	     exit_on_failure repo init -u git://github.com/AOSPA/manifest -b ${ver} --depth=1
+	     exit_on_failure repo init -u git://github.com/AOSPA/manifest -b ${ver} $DEPTH
         fi
 
         sync_manifests
