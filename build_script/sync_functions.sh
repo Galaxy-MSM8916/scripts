@@ -106,14 +106,18 @@ function apply_repopicks {
     fi
 
     #pick local gerrit changes
-    [ -n "$LOCAL_REPO_PICKS" ] && $REPOPICK -g $gerrit_url -r $LOCAL_REPO_PICKS
+    for pick in $LOCAL_REPO_PICKS; do
+        $REPOPICK -g $gerrit_url -r $pick
+    done
 
     for topic in $LOCAL_REPO_TOPICS; do
         $REPOPICK -g $gerrit_url -r -t $topic
     done
 
     #pick lineage gerrit changes
-    [ -n "$LINEAGE_REPO_PICKS" ] && $REPOPICK -r $LINEAGE_REPO_PICKS
+    for pick in $LINEAGE_REPO_PICKS; do
+       $REPOPICK -r $pick
+    done
 
     for topic in $LINEAGE_REPO_TOPICS; do
         $REPOPICK -r -t $topic
