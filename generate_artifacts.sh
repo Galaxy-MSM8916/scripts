@@ -226,6 +226,7 @@ function generate_gapps_artifacts() {
 generate_twrp_artifacts
 generate_gapps_artifacts
 
+generate_artifacts_from_torrent 'dot*torrent' "DotOS" 1 2 6 4
 generate_artifacts_from_torrent 'oc_hotplug*torrent' "Kernels" 0 1 7 6
 generate_artifacts_from_torrent 'rr*torrent' "ResurrectionRemix" 1 2 6 4
 generate_artifacts_from_torrent 'lineage-1*torrent' "LineageOS" 1 2 6 4
