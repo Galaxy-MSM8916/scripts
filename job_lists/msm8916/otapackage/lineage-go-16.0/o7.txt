@@ -35,4 +35,4 @@ LINEAGE_CHANGES="223442,225974,227453,227454,223067,222733,222760,222742,225475,
 LINEAGE_TOPICS="8916-display-p,pie-kernel-headers"
 
 # extra commands to pass to build script
-SHELL_COMMANDS_EXTRA=" --pick $LOCAL_CHANGES --pick-topic $LOCAL_TOPICS  --pick-lineage $LINEAGE_CHANGES --pick-lineage-topic $LINEAGE_TOPICS"
+SHELL_COMMANDS_EXTRA=" --sync-all --pick $LOCAL_CHANGES --pick-topic $LOCAL_TOPICS  --pick-lineage $LINEAGE_CHANGES --pick-lineage-topic $LINEAGE_TOPICS"
