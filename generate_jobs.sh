@@ -102,7 +102,7 @@ if [ "x$CONFIG_PATH" != "x" ]; then
         <hudson.model.StringParameterDefinition>
           <name>EXTRA_ARGS</name>
           <description>Extra arguments to pass to the build script.</description>
-          <defaultValue></defaultValue>
+          <defaultValue>${SHELL_COMMANDS_EXTRA}</defaultValue>
         </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>"
@@ -357,7 +357,7 @@ for file in $JOB_DESC_FILES; do
                 SHELL_COMMANDS+=${NEWLINE}
                 SHELL_COMMANDS+="--description \"\${JOB_DESCRIPTION}\" \\"
                 [ "$BUILD_TARGET" == "bootimage" ] && SHELL_COMMANDS+="--prefix ${JOB_PREFIX} "
-                SHELL_COMMANDS+="--host ${HOST_USER}@${HOST_NAME} ${SHELL_COMMANDS_EXTRA} \$EXTRA_ARGS"
+                SHELL_COMMANDS+="--host ${HOST_USER}@${HOST_NAME} \$EXTRA_ARGS"
 
             elif [ "$BUILD_TARGET" == "promote" ]; then
                 CAN_ROAM=false
