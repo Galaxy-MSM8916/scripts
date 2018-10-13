@@ -113,6 +113,20 @@ function copy_files {
 
 function upload_artifacts {
     echoTextBlue "Transferring build artifacts..."
+
+    #upload to github
+    if [ "$BUILD_TARGET" == "recoveryimage" ]; then
+        create_release ${rec_name}
+	upload_artifacts ${rec_name} ${ARTIFACT_OUT_DIR}
+    elif [ "$BUILD_TARGET" == "bootimage" ]; then
+        create_release ${bimg_name}
+	upload_artifacts ${bimg_name} ${ARTIFACT_OUT_DIR}
+    elif [ "$BUILD_TARGET" == "otapackage" ]; then
+        create_release ${arc_name}
+	upload_artifacts ${arc_name} ${ARTIFACT_OUT_DIR}
+    fi
+
+    # rsync to dl server
     remote_mkdir ${OUTPUT_DIR}
     rsync_cp ${ARTIFACT_OUT_DIR} ${OUTPUT_DIR}
 }
