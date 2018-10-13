@@ -29,6 +29,20 @@ function fix_html_home_perms() {
     done
 }
 
+function generate_index_php() {
+# arg1: redirect url
+echo "<?php
+header(\"Location: $1\");
+die();
+?>
+"
+}
+
+function generate_htaccess() {
+# arg1: redirect url
+echo "Redirect 301 / $1"
+}
+
 function link_artifacts() {
     # arg1: find_dir  arg2: html_out_dir arg3: device
     local find_dir=$1
@@ -84,11 +98,11 @@ function generate_artifacts_from_torrent() {
 
         dest_torrent="$html_out_dir/${file_name}.torrent"
 
-        link_artifacts $transmission_out_dir $html_out_dir $device_name
-
-        if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
-            ln $source_torrent $dest_torrent || ln -s $source_torrent $dest_torrent
-        fi
+        #link_artifacts $transmission_out_dir $html_out_dir $device_name
+        #if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
+        #    ln $source_torrent $dest_torrent || ln -s $source_torrent $dest_torrent
+        #fi
+        generate_index_php "https://github.com/Galaxy-${soc^^}/releases/releases/tag/${file_name}" >> $html_out_dir/index.php
         #echo
     done
 }
@@ -214,21 +228,27 @@ function generate_gapps_artifacts() {
     done
 }
 
-generate_twrp_artifacts
-generate_gapps_artifacts
+#generate_twrp_artifacts
+#generate_gapps_artifacts
 
-generate_artifacts_from_torrent 'oc_hotplug*torrent' "Kernels" 0 1 7 6
-generate_artifacts_from_torrent 'rr*torrent' "ResurrectionRemix" 1 2 6 4
+#generate_artifacts_from_torrent 'oc_hotplug*torrent' "Kernels" 0 1 7 6
+#generate_artifacts_from_torrent 'rr*torrent' "ResurrectionRemix" 1 2 6 4
 generate_artifacts_from_torrent 'lineage-1*torrent' "LineageOS" 1 2 6 4
 generate_artifacts_from_torrent 'lineage-go-1*torrent' "LineageOS_Go" 1 3 7 5
+
+for doc_root in `find /var/www/ -name 'download.*.com'`; do
+    mkdir -p $doc_root/public_html/ZRAM
+    generate_index_php "https://github.com/Galaxy-${soc^^}/releases/releases/tag/ZRAM" >> $doc_root/public_html/ZRAM/index.php
+done
+
 
 zram_lower=128
 zram_incr=128
 zram_upper=384
 
 # generate zram images
-for size in `seq $zram_lower $zram_incr $zram_upper`; do
-    generate_zram_zip $size
-done
+#for size in `seq $zram_lower $zram_incr $zram_upper`; do
+#    generate_zram_zip $size
+#done
 
 fix_html_home_perms
