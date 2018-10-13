@@ -37,6 +37,15 @@ function fix_html_home_perms() {
     done
 }
 
+function generate_index_php() {
+# arg1: redirect url
+echo "<?php
+header(\"Location: $1\");
+die();
+?>
+"
+}
+
 function link_artifacts() {
     # arg1: find_dir  arg2: html_out_dir arg3: device
     local find_dir=$1
@@ -88,15 +97,14 @@ function generate_artifacts_from_torrent() {
         build_date=$(echo $file_name_std | cut -d '-' -f ${date_offset})
         html_out_dir=`get_html_home $device_name`/${dist_name}/$version/$device_name/$build_date
         mkdir -p $html_out_dir
-        transmission_out_dir=${TRANSMISSION_DOWNLOAD_SOURCE}/${file_name}
 
-        dest_torrent="$html_out_dir/${file_name}.torrent"
+        #dest_torrent="$html_out_dir/${file_name}.torrent"
 
-        link_artifacts $transmission_out_dir $html_out_dir $device_name
-
-        if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
-            ln $source_torrent $dest_torrent || ln -s $source_torrent $dest_torrent
-        fi
+        #link_artifacts $transmission_out_dir $html_out_dir $device_name
+        #if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
+        #    ln $source_torrent $dest_torrent || ln -s $source_torrent $dest_torrent
+        #fi
+        generate_index_php "https://github.com/Galaxy-${soc^^}/releases/releases/tag/${file_name}" >> $html_out_dir/index.php
         #echo
     done
 }
@@ -164,13 +172,15 @@ function generate_twrp_artifacts() {
 
         mkdir -p $html_out_dir
 
-        if ! [ -e $html_out_dir/${file_name}.tar ] && [ -f $twrp_source_tar ]; then
-            ln $twrp_source_tar $html_out_dir/${file_name}.tar || ln -s $twrp_source_tar $html_out_dir/${file_name}.tar
-        fi
+        #if ! [ -e $html_out_dir/${file_name}.tar ] && [ -f $twrp_source_tar ]; then
+        #    ln $twrp_source_tar $html_out_dir/${file_name}.tar || ln -s $twrp_source_tar $html_out_dir/${file_name}.tar
+        #fi
 
-        if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
-            ln $source_torrent $dest_torrent || ln -s $source_torrent $dest_torrent
-        fi
+        #if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
+        #    ln $source_torrent $dest_torrent || ln -s $source_torrent $dest_torrent
+        #fi
+
+        generate_index_php "https://github.com/Galaxy-${soc^^}/releases/releases/tag/${file_name}" >> $html_out_dir/index.php
     done
 }
 
@@ -184,18 +194,21 @@ function generate_gapps_artifacts() {
         source_zip=${TRANSMISSION_DOWNLOAD_SOURCE}/${file_name}.zip
 
         for doc_root in `find /var/www/ -name 'download.*.com'`; do
-            html_out_dir=${doc_root}/public_html/MindTheGapps/$version/$arch/$date/
-            dest_torrent="$html_out_dir/${file_name}.torrent"
+            #html_out_dir=${doc_root}/public_html/MindTheGapps/$version/$arch/$date/
+            html_out_dir=${doc_root}/public_html/MindTheGapps/
+            #dest_torrent="$html_out_dir/${file_name}.torrent"
 
             mkdir -p $html_out_dir
 
-            if ! [ -e $html_out_dir/${file_name}.zip ] && [ -f $source_zip ]; then
-                ln $source_zip $html_out_dir/${file_name}.zip || ln -s $source_zip $html_out_dir/${file_name}.zip
-            fi
+            #if ! [ -e $html_out_dir/${file_name}.zip ] && [ -f $source_zip ]; then
+            #    ln $source_zip $html_out_dir/${file_name}.zip || ln -s $source_zip $html_out_dir/${file_name}.zip
+            #fi
 
-            if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
-                ln $source_torrent $dest_torrent || ln -s $source_torrent $dest_torrent
-            fi
+            #if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
+            #    ln $source_torrent $dest_torrent || ln -s $source_torrent $dest_torrent
+            #fi
+
+            generate_index_php "https://github.com/Galaxy-MSM8916/releases/releases/tag/MindTheGapps" >> $html_out_dir/index.php
         done
     done
     #e.g - open_gapps-arm-8.1-aroma-20180715-UNOFFICIAL.zip
@@ -207,18 +220,20 @@ function generate_gapps_artifacts() {
         source_zip=${TRANSMISSION_DOWNLOAD_SOURCE}/${file_name}.zip
 
         for doc_root in `find /var/www/ -name 'download.*.com'`; do
-            html_out_dir=${doc_root}/public_html/OpenGApps/$version/$arch/$date/
-            dest_torrent="$html_out_dir/${file_name}.torrent"
+            #html_out_dir=${doc_root}/public_html/OpenGApps/$version/$arch/$date/
+            html_out_dir=${doc_root}/public_html/OpenGApps/
+            #dest_torrent="$html_out_dir/${file_name}.torrent"
 
             mkdir -p $html_out_dir
 
-            if ! [ -e $html_out_dir/${file_name}.zip ] && [ -f $source_zip ]; then
-                ln $source_zip $html_out_dir/${file_name}.zip || ln -s $source_zip $html_out_dir/${file_name}.zip
-            fi
+            #if ! [ -e $html_out_dir/${file_name}.zip ] && [ -f $source_zip ]; then
+            #    ln $source_zip $html_out_dir/${file_name}.zip || ln -s $source_zip $html_out_dir/${file_name}.zip
+            #fi
 
-            if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
-                ln $source_torrent $dest_torrent || ln -s $source_torrent $dest_torrent
-            fi
+            #if ! [ -e $dest_torrent ] && [ -f $source_torrent ]; then
+            #    ln $source_torrent $dest_torrent || ln -s $source_torrent $dest_torrent
+            #fi
+            generate_index_php "https://github.com/Galaxy-MSM8916/releases/releases/tag/OpenGApps" >> $html_out_dir/index.php
         done
     done
 }
@@ -232,13 +247,19 @@ generate_artifacts_from_torrent 'rr*torrent' "ResurrectionRemix" 1 2 6 4
 generate_artifacts_from_torrent 'lineage-1*torrent' "LineageOS" 1 2 6 4
 generate_artifacts_from_torrent 'lineage-go-1*torrent' "LineageOS_Go" 1 3 7 5
 
-zram_lower=128
-zram_incr=128
-zram_upper=384
+for doc_root in `find /var/www/ -name 'download.*.com'`; do
+    mkdir -p $doc_root/public_html/ZRAM
+    generate_index_php "https://github.com/Galaxy-MSM8916/releases/releases/tag/ZRAM" >> $doc_root/public_html/ZRAM/index.php
+done
+
+
+#zram_lower=128
+#zram_incr=128
+#zram_upper=384
 
 # generate zram images
-for size in `seq $zram_lower $zram_incr $zram_upper`; do
-    generate_zram_zip $size
-done
+#for size in `seq $zram_lower $zram_incr $zram_upper`; do
+#    generate_zram_zip $size
+#done
 
 fix_html_home_perms
