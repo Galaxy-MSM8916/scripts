@@ -63,7 +63,7 @@ function print_end_build {
         home_proper=/var/lib/${soc}-jenkins
         target_str_len=$(echo ${home_proper}/jobs | wc -c)
         r_dir=$(echo $OUTPUT_DIR | cut -c ${target_str_len}-)
-        link="https://artifacts.${soc}.com${r_dir}"
+        link="https://github.com/Galaxy-${soc^^}/${GITHUB_REPO}/releases/"
 
         END_TIME=$( date +%s )
         buildTime="%0A%0ABuild time: $(format_time ${END_TIME} ${BUILD_START_TIME})"
@@ -74,16 +74,19 @@ function print_end_build {
         if [ "x$BUILD_URL" != "x" ]; then
            
             if [ "$BUILD_TARGET" == "recoveryimage" ]; then
-                str_rec="%0A%0ARecovery: ${link}/builds/${rec_name}.tar"
+                str_rel="%0A%0ARelease: ${link}/tag/${rec_name}"
+                str_rec="%0A%0ARecovery: ${link}/download/${rec_name}/${rec_name}.tar"
             elif [ "$BUILD_TARGET" == "bootimage" ]; then
-                str_boot1="%0A%0ABoot image: ${JOB_URL}/artifact/builds/${bimg_name}.img"
-                str_boot2="%0A%0ABoot (ODIN package): ${JOB_URL}/artifact/builds/${boot_tar_name}"
+                str_rel="%0A%0ARelease: ${link}/tag/${bimg_name}"
+                str_boot1="%0A%0ABoot image: ${link}/download/${bimg_name}/${bimg_name}.img"
+                str_boot2="%0A%0ABoot (ODIN package): ${link}/download/${bimg_name}/${boot_tar_name}"
                 str_boot=${str_boot1}${str_boot2}
             elif [ "$BUILD_TARGET" == "otapackage" ]; then
-                str_rom="%0A%0A ROM: ${link}/builds/${arc_name}.zip"
-                str_rec="%0A%0A Recovery: ${link}/builds/${rec_name}.tar"
+                str_rel="%0A%0ARelease: ${link}/tag/${arc_name}"
+                str_rom="%0A%0A ROM: ${link}/download/${arc_name}/${arc_name}.zip"
+                str_rec="%0A%0ARecovery: ${link}/download/${arc_name}/${rec_name}.tar"
             fi
-            str_changelog="%0A%0AChangelog: ${link}/builds/changelog-${arc_name}.txt"
+            str_changelog="%0A%0AChangelog: ${link}/download/${arc_name}/changelog-${arc_name}.txt"
 #            if [ "$BUILD_TARGET" == "otapackage" ]; then
 #                str_blurb="%0A%0ANote: Large artifact links are password protected, and restricted to testers only for faster access. %0AYou can still use the download server to download artifacts otherwise."
 #            fi
@@ -98,7 +101,7 @@ function print_end_build {
 
         str_main+=" completed successfully."
 
-        textStr="${str_main}${str_rom}${str_rec}${str_boot}${str_changelog}${str_blurb}${buildTime}${queuedTime}${totalTime}"
+        textStr="${str_main}${str_rel}${str_rom}${str_rec}${str_boot}${str_changelog}${str_blurb}${buildTime}${queuedTime}${totalTime}"
 
         textStr=$(echo $textStr |sed s'/\/\//\//'g)
         textStr=$(echo $textStr |sed s'/http:\//http:\/\//'g)
