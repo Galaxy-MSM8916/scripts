@@ -28,7 +28,7 @@ BUILD_TARGET=otapackage
 # format: DEVICE_CODENAME:DEVICE_MODEL:DESCRIPTION
 # Use '_' to denote a space.
 DEVICES=serranovelte:SM-I9195I,
-#DEVICES+=serranove3g:SM-I9192I
+DEVICES+=serranove3g:SM-I9192I
 
 LOCAL_CHANGES="905,986"
 LOCAL_TOPICS="android-go-p,sepolicy-p,blobs-p,8916-audio-p"
