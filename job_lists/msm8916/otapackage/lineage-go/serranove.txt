@@ -28,7 +28,7 @@ BUILD_TARGET=otapackage
 # format: DEVICE_CODENAME:DEVICE_MODEL:DESCRIPTION
 # Use '_' to denote a space.
 DEVICES=serranovelte:SM-I9195I,
-#DEVICES+=serranove3g:SM-I9192I
+DEVICES+=serranove3g:SM-I9192I
 
 # extra commands to pass to build script
 SHELL_COMMANDS_EXTRA="--pick-topic android-go-o"
