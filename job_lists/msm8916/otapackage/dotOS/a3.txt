@@ -32,4 +32,5 @@ DEVICES+=a3lte:SM-A300F,
 DEVICES+=a3ulte:SM-A300FU
 
 # extra commands to pass to build script
-SHELL_COMMANDS_EXTRA="--pick-topic dot-o"
+LOCAL_REPOPICKS=959,974,966,939,946,941,952,921,976
+SHELL_COMMANDS_EXTRA="--pick $LOCAL_REPOPICKS"
