@@ -53,5 +53,6 @@ DEVICES+=j7ltespr:SM-J700P,
 DEVICES+=j7ltechn:SM-J7008,
 DEVICES+=o7prolte:SM-G600FY,
 DEVICES+=serranovelte:SM-I9195I
+DEVICES+=serranove3g:SM-I9192I
 
 SHELL_COMMANDS_EXTRA=" --make-args RECOVERY_VARIANT:=twrp --pick-topic twrp"
