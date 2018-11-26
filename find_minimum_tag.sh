@@ -8,7 +8,7 @@ function print_help() {
     echo "  -o | --out        Path to output file (for report)"
     echo "                    if none is specified, print to stdout"
     echo "  -r | --remote     Remote to use for fetching tags/branches"
-    echo "  -t | --tag-regexp regexp to use for searching tags. Default is '\*LA\.BR\.\*8x16\*[0-9]'"
+    echo "  -t | --tag-regexp regexp to use for searching tags. Default is '*LA\.BR\.*8x16*[0-9]'"
     echo "  -h | --help       Print this message"
     echo "  -v | --verbose    Print git output as well"
     exit 0
