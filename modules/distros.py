@@ -48,40 +48,11 @@ def get_distros():
 
     return distros
 
-def get_distro_versions(distro):
+
+def _get_distro_dict_value(distro, search_key):
     """
-    Return valid versions for distro
+    Return value mapped to key in distro dictionary
     """
-    versions = []
-
-    for key in config.distros:
-        if key == distro:
-            if "versions" in config.distros[key]:
-                versions.extend(config.distros[key]["versions"])
-
-            break
-
-        if "variants" not in config.distros[key]:
-            continue
-
-        for variant in config.distros[key]["variants"]:
-            if variant == distro:
-                if "versions" in config.distros[key]:
-                    versions.extend(config.distros[key]["versions"])
-
-                if "versions" in config.distros[key][variant]:
-                    versions.extend(config.distros[key][variant]["versions"])
-
-                break
-
-    return versions
-
-def get_distro_repo_url(distro):
-    """
-    Return sync url for distro
-    """
-    search_key = "url"
-
     for key in config.distros:
         if key == distro:
             if search_key in config.distros[key]:
@@ -96,4 +67,29 @@ def get_distro_repo_url(distro):
                     return config.distros[key][variant][search_key]
 
     return None
+
+def get_distro_versions(distro):
+    """
+    Return valid versions for distro
+    """
+    search_key = "versions"
+    versions = []
+
+    value = _get_distro_dict_value(distro, search_key)
+    if (value != None):
+        versions.extend(value)
+
+    value = _get_distro_dict_value(distro, "variants")
+    if (value != None):
+        for variant in value:
+            if search_key in value[variant]:
+                versions.extend(value[variant][search_key])
+
+    return versions
+
+def get_distro_repo_url(distro):
+    """
+    Return sync url for distro
+    """
+    return _get_distro_dict_value(distro, "url")
 
