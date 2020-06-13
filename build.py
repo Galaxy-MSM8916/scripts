@@ -4,7 +4,11 @@ import getopt
 import os
 import sys
 
-import conf
+try:
+    import conf
+except ImportError:
+    import conf_template as conf
+
 import modules
 
 if __name__ == "__main__":
