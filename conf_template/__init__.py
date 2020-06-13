@@ -12,18 +12,19 @@ from .distributions import distros, versions, targets
 from .executors import executors
 from .jobs import jobs
 
-__all__ = [ "mod_devices", "mod_distributions", "mod_executors", "mod_jobs" ]
-
 envvars = {}
 variables = {}
 
+modules = [ "mod_devices", "mod_distributions", "mod_executors", "mod_jobs" ]
+
 # concatenate all targets, envvars, variables
-for mod in __all__:
+for module in modules:
+    module = eval(module)
 
-    mod = eval(mod)
+    if 'envvars' in dir(module):
+        envvars.update(module.envvars)
 
-    if 'envvars' in dir(mod):
-        envvars.update(mod.envvars)
+    if 'variables' in dir(module):
+        variables.update(module.variables)
 
-    if 'variables' in dir(mod):
-        variables.update(mod.variables)
+__all__ = ["envvars", "variables", "targets", "devices", "distros", "executors", "jobs"]

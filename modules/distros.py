@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
-try:
-    import conf
-except ImportError:
-    import conf_template as conf
+from . import config
 
 def get_targets():
     """
     Return all valid targets
     """
 
-    return conf.targets
+    return config.targets
 
 def get_devices():
     """
@@ -18,7 +15,7 @@ def get_devices():
 
     devices = set()
 
-    for variant_map in conf.devices.values():
+    for variant_map in config.devices.values():
         devices.update(set(variant_map.keys()))
 
     return devices
@@ -30,9 +27,9 @@ def get_build_types():
 
     types = set()
 
-    for key in conf.distros:
-        if "types" in conf.distros[key]:
-            types.update(set(conf.distros[key]["types"]))
+    for key in config.distros:
+        if "types" in config.distros[key]:
+            types.update(set(config.distros[key]["types"]))
 
 
 
@@ -43,11 +40,11 @@ def get_distros():
 
     distros = set()
 
-    for key in conf.distros:
+    for key in config.distros:
         distros.add(key)
 
-        if "variants" in conf.distros[key]:
-            distros.update(set(conf.distros[key]["variants"]))
+        if "variants" in config.distros[key]:
+            distros.update(set(config.distros[key]["variants"]))
 
     return distros
 
@@ -57,23 +54,23 @@ def get_distro_versions(distro):
     """
     versions = []
 
-    for key in conf.distros:
+    for key in config.distros:
         if key == distro:
-            if "versions" in conf.distros[key]:
-                versions.extend(conf.distros[key]["versions"])
+            if "versions" in config.distros[key]:
+                versions.extend(config.distros[key]["versions"])
 
             break
 
-        if "variants" not in conf.distros[key]:
+        if "variants" not in config.distros[key]:
             continue
 
-        for variant in conf.distros[key]["variants"]:
+        for variant in config.distros[key]["variants"]:
             if variant == distro:
-                if "versions" in conf.distros[key]:
-                    versions.extend(conf.distros[key]["versions"])
+                if "versions" in config.distros[key]:
+                    versions.extend(config.distros[key]["versions"])
 
-                if "versions" in conf.distros[key][variant]:
-                    versions.extend(conf.distros[key][variant]["versions"])
+                if "versions" in config.distros[key][variant]:
+                    versions.extend(config.distros[key][variant]["versions"])
 
                 break
 

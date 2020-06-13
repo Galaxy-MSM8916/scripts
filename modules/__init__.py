@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-import modules.args as args
-import modules.jobs as jobs
-import modules.distros as distros
-import modules.sync as sync
+from . import config
+from . import args
+from . import jobs
+from . import sync
+from . import distros
 
-__all__ = [ "args", "jobs", "sync", "distros" ]
+__all__ = [ "args", "jobs", "sync", "distros", "config" ]

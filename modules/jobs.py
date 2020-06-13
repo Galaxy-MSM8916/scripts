@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
-try:
-    import conf
-except ImportError:
-    import conf_template as conf
+
+from . import config
 
 def get_targets(job):
     """
@@ -11,9 +9,9 @@ def get_targets(job):
 
     targets = set()
 
-    if job in conf.jobs:
-        if "targets" in conf.jobs[job]:
-            targets.update(set(conf.jobs[job]["targets"]))
+    if job in config.jobs:
+        if "targets" in config.jobs[job]:
+            targets.update(set(config.jobs[job]["targets"]))
 
     return targets
 
@@ -24,8 +22,8 @@ def get_build_types(job):
 
     types = set()
 
-    if job in conf.jobs:
-        if "types" in conf.distros[job]:
-            types.update(set(conf.jobs[job]["types"]))
+    if job in config.jobs:
+        if "types" in config.distros[job]:
+            types.update(set(config.jobs[job]["types"]))
 
     return types

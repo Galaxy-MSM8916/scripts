@@ -4,15 +4,11 @@ import getopt
 import os
 import sys
 
-try:
-    import conf
-except ImportError:
-    import conf_template as conf
-
 import modules
+import modules.config as config
 
 def init():
-    os.environ.update(conf.envvars)
+    os.environ.update(config.envvars)
 
     args = modules.args.parse_args()
 

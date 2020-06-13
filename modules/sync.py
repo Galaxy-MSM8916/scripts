@@ -1,4 +1,4 @@
-from .distros import conf
+#!/usr/bin/env python3
 
 import requests 
 
