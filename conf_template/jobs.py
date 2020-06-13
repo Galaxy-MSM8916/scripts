@@ -7,12 +7,14 @@ jobs = {
             "j7ltespr": ["14.1", "15.1"]
             },
         "picks": [],
-        "picks-lineage": []
+        "picks-lineage": [],
+        "types": ["eng"],
         },
 
     "lineage-go": {
         "devices": {},
-        "picks": ["android-go"]
+        "picks": ["android-go"],
+        "types": ["eng"],
         },
 
     "rr": {
@@ -20,6 +22,7 @@ jobs = {
             "gprimelte": ["6.0.0"],
             "j7ltespr": ["6.0.0"]
             },
-        "picks": []
+        "picks": [],
+        "types": ["eng"],
         },
 }
