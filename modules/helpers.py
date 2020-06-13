@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+try:
+    import conf
+except ImportError:
+    import conf_template as conf
 
 def get_targets():
     try:
