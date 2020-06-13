@@ -8,7 +8,7 @@ from . import jobs as mod_jobs
 
 # bind module variables to the package
 from .devices import devices
-from .distributions import distros, versions, targets
+from .distributions import distros, targets
 from .executors import executors
 from .jobs import jobs
 

@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
 
-versions = {
-    "7.1": [ "N", "Nougat", "nougat", "14.1" ],
-    "8.1": [ "O", "Oreo", "oreo", "6.0.0", "15.1" ],
-}
-
 # targets
 targets = [ "otapackage", "recoveryimage", "bootimage" ]
 
