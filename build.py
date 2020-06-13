@@ -11,5 +11,9 @@ except ImportError:
 
 import modules
 
+def init():
+    os.environ.update(conf.envvars)
+
 if __name__ == "__main__":
     modules.parse_args()
+    init()
