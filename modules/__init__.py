@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from .args import *
-from .helpers import *
-from .sync import *
+import modules.args as args
+import modules.helpers as helpers
+import modules.sync as sync
 
 __all__ = [ "args", "helpers", "sync" ]

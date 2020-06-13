@@ -14,7 +14,7 @@ import modules
 def init():
     os.environ.update(conf.envvars)
 
-    args = modules.parse_args()
+    args = modules.args.parse_args()
 
 if __name__ == "__main__":
     init()
