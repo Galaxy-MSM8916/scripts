@@ -11,6 +11,8 @@ def parse_args():
 
     parser.add_argument('-d', '--device', metavar='device', type=str, nargs=1, help='Device codename.', choices=distros.get_devices())
 
+    parser.add_argument('--build-dir', metavar='dir', type=str, nargs=1, help='Source/build directory', default='./build')
+
     parser.add_argument( '--distribution', '--distro', metavar='distribution', type=str, nargs=1, help='Distribution to build.', choices=distros.get_distros())
 
     parser.add_argument('--type', metavar='type', type=str, nargs=1, help='Type of build.', choices=distros.get_build_types())
