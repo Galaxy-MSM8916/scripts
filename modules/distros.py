@@ -23,6 +23,19 @@ def get_devices():
 
     return devices
 
+def get_build_types():
+    """
+    Return all valid build types
+    """
+
+    types = set()
+
+    for key in conf.distros:
+        if "types" in conf.distros[key]:
+            types.update(set(conf.distros[key]["types"]))
+
+
+
 def get_distros():
     """
     Return all valid distros
@@ -37,17 +50,6 @@ def get_distros():
             distros.update(set(conf.distros[key]["variants"]))
 
     return distros
-
-def get_build_types():
-    """
-    Return all valid build types
-    """
-
-    types = set()
-
-    for key in conf.distros:
-        if "types" in conf.distros[key]:
-            types.update(set(conf.distros[key]["types"]))
 
 def get_distro_versions(distro):
     """
@@ -77,28 +79,4 @@ def get_distro_versions(distro):
 
     return versions
 
-def get_job_targets(job):
-    """
-    Return targets for job
-    """
 
-    targets = set()
-
-    if job in conf.jobs:
-        if "targets" in conf.jobs[job]:
-            targets.update(set(conf.jobs[job]["targets"]))
-
-    return targets
-
-def get_job_build_types(job):
-    """
-    Return build types for job
-    """
-
-    types = set()
-
-    if job in conf.jobs:
-        if "types" in conf.distros[job]:
-            types.update(set(conf.jobs[job]["types"]))
-
-    return types

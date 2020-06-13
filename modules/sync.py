@@ -1,5 +1,4 @@
-from . import helpers
-from .helpers import conf
+from .distros import conf
 
 import requests 
 
