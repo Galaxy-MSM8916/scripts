@@ -49,6 +49,34 @@ def get_build_types():
         if "types" in conf.distros[key]:
             types.update(set(conf.distros[key]["types"]))
 
+def get_distro_versions(distro):
+    """
+    Return valid versions for distro
+    """
+    versions = []
+
+    for key in conf.distros:
+        if key == distro:
+            if "versions" in conf.distros[key]:
+                versions.extend(conf.distros[key]["versions"])
+
+            break
+
+        if "variants" not in conf.distros[key]:
+            continue
+
+        for variant in conf.distros[key]["variants"]:
+            if variant == distro:
+                if "versions" in conf.distros[key]:
+                    versions.extend(conf.distros[key]["versions"])
+
+                if "versions" in conf.distros[key][variant]:
+                    versions.extend(conf.distros[key][variant]["versions"])
+
+                break
+
+    return versions
+
 def get_job_targets(job):
     """
     Return targets for job
