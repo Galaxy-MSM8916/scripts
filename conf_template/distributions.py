@@ -27,6 +27,7 @@ distros = {
                 "prefix": "los-go",
                 },
             },
+        "types": ["userdebug", "eng"],
         },
 
     "rr" : {
@@ -34,6 +35,7 @@ distros = {
         "versions": ["oreo"],
         "prefix": "rr",
         "url" : "https://github.com/ResurrectionRemix/platform_manifest.git",
-        "init_prefix": []
+        "init_prefix": [],
+        "types": ["userdebug", "eng"],
         },
 }
