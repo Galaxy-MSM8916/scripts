@@ -76,4 +76,24 @@ def get_distro_versions(distro):
 
     return versions
 
+def get_distro_repo_url(distro):
+    """
+    Return sync url for distro
+    """
+    search_key = "url"
+
+    for key in config.distros:
+        if key == distro:
+            if search_key in config.distros[key]:
+                return config.distros[key][search_key]
+
+        if "variants" not in config.distros[key]:
+            continue
+
+        for variant in config.distros[key]["variants"]:
+            if variant == distro:
+                if search_key in config.distros[key][variant]:
+                    return config.distros[key][variant][search_key]
+
+    return None
 
