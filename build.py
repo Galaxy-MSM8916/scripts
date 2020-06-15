@@ -4,13 +4,16 @@ import getopt
 import os
 import sys
 
-import modules
-import modules.config as config
-
 def init():
-    os.environ.update(config.envvars)
+    import modules.args
+    import modules.config
 
+    os.environ.update(modules.config.envvars)
     args = modules.args.parse_args()
 
 if __name__ == "__main__":
+
+    import modules.args
+
+    modules.args.parse_config_url()
     init()

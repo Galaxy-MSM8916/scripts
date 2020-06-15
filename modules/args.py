@@ -1,13 +1,71 @@
 #!/usr/bin/env python3
 
+import os
+import sys
 import argparse
+import subprocess
 
-from . import distros
+def parse_config_url():
+    """
+    Parse config url argument and fetch config
+    """
+
+    config_url_flag = "--config-url"
+    config_url = None
+
+    def print_help(error = None):
+        print(sys.argv[0], "[" + config_url_flag + "url" + "]")
+        print()
+
+        if error == None:
+            print("\t" + config_url_flag + " url  Config repo url.")
+        else:
+            print(error)
+
+    for i in range(len(sys.argv)):
+        if sys.argv[i] == config_url_flag:
+            if i + 1 >= len(sys.argv):
+                print_help("No url specified")
+                os._exit(1)
+
+            config_url = sys.argv[i + 1]
+            break
+
+    conf_dir = os.getcwd() + "/conf"
+
+    if os.path.exists(conf_dir):
+        r = subprocess.run(["rm", "-rf", conf_dir])
+
+        if r.returncode != 0:
+            print("Failed to remove old repo")
+            os._exit(1)
+
+    if config_url != None:
+        git_args = ["git", "clone", config_url, conf_dir]
+
+        try:
+            r = subprocess.run(git_args, timeout=20)
+
+            if r.returncode != 0:
+                print("Failed to fetch config repo")
+                os._exit(1)
+        except subprocess.TimeoutExpired:
+                print("Failed to fetch config repo")
+                os._exit(1)
+
 
 def parse_args():
+    """
+    Parse program arguments
+    """
+
+    from . import distros
+
     parser = argparse.ArgumentParser(description='Build script.')
 
     parser.add_argument('-t', '--target', metavar='target', type=str, required=True, nargs=1, help='Build target.', choices=distros.get_targets())
+
+    parser.add_argument('--config-url', metavar='git_url', type=str, nargs=1, help='Config url.')
 
     parser.add_argument('-d', '--device', metavar='device', type=str, nargs=1, help='Device codename.', choices=distros.get_devices())
 
