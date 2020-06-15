@@ -79,4 +79,73 @@ def initialise_dist_repo(build_dir, distro, version):
         os._exit(1)
 
     os.chdir(top_dir)
-    
+
+def write_manifest(distro, version, outpath):
+    """
+    Fetch and write manifest for distro to directory outpath
+    """
+
+    # get manifest
+    manifest_xml = get_manifest(distro, version)
+    if manifest_xml == None:
+        print("Error: failed to fetch local manifest file")
+        os._exit(1)
+
+    os.makedirs(outpath, exist_ok=True)
+
+    manifest_file = outpath + "/" + distro + "-" + version + ".xml"
+    fhandle = open(manifest_file, "w")
+    if fhandle == None:
+        print("Error: failed to open local manifest file")
+        os._exit(1)
+
+    if fhandle.write(manifest_xml) != len(manifest_xml):
+        print("Error: failed to write local manifest file")
+        os._exit(1)
+
+    fhandle.close()
+
+def sync_dist_repo(build_dir, distro, version):
+    """
+    Sync source repo for distro
+    """
+    top_dir = os.environ['PWD']
+
+    repo_tool_path = top_dir + '/tools/repo'
+    if not os.path.exists(repo_tool_path):
+        print("Error: could not find repo tool")
+        os._exit(1)
+
+    repo_dir = get_dist_repo_dir(build_dir, distro, version)
+
+    if not os.path.exists(repo_dir + "/.repo"):
+        initialise_dist_repo(build_dir, distro, version)
+
+    manifest_dir = repo_dir + "/.repo/local_manifests"
+
+    if os.path.exists(manifest_dir):
+        r = subprocess.run(["rm", "-rf", manifest_dir])
+
+        if r.returncode != 0:
+            print("Failed to remove old manifests")
+            os._exit(1)
+
+    os.makedirs(manifest_dir)
+
+    write_manifest(distro, version, manifest_dir)
+
+    os.chdir(repo_dir)
+    if os.getcwd() == top_dir:
+        print("Error: failed to change directory")
+        os._exit(1)
+
+    repo_args = [repo_tool_path, "sync", "--force-sync", \
+        "--no-tags", "--no-clone-bundle", "--prune"]
+
+    result = subprocess.run(repo_args, input="", text=True)
+    if result.returncode != 0:
+        print("Failed to sync repo")
+        os._exit(1)
+
+    os.chdir(top_dir)
+
