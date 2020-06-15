@@ -5,6 +5,9 @@ import subprocess
 import requests
 from . import distros
 
+lineage_gerrit = 'https://review.lineageos.org'
+msm8916_gerrit = 'https://review.msm8916.com'
+
 manifest_repo_url = "https://raw.githubusercontent.com/Galaxy-MSM8916/local_manifests/master"
 
 def get_manifest(distro, version):
@@ -149,3 +152,40 @@ def sync_dist_repo(build_dir, distro, version):
 
     os.chdir(top_dir)
 
+def apply_repopicks(build_dir, distro, version, gerrit_url = lineage_gerrit, picks = [], topics = []):
+    """
+    Apply repopicks supplied in picks to distro
+    """
+    top_dir = os.environ['PWD']
+
+    repopick_tool_path = top_dir + '/tools/repopick.py'
+    if not os.path.exists(repopick_tool_path):
+        print("Error: could not find repo tool")
+        os._exit(1)
+
+    repo_dir = get_dist_repo_dir(build_dir, distro, version)
+
+    os.chdir(repo_dir)
+    if os.getcwd() == top_dir:
+        print("Error: failed to change directory")
+        os._exit(1)
+
+    for pick in picks:
+        repo_args = ["python3", repopick_tool_path, "-g", gerrit_url, \
+            "-r", str(pick)]
+
+        result = subprocess.run(repo_args, input="", text=True)
+        if result.returncode != 0:
+            print("Failed to pick change " + str(pick))
+            os._exit(1)
+
+    for topic in topics:
+        repo_args = ["python3", repopick_tool_path, "-g", gerrit_url, \
+            "-r", "-t", topic]
+
+        result = subprocess.run(repo_args, input="", text=True)
+        if result.returncode != 0:
+            print("Failed to pick topic " + topic)
+            os._exit(1)
+
+    os.chdir(top_dir)
