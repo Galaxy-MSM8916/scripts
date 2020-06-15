@@ -31,7 +31,17 @@ def get_build_types():
         if "types" in config.distros[key]:
             types.update(set(config.distros[key]["types"]))
 
+def get_variant_distro_parent(variant):
+    """
+    Return the name of variant distro's parent distro
+    """
+    search_key = "variants"
+    for key in config.distros:
+        if search_key in config.distros[key]:
+            if variant in config.distros[key][search_key]:
+                return key
 
+    return None
 
 def get_distros():
     """
