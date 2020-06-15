@@ -75,6 +75,8 @@ def _get_distro_dict_value(distro, search_key):
             if variant == distro:
                 if search_key in config.distros[key][variant]:
                     return config.distros[key][variant][search_key]
+                elif search_key in config.distros[key]:
+                    return config.distros[key][search_key]
 
     return None
 
