@@ -82,7 +82,9 @@ def get_distro_versions(distro):
     value = _get_distro_dict_value(distro, "variants")
     if (value != None):
         for variant in value:
-            if search_key in value[variant]:
+            if distro != variant:
+                continue
+            elif search_key in value[variant]:
                 versions.extend(value[variant][search_key])
 
     return versions
