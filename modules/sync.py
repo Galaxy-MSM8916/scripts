@@ -48,7 +48,7 @@ def initialise_dist_repo(build_dir, distro, version):
     os.makedirs(repo_dir, exist_ok=True)
     os.chdir(repo_dir)
 
-    if os.getcwd == top_dir:
+    if os.getcwd() == top_dir:
         print("Error: failed to change directory")
         os._exit(1)
 
