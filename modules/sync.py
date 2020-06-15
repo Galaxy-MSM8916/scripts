@@ -20,6 +20,12 @@ def get_manifest(distro, version):
 
     return r.text
 
+def get_dist_repo_dir(build_dir, distro, version):
+    """
+    Return repo source directory for distro
+    """
+    return build_dir + "/" + distro + "-" + version
+
 def initialise_dist_repo(build_dir, distro, version):
     """
     Initialise repo source directory for distro with version
@@ -37,7 +43,7 @@ def initialise_dist_repo(build_dir, distro, version):
         print("Error: could not determine repo url")
         os._exit(1)
 
-    repo_dir = build_dir + "/" + distro + "-" + version
+    repo_dir = get_dist_repo_dir(build_dir, distro, version)
 
     os.makedirs(repo_dir, exist_ok=True)
     os.chdir(repo_dir)
