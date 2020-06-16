@@ -8,28 +8,14 @@ import subprocess
 def parse_config_url():
     """
     Parse config url argument and fetch config
+    and return command line args
     """
+
+    args = []
+    args.extend(sys.argv)
 
     config_url_flag = "--config-url"
     config_url = None
-
-    def print_help(error = None):
-        print(sys.argv[0], "[" + config_url_flag + "url" + "]")
-        print()
-
-        if error == None:
-            print("\t" + config_url_flag + " url  Config repo url.")
-        else:
-            print(error)
-
-    for i in range(len(sys.argv)):
-        if sys.argv[i] == config_url_flag:
-            if i + 1 >= len(sys.argv):
-                print_help("No url specified")
-                os._exit(1)
-
-            config_url = sys.argv[i + 1]
-            break
 
     conf_dir = os.getcwd() + "/conf"
 
@@ -39,6 +25,18 @@ def parse_config_url():
         if r.returncode != 0:
             print("Failed to remove old repo")
             os._exit(1)
+
+    try:
+        i = args.index(config_url_flag)
+
+        if i + 1 >= len(sys.argv):
+            args.append("-h")
+            return args
+
+        config_url = sys.argv[i + 1]
+
+    except ValueError:
+        return args
 
     if config_url != None:
         git_args = ["git", "clone", config_url, conf_dir]
@@ -53,12 +51,13 @@ def parse_config_url():
                 print("Failed to fetch config repo")
                 os._exit(1)
 
+    return args
 
-def parse_args():
+
+def parse_args(args = None):
     """
     Parse program arguments
     """
-
     from . import distros
 
     parser = argparse.ArgumentParser(description='Build script.')
@@ -89,4 +88,7 @@ def parse_args():
 
     parser.add_argument('--days', metavar='num', type=int, nargs=1, help='Number of days of changelogs to generate.')
 
-    return parser.parse_args()
+    if args == None:
+        return parser.parse_args()
+
+    return parser.parse_args(args)
