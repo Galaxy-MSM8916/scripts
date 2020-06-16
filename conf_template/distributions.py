@@ -5,6 +5,7 @@ targets = [ "otapackage", "recoveryimage", "bootimage" ]
 
 envvars = {
     "LINEAGE_BUILDTYPE": "NIGHTLY",
+    "CCACHE_MAXSIZE" : "50G",
     }
 
 # name: Distro name
