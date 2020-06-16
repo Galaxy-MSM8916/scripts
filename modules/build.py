@@ -3,6 +3,7 @@
 import os
 import subprocess
 import requests
+
 from . import distros
 
 def get_cpu_count():
@@ -15,13 +16,13 @@ def get_cpu_count():
     except (ImportError, NotImplementedError):
         return 2;
 
-def build_target(build_dir, distro, version, device, target, buildtype):
+def build_target(build_dir, distro, version, device, target, build_variant):
     """
     Build target for device on distro
     """
-    top_dir = os.environ['PWD']
 
-    repo_dir = distros.get_dist_repo_dir(build_dir, distro, version)
+    top_dir = os.environ['PWD']
+    repo_dir = distros.get_distro_repo_dir(build_dir, distro, version)
 
     os.chdir(repo_dir)
     if os.getcwd() == top_dir:
@@ -32,15 +33,17 @@ def build_target(build_dir, distro, version, device, target, buildtype):
     if dist_short == None:
         dist_short = distro
 
-    build_args = ["bash", "-c", "\"", "source" "build/envsetup.sh", "&&", \
-         "lunch", dist_short + "_" + device + "-" + buildtype, "&&", \
-             "make", "-j" + str(get_cpu_count() - 1), target, "\""]
+    lunch_target = dist_short + "_" + device + "-" + build_variant
+    job_count = str(get_cpu_count() - 1)
+
+    build_args = [ "bash", "-c", "source build/envsetup.sh && " +\
+         "lunch " + lunch_target + " && " +\
+             "make -j" + job_count + " " + target ]
 
     res = subprocess.run(build_args, input = "", text = True)
 
     if res.returncode != 0:
         print("Build failed with return code " + str(res.returncode))
-        os.exit(res.returncode)
+        os._exit(res.returncode)
     
     os.chdir(top_dir)
-
