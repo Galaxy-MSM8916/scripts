@@ -13,6 +13,12 @@ def get_jobs_dict_value(distro, version, key):
 
     return None
 
+def get_distros():
+    """
+    Return all distros in the job map
+    """
+    return config.jobs.keys()
+
 def get_targets(distro, version):
     """
     Return targets for distro
