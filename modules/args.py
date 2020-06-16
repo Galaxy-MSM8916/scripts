@@ -17,15 +17,6 @@ def parse_config_url():
     config_url_flag = "--config-url"
     config_url = None
 
-    conf_dir = os.getcwd() + "/conf"
-
-    if os.path.exists(conf_dir):
-        r = subprocess.run(["rm", "-rf", conf_dir])
-
-        if r.returncode != 0:
-            print("Failed to remove old repo")
-            os._exit(1)
-
     try:
         i = args.index(config_url_flag)
 
@@ -37,6 +28,15 @@ def parse_config_url():
 
     except ValueError:
         return args
+
+    conf_dir = os.getcwd() + "/conf"
+
+    if os.path.exists(conf_dir):
+        r = subprocess.run(["rm", "-rf", conf_dir])
+
+        if r.returncode != 0:
+            print("Failed to remove old repo")
+            os._exit(1)
 
     if config_url != None:
         git_args = ["git", "clone", config_url, conf_dir]
