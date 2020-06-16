@@ -89,4 +89,4 @@ def parse_args():
 
     parser.add_argument('--days', metavar='num', type=int, nargs=1, help='Number of days of changelogs to generate.')
 
-    return parser.parse_args().__dict__
+    return parser.parse_args()
