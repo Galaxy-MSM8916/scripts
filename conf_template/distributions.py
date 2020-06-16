@@ -11,7 +11,6 @@ envvars = {
 
 # name: Distro name
 # versions: for use with repo init
-# prefix: Jenkins job prefix
 # url: repo init url
 # init_prefix: branch prefixes for repo init, e.g "lineage-" for lineage (e.g "lineage-" + "15.1")
 distros = {
@@ -19,7 +18,7 @@ distros = {
         "name": "LineageOS",
         "versions": ["16.0", "17.1"],
         "url": "git://github.com/LineageOS/android.git",
-        "init_prefix": ["lineage-", "cm-"],
+        "init_prefix": ["lineage-"],
         "variants": {
             "lineage-go" : {
                 "name": "LineageOS Go",
