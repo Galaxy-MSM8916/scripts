@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 
 import os
+import time
 import subprocess
 import requests
 
+from . import config
+from . import devices
 from . import distros
 
 def get_cpu_count():
@@ -121,3 +124,76 @@ def get_otapackage_path(build_dir, distro, version, device):
                     ota_path = fpath
 
     return ota_path
+
+def get_short_date():
+    """
+    Return date in yyyymmdd format
+    """
+    st = time.localtime()
+    date = str(st.tm_year)
+
+    if st.tm_mon < 10:
+        date += "0"
+
+    date += str(st.tm_mon)
+
+    if st.tm_mday < 10:
+        date += "0"
+
+    date += str(st.tm_mday)
+
+    return date
+
+def get_buildtype():
+    """
+    Return build type
+    """
+    buildtype = "UNOFFICIAL"
+
+    if "LINEAGE_BUILDTYPE" in config.envvars:
+        buildtype = config.envvars["LINEAGE_BUILDTYPE"]
+
+    return buildtype
+
+def get_build_release_description(distro, version, device):
+    """
+    Return descriptive build description
+    """
+    distro_name = distros.get_long_distro_name(distro)
+    device_long = devices.get_long_device_name(device)
+    device_model = devices.get_device_model(device)
+
+    return distro_name + " " + version + " for the " \
+        + device_long + " (" + device_model + ")"
+
+def get_bootimage_release_name(distribution, version, device):
+    """
+    Return name of boot image for use in release upload
+    """
+    return "boot-" + distribution + "-" + version \
+        + "-" + get_short_date() + "-" + device + ".img"
+
+def get_recoveryimage_release_name(distribution, version, device):
+    """
+    Return name of recovery image for use in release upload
+    """
+    return "recovery-" + distribution + "-" + version \
+        + "-" + get_short_date() + "-" + device + ".img"
+
+def get_otapackage_release_name(distribution, version, device):
+    """
+    Return name of ota image for use in release upload
+    """
+    return distribution + "-" + version + "-" + get_short_date() \
+        + "-" + get_buildtype() + device + ".zip"
+
+def get_build_release_tag(distribution, version, device, target):
+    """
+    Return tag name for use in release upload
+    """
+    if target == "recoveryimage":
+        return get_recoveryimage_release_name(distribution, version, device)
+    elif target == "bootimage":
+        return get_bootimage_release_name(distribution, version, device)
+
+    return get_otapackage_release_name(distribution, version, device)
