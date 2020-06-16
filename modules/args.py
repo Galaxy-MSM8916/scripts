@@ -12,7 +12,7 @@ def parse_config_url():
     """
 
     args = []
-    args.extend(sys.argv)
+    args.extend(sys.argv[1:])
 
     config_url_flag = "--config-url"
     config_url = None
