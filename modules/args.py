@@ -85,6 +85,8 @@ def parse_args(args = None):
 
     parser.add_argument('--local-only', action="store_true", help="Don't fetch remote refs on sync.")
 
+    parser.add_argument('--generate-pipelines', action="store_true", help="Generate build pipelines.")
+
     parser.add_argument('--clean', action="store_true", help="clean build top after completion.")
 
     parser.add_argument('--clean-device', action="store_true", help="clean build top after completion (only device subdir).")
