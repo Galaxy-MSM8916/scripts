@@ -12,13 +12,13 @@ jobs = {
             },
         "picks": [],
         "picks-lineage": [],
-        "types": ["eng"],
+        "build_variants": ["eng"],
         },
 
     "lineage-go": {
         "devices": {},
         "picks": ["android-go"],
-        "types": ["eng"],
+        "build_variants": ["eng"],
         },
 
     "rr": {
@@ -27,6 +27,6 @@ jobs = {
             "j7ltespr": ["6.0.0"]
             },
         "picks": [],
-        "types": ["eng"],
+        "build_variants": ["eng"],
         },
 }

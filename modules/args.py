@@ -73,7 +73,7 @@ def parse_args():
 
     parser.add_argument( '--distribution', '--distro', metavar='distribution', type=str, nargs=1, help='Distribution to build.', choices=distros.get_distros())
 
-    parser.add_argument('--type', metavar='type', type=str, nargs=1, help='Type of build.', choices=distros.get_build_types())
+    parser.add_argument('--type', metavar='type', type=str, nargs=1, help='Type of build.', choices=distros.get_build_variants())
 
     parser.add_argument('--pick', metavar='number', type=int, nargs='+', help='Pick msm8916 gerrit changes.')
     parser.add_argument('--pick-lineage', metavar='number', type=int, nargs='+', help='Pick lineage gerrit changes.')

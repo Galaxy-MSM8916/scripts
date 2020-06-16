@@ -26,7 +26,7 @@ distros = {
                 "versions": ["16.0", "17.1"],
                 },
             },
-        "types": ["userdebug", "eng"],
+        "build_variants": ["userdebug", "eng"],
         },
 
     "rr" : {
@@ -34,6 +34,6 @@ distros = {
         "versions": ["pie", "ten"],
         "url" : "https://github.com/ResurrectionRemix/platform_manifest.git",
         "init_prefix": [],
-        "types": ["userdebug", "eng"],
+        "build_variants": ["userdebug", "eng"],
         },
 }

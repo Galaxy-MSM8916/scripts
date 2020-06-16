@@ -15,15 +15,15 @@ def get_targets(distro):
 
     return targets
 
-def get_build_types(distro):
+def get_build_variants(distro):
     """
-    Return build types for distro
+    Return build variants for distro
     """
 
-    types = set()
+    build_variants = set()
 
     if distro in config.jobs:
-        if "types" in config.distros[distro]:
-            types.update(set(config.jobs[distro]["types"]))
+        if "build_variants" in config.distros[distro]:
+            build_variants.update(set(config.jobs[distro]["build_variants"]))
 
-    return types
+    return build_variants

@@ -20,16 +20,16 @@ def get_devices():
 
     return devices
 
-def get_build_types():
+def get_build_variants():
     """
-    Return all valid build types
+    Return all valid build variants
     """
 
-    types = set()
+    build_variants = set()
 
     for key in config.distros:
-        if "types" in config.distros[key]:
-            types.update(set(config.distros[key]["types"]))
+        if "build_variants" in config.distros[key]:
+            build_variants.update(set(config.distros[key]["build_variants"]))
 
 def get_variant_distro_parent(variant):
     """
