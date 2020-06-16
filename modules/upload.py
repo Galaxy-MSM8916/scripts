@@ -3,7 +3,7 @@
 import os
 import subprocess
 
-def create_github_release(token, user, repo, tag, description=None):
+def create_github_release(tag, description=None, repo = None, token = None, user = None):
     """
     Create a github release under tag in repo
     """
@@ -14,8 +14,19 @@ def create_github_release(token, user, repo, tag, description=None):
         print("Error: could not find github release tool")
         os._exit(1)
 
-    release_args = [release_tool_path, "info", "-s", token, \
-        "--user", user, "--repo", repo, "--tag", tag ]
+    release_args = [release_tool_path, "info", "--tag", tag ]
+
+    if repo:
+        release_args.append("--repo")
+        release_args.append(repo)
+
+    if token:
+        release_args.append("--security-token")
+        release_args.append(token)
+
+    if user:
+        release_args.append("--user")
+        release_args.append(user)
 
     # check if release exists
     res = subprocess.run(release_args)
@@ -24,7 +35,7 @@ def create_github_release(token, user, repo, tag, description=None):
 
     release_args[1] = "release"
 
-    if description != None:
+    if description:
         release_args.append("--description")
         release_args.append(description)
 
@@ -37,7 +48,7 @@ def create_github_release(token, user, repo, tag, description=None):
         print("Failed to create github release " + tag)
         os._exit(1)
 
-def upload_github_artifact(token, user, repo, tag, name, path):
+def upload_github_artifact(tag, name, path, repo = None, token = None, user = None):
     """
     Upload an artifact at path under release tag in repo with name
     """
@@ -51,9 +62,20 @@ def upload_github_artifact(token, user, repo, tag, name, path):
         print("Error: invalid release artifact specified")
         os._exit(1)
 
-    release_args = [release_tool_path, "-s", token, \
-        "--user", user, "--repo", repo, "--tag", tag, \
-            "--name", name, "--file", path, "--replace"]
+    release_args = [release_tool_path, "--tag", tag, \
+        "--name", name, "--file", path, "--replace"]
+
+    if repo:
+        release_args.append("--repo")
+        release_args.append(repo)
+
+    if token:
+        release_args.append("--security-token")
+        release_args.append(token)
+
+    if user:
+        release_args.append("--user")
+        release_args.append(user)
 
     print("Uploading release artifact " + name + " on tag " + tag)
 
