@@ -102,7 +102,7 @@ def write_manifest(distro, version, outpath):
 
     fhandle.close()
 
-def sync_dist_repo(build_dir, distro, version):
+def sync_dist_repo(build_dir, distro, version, local_only=False):
     """
     Sync source repo for distro
     """
@@ -138,6 +138,9 @@ def sync_dist_repo(build_dir, distro, version):
 
     repo_args = [repo_tool_path, "sync", "--force-sync", \
         "--no-tags", "--no-clone-bundle", "--prune"]
+
+    if local_only:
+        repo_args.append("--local-only")
 
     result = subprocess.run(repo_args, input="", text=True)
     if result.returncode != 0:

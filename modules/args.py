@@ -83,6 +83,8 @@ def parse_args(args = None):
     parser.add_argument('--pick-topic', metavar='topic', type=str, nargs='+', help='Pick msm8916 gerrit topics.')
     parser.add_argument('--pick-lineage-topic', metavar='topic', type=str, nargs='+', help='Pick lineage gerrit topics.')
 
+    parser.add_argument('--local-only', action="store_true", help="Don't fetch remote refs on sync.")
+
     parser.add_argument('--clean', action="store_true", help="clean build top after completion.")
 
     parser.add_argument('--clean-device', action="store_true", help="clean build top after completion (only device subdir).")
