@@ -85,6 +85,8 @@ def parse_args():
 
     parser.add_argument('--clean', action="store_true", help="clean build top after completion.")
 
+    parser.add_argument('--clean-device', action="store_true", help="clean build top after completion (only device subdir).")
+
     parser.add_argument('--days', metavar='num', type=int, nargs=1, help='Number of days of changelogs to generate.')
 
     return parser.parse_args().__dict__
