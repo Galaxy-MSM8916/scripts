@@ -107,3 +107,9 @@ def get_distro_repo_url(distro):
     """
     return _get_distro_dict_value(distro, "url")
 
+def get_distro_repo_dir(build_dir, distro, version):
+    """
+    Return repo source directory for distro
+    """
+    return build_dir + "/" + distro + "-" + version
+
