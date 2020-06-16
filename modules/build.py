@@ -88,9 +88,17 @@ def get_otapackage_path(build_dir, distro, version, device):
 
     dir_contents = os.listdir(out_path)
 
+    ota_path = None
+    newest_mtime = -1
+
     for file in dir_contents:
         if file.endswith(".zip"):
             if device in file:
-                return out_path + "/" + file
+                fpath = out_path + "/" + file
+                mtime = os.path.getmtime(fpath)
 
-    return None
+                if mtime > newest_mtime:
+                    newest_mtime = mtime
+                    ota_path = fpath
+
+    return ota_path
