@@ -89,7 +89,7 @@ def get_lineage_repopicks(distro, version):
     Return pair of lineage repopick change ids and topics for distro
     """
 
-    key = "picks-lineage"
+    key = "picks_lineage"
 
     res = get_jobs_dict_value(distro, version, key)
     if res == None:

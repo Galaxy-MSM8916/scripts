@@ -9,7 +9,7 @@ jobs = {
         "17.1": {
             "devices": ["gprimelte", "j7ltespr"],
             "picks": [],
-            "picks-lineage": [],
+            "picks_lineage": [],
             "build_variants": ["eng"],
             "targets": ["otapackage", "recoveryimage"],
         },
@@ -19,7 +19,7 @@ jobs = {
         "17.1": {
             "devices": [],
             "picks": ["android-go"],
-            "picks-lineage": [],
+            "picks_lineage": [],
             "build_variants": ["eng"],
             "targets": ["otapackage"],
         },
@@ -29,7 +29,7 @@ jobs = {
         "ten": {
             "devices": [],
             "picks": [],
-            "picks-lineage": [],
+            "picks_lineage": [],
             "build_variants": ["eng"],
             "targets": ["otapackage"],
         },
