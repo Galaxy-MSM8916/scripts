@@ -6,27 +6,32 @@
 
 jobs = {
     "lineage": {
-        "devices": {
-            "gprimelte": ["14.1", "15.1"],
-            "j7ltespr": ["14.1", "15.1"]
-            },
-        "picks": [],
-        "picks-lineage": [],
-        "build_variants": ["eng"],
+        "17.1": {
+            "devices": ["gprimelte", "j7ltespr"],
+            "picks": [],
+            "picks-lineage": [],
+            "build_variants": ["eng"],
+            "targets": ["otapackage", "recoveryimage"],
         },
+    },
 
     "lineage-go": {
-        "devices": {},
-        "picks": ["android-go"],
-        "build_variants": ["eng"],
+        "17.1": {
+            "devices": [],
+            "picks": ["android-go"],
+            "picks-lineage": [],
+            "build_variants": ["eng"],
+            "targets": ["otapackage"],
         },
+    },
 
     "rr": {
-        "devices": {
-            "gprimelte": ["6.0.0"],
-            "j7ltespr": ["6.0.0"]
-            },
-        "picks": [],
-        "build_variants": ["eng"],
+        "ten": {
+            "devices": [],
+            "picks": [],
+            "picks-lineage": [],
+            "build_variants": ["eng"],
+            "targets": ["otapackage"],
         },
+    },
 }
