@@ -48,6 +48,25 @@ def build_target(build_dir, distro, version, device, target, build_variant):
 
     os.chdir(top_dir)
 
+def clean_source_dir(build_dir, distro, version, device = None):
+    """
+    Clean source dir of build intermediates.
+
+    If device is specified, remove only device artifacts/intermediates
+    """
+    repo_dir = distros.get_distro_repo_dir(build_dir, distro, version)
+
+    out_path = repo_dir + "/out"
+
+    if device != None:
+        out_path += "/target/product/" + device
+
+    res = subprocess.run(["rm", "-rf", out_path])
+
+    if res.returncode != 0:
+        print("Failed to remove directory " + out_path)
+        os._exit(res.returncode)
+
 def get_bootimage_path(build_dir, distro, version, device):
     """
     Return path to boot image, or None if not found
