@@ -4,6 +4,12 @@
 # map of information pertinent to running automated builds
 # map keys are distro short names (see distributions.py)
 
+envvars = {
+    "GITHUB_TOKEN": "",
+    "GITHUB_USER": "Galaxy-MSM8916",
+    "GITHUB_REPO": "releases",
+}
+
 jobs = {
     "lineage": {
         "17.1": {
