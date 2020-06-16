@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+
+# map of information pertinent to running automated builds
+# map keys are distro short names (see distributions.py)
+
 jobs = {
     "lineage": {
         "devices": {
