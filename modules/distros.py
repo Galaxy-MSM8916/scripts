@@ -8,18 +8,6 @@ def get_targets():
 
     return config.targets
 
-def get_devices():
-    """
-    Return all valid devices
-    """
-
-    devices = set()
-
-    for variant_map in config.devices.values():
-        devices.update(set(variant_map.keys()))
-
-    return devices
-
 def get_build_variants():
     """
     Return all valid build variants

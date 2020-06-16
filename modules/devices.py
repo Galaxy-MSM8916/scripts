@@ -21,3 +21,14 @@ def get_device_model(device):
             return config.devices[name][device]["model"]
 
     return None
+
+def get_devices():
+    """
+    Return all valid devices
+    """
+    devices = set()
+
+    for variant_map in config.devices.values():
+        devices.update(set(variant_map.keys()))
+
+    return devices

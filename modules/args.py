@@ -58,6 +58,7 @@ def parse_args(args = None):
     """
     Parse program arguments
     """
+    from . import devices
     from . import distros
 
     parser = argparse.ArgumentParser(description='Build script.')
@@ -66,7 +67,7 @@ def parse_args(args = None):
 
     parser.add_argument('--config-url', metavar='git_url', type=str, nargs=1, help='Config url.')
 
-    parser.add_argument('-d', '--device', metavar='device', type=str, nargs=1, help='Device codename.', choices=distros.get_devices())
+    parser.add_argument('-d', '--device', metavar='device', type=str, nargs=1, help='Device codename.', choices=devices.get_devices())
 
     parser.add_argument('--build-dir', metavar='dir', type=str, nargs=1, help='Source/build directory', default='./build')
 
