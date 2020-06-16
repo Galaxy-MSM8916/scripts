@@ -18,14 +18,12 @@ distros = {
     "lineage" : {
         "name": "LineageOS",
         "versions": ["16.0", "17.1"],
-        "prefix": "los",
         "url": "git://github.com/LineageOS/android.git",
         "init_prefix": ["lineage-", "cm-"],
         "variants": {
             "lineage-go" : {
                 "name": "LineageOS Go",
                 "versions": ["16.0", "17.1"],
-                "prefix": "los-go",
                 },
             },
         "types": ["userdebug", "eng"],
@@ -34,7 +32,6 @@ distros = {
     "rr" : {
         "name": "RessurectionRemix",
         "versions": ["pie", "ten"],
-        "prefix": "rr",
         "url" : "https://github.com/ResurrectionRemix/platform_manifest.git",
         "init_prefix": [],
         "types": ["userdebug", "eng"],
