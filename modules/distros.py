@@ -68,6 +68,12 @@ def _get_distro_dict_value(distro, search_key):
 
     return None
 
+def get_long_distro_name(distro):
+    """
+    Return long name for distro
+    """
+    return _get_distro_dict_value(distro, "name")
+
 def get_distro_versions(distro):
     """
     Return valid versions for distro
