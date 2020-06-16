@@ -3,6 +3,10 @@
 # targets
 targets = [ "otapackage", "recoveryimage", "bootimage" ]
 
+envvars = {
+    "LINEAGE_BUILDTYPE": "NIGHTLY",
+    }
+
 # name: Distro name
 # versions: for use with repo init
 # prefix: Jenkins job prefix
