@@ -63,7 +63,7 @@ def parse_args(args = None):
 
     parser = argparse.ArgumentParser(description='Build script.')
 
-    parser.add_argument('-t', '--target', metavar='target', type=str, required=True, nargs=1, help='Build target.', choices=distros.get_targets())
+    parser.add_argument('-t', '--target', metavar='target', type=str, nargs=1, help='Build target.', choices=distros.get_targets())
 
     parser.add_argument('--config-url', metavar='git_url', type=str, nargs=1, help='Config url.')
 
