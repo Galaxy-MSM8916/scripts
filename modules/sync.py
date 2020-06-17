@@ -137,7 +137,7 @@ def sync_dist_repo(build_dir, distro, version, local_only=False):
         os._exit(1)
 
     repo_args = [repo_tool_path, "sync", "--force-sync", \
-        "--no-tags", "--no-clone-bundle", "--prune"]
+        "--no-tags", "--no-clone-bundle", "--prune", "--force-remove-dirty"]
 
     if local_only:
         repo_args.append("--local-only")
