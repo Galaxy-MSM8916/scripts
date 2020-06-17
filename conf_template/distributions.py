@@ -14,13 +14,13 @@ envvars = {
 distros = {
     "lineage" : {
         "name": "LineageOS",
-        "versions": ["16.0", "17.1"],
+        "versions": ["17.1"],
         "url": "git://github.com/LineageOS/android.git",
         "init_prefix": ["lineage-"],
         "variants": {
             "lineage-go" : {
                 "name": "LineageOS Go",
-                "versions": ["16.0", "17.1"],
+                "versions": ["17.1"],
                 },
             },
         "build_variants": ["userdebug", "eng"],
