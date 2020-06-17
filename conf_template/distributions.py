@@ -5,6 +5,7 @@ targets = [ "otapackage", "recoveryimage", "bootimage" ]
 
 envvars = {
     "LINEAGE_BUILDTYPE": "NIGHTLY",
+    "USE_CCACHE": "1",
     "CCACHE_MAXSIZE": "100G",
     "CCACHE_COMPRESS": "1",
     }
