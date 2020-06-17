@@ -43,7 +43,7 @@ def build_target(build_dir, distro, version, device, target, build_variant):
          "lunch " + lunch_target + " && " +\
              "make -j" + job_count + " " + target ]
 
-    res = subprocess.run(build_args, input = "", text = True)
+    res = subprocess.run(build_args, input = "", encoding="utf-8")
 
     if res.returncode != 0:
         print("Build failed with return code " + str(res.returncode))
