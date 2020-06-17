@@ -185,15 +185,18 @@ def get_otapackage_release_name(distribution, version, device):
     Return name of ota image for use in release upload
     """
     return distribution + "-" + version + "-" + get_short_date() \
-        + "-" + get_buildtype() + device + ".zip"
+        + "-" + get_buildtype() + "-" + device + ".zip"
 
 def get_build_release_tag(distribution, version, device, target):
     """
     Return tag name for use in release upload
     """
+    tag = None
     if target == "recoveryimage":
-        return get_recoveryimage_release_name(distribution, version, device)
+        tag = get_recoveryimage_release_name(distribution, version, device)
     elif target == "bootimage":
-        return get_bootimage_release_name(distribution, version, device)
+        tag = get_bootimage_release_name(distribution, version, device)
+    else:
+        tag = get_otapackage_release_name(distribution, version, device)
 
-    return get_otapackage_release_name(distribution, version, device)
+    return tag.split(".")[0]
