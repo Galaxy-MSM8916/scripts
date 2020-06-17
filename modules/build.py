@@ -191,6 +191,7 @@ def get_build_release_tag(distribution, version, device, target):
     """
     Return tag name for use in release upload
     """
+    delim = "."
     tag = None
     if target == "recoveryimage":
         tag = get_recoveryimage_release_name(distribution, version, device)
@@ -199,4 +200,12 @@ def get_build_release_tag(distribution, version, device, target):
     else:
         tag = get_otapackage_release_name(distribution, version, device)
 
-    return tag.split(".")[0]
+    split = tag.split(delim)
+    split.pop()
+
+    tag = ""
+    for i in range(len(split)):
+        tag += split[i]
+        tag += delim
+
+    return tag.strip(delim)
