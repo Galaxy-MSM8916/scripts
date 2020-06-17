@@ -77,11 +77,11 @@ def parse_args(args = None):
 
     parser.add_argument('--build-variant', metavar='build variant', type=str, nargs=1, help='Type of build.', choices=distros.get_build_variants())
 
-    parser.add_argument('--pick', metavar='number', type=int, nargs='+', help='Pick msm8916 gerrit changes.')
-    parser.add_argument('--pick-lineage', metavar='number', type=int, nargs='+', help='Pick lineage gerrit changes.')
+    parser.add_argument('--pick', metavar='number', type=int, action="append", help='Pick msm8916 gerrit changes.')
+    parser.add_argument('--pick-lineage', metavar='number', type=int, action="append", help='Pick lineage gerrit changes.')
 
-    parser.add_argument('--pick-topic', metavar='topic', type=str, nargs='+', help='Pick msm8916 gerrit topics.')
-    parser.add_argument('--pick-lineage-topic', metavar='topic', type=str, nargs='+', help='Pick lineage gerrit topics.')
+    parser.add_argument('--pick-topic', metavar='topic', type=str, action="append", help='Pick msm8916 gerrit topics.')
+    parser.add_argument('--pick-lineage-topic', metavar='topic', type=str, action="append", help='Pick lineage gerrit topics.')
 
     parser.add_argument('--local-only', action="store_true", help="Don't fetch remote refs on sync.")
 
