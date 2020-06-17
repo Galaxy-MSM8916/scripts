@@ -30,14 +30,4 @@ jobs = {
             "targets": ["otapackage"],
         },
     },
-
-    "rr": {
-        "ten": {
-            "devices": [],
-            "picks": [],
-            "picks_lineage": [],
-            "build_variants": ["userdebug"],
-            "targets": ["otapackage"],
-        },
-    },
 }
