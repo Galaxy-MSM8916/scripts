@@ -62,8 +62,8 @@ def upload_github_artifact(tag, name, path, repo = None, token = None, user = No
         print("Error: invalid release artifact specified")
         os._exit(1)
 
-    release_args = [release_tool_path, "--tag", tag, \
-        "--name", name, "--file", path, "--replace"]
+    release_args = [release_tool_path, "upload", "--tag", \
+        tag, "--name", name, "--file", path, "--replace"]
 
     if repo:
         release_args.append("--repo")
