@@ -65,6 +65,9 @@ def run_build(parse_args):
     if ccache_bin:
         config.envvars["CCACHE_EXEC"] = ccache_bin
         config.envvars["CCACHE_DIR"] = build_dir + "/ccache"
+        config.envvars["USE_CCACHE"] = "1"
+        config.envvars["CCACHE_MAXSIZE"] = "100G"
+        config.envvars["CCACHE_COMPRESS"] = "1"
 
     # update envvars
     os.environ.update(config.envvars)
