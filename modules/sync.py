@@ -62,7 +62,7 @@ def initialise_dist_repo(build_dir, distro, version):
         args = [repo_path, "init", "-u", repo_url, "-b", v]
 
         try:
-            result = subprocess.run(args, timeout=10, input="", text=True)
+            result = subprocess.run(args, timeout=10, input="", encoding="utf-8")
 
             if result.returncode == 0:
                 initialised = True
@@ -142,7 +142,7 @@ def sync_dist_repo(build_dir, distro, version, local_only=False):
     if local_only:
         repo_args.append("--local-only")
 
-    result = subprocess.run(repo_args, input="", text=True)
+    result = subprocess.run(repo_args, input="", encoding="utf-8")
     if result.returncode != 0:
         print("Failed to sync repo")
         os._exit(1)
@@ -171,7 +171,7 @@ def apply_repopicks(build_dir, distro, version, gerrit_url = lineage_gerrit, pic
         repo_args = ["python3", repopick_tool_path, "-g", gerrit_url, \
             "-r", str(pick)]
 
-        result = subprocess.run(repo_args, input="", text=True)
+        result = subprocess.run(repo_args, input="", encoding="utf-8")
         if result.returncode != 0:
             print("Failed to pick change " + str(pick))
             os._exit(1)
@@ -180,7 +180,7 @@ def apply_repopicks(build_dir, distro, version, gerrit_url = lineage_gerrit, pic
         repo_args = ["python3", repopick_tool_path, "-g", gerrit_url, \
             "-r", "-t", topic]
 
-        result = subprocess.run(repo_args, input="", text=True)
+        result = subprocess.run(repo_args, input="", encoding="utf-8")
         if result.returncode != 0:
             print("Failed to pick topic " + topic)
             os._exit(1)
