@@ -5,7 +5,7 @@
 # map keys are distro short names (see distributions.py)
 
 envvars = {
-    "GITHUB_TOKEN": "",
+    #"GITHUB_TOKEN": "",
     "GITHUB_USER": "Galaxy-MSM8916",
     "GITHUB_REPO": "releases",
 }
