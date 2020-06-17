@@ -13,18 +13,18 @@ envvars = {
 jobs = {
     "lineage": {
         "17.1": {
-            "devices": ["gprimelte", "j7ltespr"],
+            "devices": ["j5lte", "j5nlte", "j53gxx", "j5ltechn"],
             "picks": [],
             "picks_lineage": [],
             "build_variants": ["eng"],
-            "targets": ["otapackage", "recoveryimage"],
+            "targets": ["otapackage"],
         },
     },
 
     "lineage-go": {
         "17.1": {
             "devices": [],
-            "picks": ["android-go"],
+            "picks": ["android-go-17.1"],
             "picks_lineage": [],
             "build_variants": ["eng"],
             "targets": ["otapackage"],
