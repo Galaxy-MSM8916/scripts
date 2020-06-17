@@ -4,6 +4,18 @@ import getopt
 import os
 import sys
 
+def get_program_path(program):
+    """
+    Return absolute path of program
+    """
+    import subprocess
+
+    try:
+        path = subprocess.check_output(["which", program])
+        return str(path, encoding="utf-8").strip("\n ")
+    except subprocess.CalledProcessError:
+        return None
+
 def run_build(parse_args):
     """
     Run a source build
@@ -48,9 +60,9 @@ def run_build(parse_args):
         os._exit(1)
 
     # set ccache stuff
-    ccache_bin = "/usr/bin/ccache"
+    ccache_bin = get_program_path("ccache")
 
-    if os.path.exists(ccache_bin):
+    if ccache_bin:
         config.envvars["CCACHE_EXEC"] = ccache_bin
         config.envvars["CCACHE_DIR"] = build_dir + "/ccache"
 
