@@ -121,7 +121,7 @@ def run_build(parse_args):
         recovery_name = build.get_recoveryimage_release_name(distribution, version, device)
         upload.upload_github_artifact(tag, recovery_name, recovery_path)
 
-    if otapackage_path:
+    if otapackage_path and target == "otapackage":
         otapackage_name = build.get_otapackage_release_name(distribution, version, device)
         upload.upload_github_artifact(tag, otapackage_name, otapackage_path)
 
