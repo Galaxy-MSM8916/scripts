@@ -58,7 +58,7 @@ def upload_github_artifact(tag, name, path, repo = None, token = None, user = No
     if not os.path.exists(release_tool_path):
         print("Error: could not find github release tool")
         os._exit(1)
-    elif not (os.path.exists(path) or os.path.isdir(path)):
+    elif (not os.path.exists(path)) or os.path.isdir(path):
         print("Error: invalid release artifact specified")
         os._exit(1)
 
