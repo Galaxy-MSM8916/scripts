@@ -116,14 +116,17 @@ def run_build(parse_args):
     if bootimage_path:
         bootimage_name = build.get_bootimage_release_name(distribution, version, device)
         upload.upload_github_artifact(tag, bootimage_name, bootimage_path)
+        upload.upload_ssh(tag, bootimage_name, bootimage_path)
 
     if recovery_path:
         recovery_name = build.get_recoveryimage_release_name(distribution, version, device)
         upload.upload_github_artifact(tag, recovery_name, recovery_path)
+        upload.upload_ssh(tag, recovery_name, recovery_path)
 
     if otapackage_path and target == "otapackage":
         otapackage_name = build.get_otapackage_release_name(distribution, version, device)
         upload.upload_github_artifact(tag, otapackage_name, otapackage_path)
+        upload.upload_ssh(tag, otapackage_name, otapackage_path)
 
     # clean
     if parse_args.clean_device:

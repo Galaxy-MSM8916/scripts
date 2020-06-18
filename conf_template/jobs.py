@@ -8,6 +8,10 @@ envvars = {
     #"GITHUB_TOKEN": "",
     "GITHUB_USER": "Galaxy-MSM8916",
     "GITHUB_REPO": "releases",
+    "SSH_UPLOAD_USER": "galaxy-msm8916",
+    "SSH_UPLOAD_HOST": "frs.sourceforge.net",
+    "SSH_UPLOAD_BASE_DIR": "/home/frs/project/galaxy-msm8916"
+    #"SSH_UPLOAD_IDENTITY": "",
 }
 
 jobs = {
