@@ -94,3 +94,75 @@ def upload_github_artifact(tag, name, path, repo = None, token = None, user = No
 
     print("Error: Failed to upload release artifact")
     os._exit(1)
+
+def upload_sourceforge(tag, name, path, user = None, project_name = None, identity_file = None):
+    """
+    Upload an artifact to sourceforge
+    """
+    if (not os.path.exists(path)) or os.path.isdir(path):
+        print("Error: invalid release artifact specified")
+        os._exit(1)
+
+    if not user:
+        key = "SF_USER"
+        if key not in os.environ:
+            print("Error: No ssh user specified")
+            os._exit(1)
+
+        user = os.environ[key]
+
+    if not project_name:
+        key = "SF_PROJECT"
+        if key not in os.environ:
+            print("Error: No sourceforge project specified")
+            os._exit(1)
+
+        project_name = os.environ[key]
+
+    using_temp_id = False
+
+    if not (identity_file and os.path.exists(identity_file)):
+        key = "SF_IDENTITY_KEY"
+        if key not in os.environ:
+            print("Error: No identity file specified")
+            os._exit(1)
+
+        import tempfile
+
+        temp = tempfile.NamedTemporaryFile("w", delete=False)
+        temp.write(bytes(os.environ[key], encoding="utf-8"))
+        temp.close()
+
+        identity_file = temp.name
+        using_temp_id = True
+
+    sf_host = "frs.sourceforge.net"
+    ssh_command = "ssh -o StrictHostKeyChecking=no -i " + identity_file
+
+    output_path = "/home/frs/project/" + project_name + \
+        "/" + tag + "/" + name
+
+    rsync_args = ["rsync", "--progress", "-e", ssh_command, \
+        path, user + "@" + sf_host + ":" + output_path]
+
+    retries = 0
+    retry_count = 3
+    while retries < retry_count:
+        res = subprocess.run(rsync_args)
+
+        if res.returncode == 0:
+            if using_temp_id:
+                os.remove(identity_file)
+
+            return
+        else:
+            print("Failed to upload release artifact at " \
+                + path + ", retrying...")
+
+            retries += 1
+
+    if using_temp_id:
+        os.remove(identity_file)
+
+    print("Error: Failed to upload release artifact")
+    os._exit(1)

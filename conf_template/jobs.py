@@ -8,6 +8,9 @@ envvars = {
     #"GITHUB_TOKEN": "",
     "GITHUB_USER": "Galaxy-MSM8916",
     "GITHUB_REPO": "releases",
+    "SF_USER": "galaxy-msm8916",
+    "SF_PROJECT": "galaxy-msm8916",
+    #"SF_IDENTITY_KEY": "",
 }
 
 jobs = {
