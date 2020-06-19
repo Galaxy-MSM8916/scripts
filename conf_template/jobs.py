@@ -13,7 +13,8 @@ envvars = {
 jobs = {
     "lineage": {
         "17.1": {
-            "devices": ["j3xprolte", "j5lte", "j5nlte", "j53gxx", "j5ltechn", "j7ltechn"],
+            "devices": ["j3xprolte", "j5lte", "j5nlte", "j53gxx", "j5ltechn", \
+                        "j5xltecmcc", "j7ltechn"],
             "picks": [],
             "picks_lineage": [],
             "build_variants": ["userdebug"],
@@ -31,3 +32,4 @@ jobs = {
         },
     },
 }
+
