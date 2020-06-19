@@ -16,6 +16,9 @@ devices = {
         "j5ltechn": { "model": "SM-J5008" },
         "j5nlte": { "model": "SM-J500FN" },
     },
+    "Samsung Galaxy J5 2016": {
+        "j5xltecmcc": { "model": "SM-J5108" },
+    },
     "Samsung Galaxy J7": {
         "j7ltechn": { "model": "SM-J7008" },
         "j7ltespr": { "model": "SM-J700P" },
