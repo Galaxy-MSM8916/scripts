@@ -47,6 +47,9 @@ def run_build(parse_args):
         print("No build variant specified")
         os._exit(1)
 
+    # append tool dir to path
+    os.environ['PATH'] = os.environ['PATH'] + ":" + os.environ['PWD'] + "/tools"
+
     build_dir = os.path.realpath(parse_args.build_dir[0])
     target = parse_args.target[0]
     distribution = parse_args.distribution[0]
