@@ -26,4 +26,7 @@ devices = {
         "j7ltechn": { "model": "SM-J7008" },
         "j7ltespr": { "model": "SM-J700P" },
     },
+    "Samsung Galaxy On7": {
+        "on7ltechn": { "model": "SM-G6000" },
+    },
 }
