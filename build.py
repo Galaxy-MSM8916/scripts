@@ -84,6 +84,7 @@ def run_build(parse_args):
     topics = []
     repopicks_lineage = []
     topics_lineage = []
+    force_pick = parse_args.force_pick
 
     if parse_args.pick:
         repopicks = parse_args.pick
@@ -98,10 +99,10 @@ def run_build(parse_args):
         topics_lineage = parse_args.pick_lineage_topic
 
     sync.apply_repopicks(build_dir, distribution, version, \
-        sync.lineage_gerrit, picks=repopicks_lineage, topics=topics_lineage)
+        sync.lineage_gerrit, picks=repopicks_lineage, topics=topics_lineage, force=force_pick)
 
     sync.apply_repopicks(build_dir, distribution, version, \
-        sync.msm8916_gerrit, picks=repopicks, topics=topics)
+        sync.msm8916_gerrit, picks=repopicks, topics=topics, force=force_pick)
 
     # build
     build.build_target(build_dir, distribution, version, device, target, build_variant)
