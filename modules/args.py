@@ -83,6 +83,8 @@ def parse_args(args = None):
     parser.add_argument('--pick-topic', metavar='topic', type=str, action="append", help='Pick msm8916 gerrit topics.')
     parser.add_argument('--pick-lineage-topic', metavar='topic', type=str, action="append", help='Pick lineage gerrit topics.')
 
+    parser.add_argument('--force-pick', action="store_true", help='Force cherry pick even if change is closed.')
+
     parser.add_argument('--local-only', action="store_true", help="Don't fetch remote refs on sync.")
 
     parser.add_argument('--generate-pipelines', action="store_true", help="Generate build pipelines.")
