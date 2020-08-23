@@ -84,19 +84,34 @@ def run_build(parse_args):
     topics = []
     repopicks_lineage = []
     topics_lineage = []
-    force_pick = parse_args.force_pick
+    force_pick = parse_args.force_pick or bool(int(os.environ.get("SCRIPT_FORCE_PICK") or 0)) # accepts 0 or 1
+
+    # Split env vars by commas, convert pick numbers to integers and put them in a list
+    if os.environ.get("SCRIPT_PICKS"):
+        repopicks = [int(x) for x in (os.environ.get("SCRIPT_PICKS")).split(',')]
+
+    if os.environ.get("SCRIPT_PICKS_LINEAGE"):
+        repopicks_lineage = [int(x) for x in (os.environ.get("SCRIPT_PICKS_LINEAGE")).split(',')]
+
+    if os.environ.get("SCRIPT_PICK_TOPICS"):
+        topics = (os.environ.get("SCRIPT_PICK_TOPICS")).split(',')
+
+    if os.environ.get("SCRIPT_PICK_LINEAGE_TOPICS"):
+        topics_lineage = (os.environ.get("SCRIPT_PICK_LINEAGE_TOPICS")).split(',')
+
 
     if parse_args.pick:
-        repopicks = parse_args.pick
+        # Append command-line argument
+        repopicks += parse_args.pick
 
     if parse_args.pick_lineage:
-        repopicks_lineage = parse_args.pick_lineage
+        repopicks_lineage += parse_args.pick_lineage
 
     if parse_args.pick_topic:
-        topics = parse_args.pick_topic
+        topics += parse_args.pick_topic
 
     if parse_args.pick_lineage_topic:
-        topics_lineage = parse_args.pick_lineage_topic
+        topics_lineage += parse_args.pick_lineage_topic
 
     sync.apply_repopicks(build_dir, distribution, version, \
         sync.lineage_gerrit, picks=repopicks_lineage, topics=topics_lineage, force=force_pick)
@@ -133,10 +148,10 @@ def run_build(parse_args):
         upload.upload_ssh(tag, otapackage_name, otapackage_path)
 
     # clean
-    if parse_args.clean_device:
+    if parse_args.clean_device or bool(int(os.environ.get("SCRIPT_CLEAN_DEVICE") or 0)):
         print("Cleaning build directory...")
         build.clean_source_dir(build_dir, distribution, version, device)
-    elif parse_args.clean:
+    elif parse_args.clean or bool(int(os.environ.get("SCRIPT_CLEAN") or 0)):
         print("Cleaning build directory...")
         build.clean_source_dir(build_dir, distribution, version)
 
@@ -167,13 +182,13 @@ def generate_pipelines(parse_args):
         base_args.append("--config-url")
         base_args.append(parse_args.config_url[0])
 
-    if parse_args.local_only:
+    if parse_args.local_only or bool(int(os.environ.get("SCRIPT_LOCAL_ONLY") or 0)):
         base_args.append("--local-only")
 
-    if parse_args.clean:
+    if parse_args.clean or bool(int(os.environ.get("SCRIPT_CLEAN") or 0)):
         base_args.append("--clean")
 
-    if parse_args.clean_device:
+    if parse_args.clean_device or bool(int(os.environ.get("SCRIPT_CLEAN_DEVICE") or 0)):
         base_args.append("--clean-device")
 
     distributions = []
@@ -200,6 +215,7 @@ def generate_pipelines(parse_args):
             topics = []
             repopicks_lineage = []
             topics_lineage = []
+            force_pick = parse_args.force_pick or bool(int(os.environ.get("SCRIPT_FORCE_PICK") or 0)) # 0 or 1
 
             targets = []
 
@@ -218,27 +234,32 @@ def generate_pipelines(parse_args):
             else:
                 targets.extend(modules.jobs.get_targets(distribution, version))
 
+            # Split env vars by commas, convert pick numbers to integers and put them in a list
+            if os.environ.get("SCRIPT_PICKS"):
+                repopicks = [int(x) for x in (os.environ.get("SCRIPT_PICKS")).split(',')]
             if parse_args.pick:
-                repopicks = parse_args.pick
-            else:
-                repopicks = modules.jobs.get_repopicks(distribution, version)[0]
+                # Append command-line argument
+                repopicks += parse_args.pick
+            # Append from conf
+            repopicks += modules.jobs.get_repopicks(distribution, version)[0]
 
+            if os.environ.get("SCRIPT_PICKS_LINEAGE"):
+                repopicks_lineage = [int(x) for x in (os.environ.get("SCRIPT_PICKS_LINEAGE")).split(',')]
             if parse_args.pick_lineage:
-                repopicks_lineage = parse_args.pick_lineage
-            else:
-                repopicks_lineage = modules.jobs.get_lineage_repopicks(\
-                    distribution, version)[0]
+                repopicks_lineage += parse_args.pick_lineage
+            repopicks_lineage += modules.jobs.get_lineage_repopicks(distribution, version)[0]
 
+            if os.environ.get("SCRIPT_PICK_TOPICS"):
+                topics = (os.environ.get("SCRIPT_PICK_TOPICS")).split(',')
             if parse_args.pick_topic:
-                topics = parse_args.pick_topic
-            else:
-                topics = modules.jobs.get_repopicks(distribution, version)[1]
+                topics += parse_args.pick_topic
+            topics += modules.jobs.get_repopicks(distribution, version)[1]
 
+            if os.environ.get("SCRIPT_PICK_LINEAGE_TOPICS"):
+                topics_lineage = (os.environ.get("SCRIPT_PICK_LINEAGE_TOPICS")).split(',')
             if parse_args.pick_lineage_topic:
-                topics_lineage = parse_args.pick_lineage_topic
-            else:
-                topics_lineage = modules.jobs.get_lineage_repopicks(\
-                    distribution, version)[1]
+                topics_lineage += parse_args.pick_lineage_topic
+            topics_lineage += modules.jobs.get_lineage_repopicks(distribution, version)[1]
 
             for device in devices:
                 for build_variant in build_variants:
@@ -276,6 +297,9 @@ def generate_pipelines(parse_args):
                         for topic in topics_lineage:
                             script_args.append("--pick-lineage-topic")
                             script_args.append(str(topic))
+
+                        if force_pick:
+                            script_args.append("--force-pick")
 
                         desc = modules.build.get_build_release_description(\
                             distribution, version, device)
