@@ -93,7 +93,56 @@ def parse_args(args = None):
 
     parser.add_argument('--clean-device', action="store_true", help="clean build top after completion (only device subdir).")
 
-    if args == None:
-        return parser.parse_args()
+    parsed = None
 
-    return parser.parse_args(args)
+    if args == None:
+        parsed = parser.parse_args()
+    else:
+        parsed = parser.parse_args(args)
+
+    if not parsed.force_pick:
+        parsed.force_pick = bool(int(os.environ.get("SCRIPT_FORCE_PICK") or 0)) # accepts 0 or 1
+
+    if not parsed.clean_device:
+        parsed.clean_device = bool(int(os.environ.get("SCRIPT_CLEAN_DEVICE") or 0)) # accepts 0 or 1
+
+    if not parsed.local_only:
+        parsed.force_pick = bool(int(os.environ.get("SCRIPT_LOCAL_ONLY") or 0)) # accepts 0 or 1
+
+    if not parsed.clean:
+        parsed.force_pick = bool(int(os.environ.get("SCRIPT_CLEAN") or 0)) # accepts 0 or 1
+
+    # Split env vars by commas, convert pick numbers to integers and put them in a list
+    if os.environ.get("SCRIPT_PICKS"):
+        repopicks = [int(x) for x in (os.environ.get("SCRIPT_PICKS")).split(',')]
+
+        if parsed.pick:
+            parsed.pick += repopicks
+        else:
+            parsed.pick = repopicks
+
+    if os.environ.get("SCRIPT_PICKS_LINEAGE"):
+        repopicks_lineage = [int(x) for x in (os.environ.get("SCRIPT_PICKS_LINEAGE")).split(',')]
+
+        if parsed.pick:
+            parsed.pick += repopicks
+        else:
+            parsed.pick = repopicks
+
+    if os.environ.get("SCRIPT_PICK_TOPICS"):
+        topics = (os.environ.get("SCRIPT_PICK_TOPICS")).split(',')
+
+        if parsed.pick_topic:
+            parsed.pick_topic += topics
+        else:
+            parsed.pick_topic = topics
+
+    if os.environ.get("SCRIPT_PICK_LINEAGE_TOPICS"):
+        topics_lineage = (os.environ.get("SCRIPT_PICK_LINEAGE_TOPICS")).split(',')
+
+        if parsed.pick_lineage_topic:
+            parsed.pick_lineage_topic += topics_lineage
+        else:
+            parsed.pick_lineage_topic = topics_lineage
+
+    return parsed

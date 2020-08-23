@@ -200,6 +200,7 @@ def generate_pipelines(parse_args):
             topics = []
             repopicks_lineage = []
             topics_lineage = []
+            force_pick = parse_args.force_pick
 
             targets = []
 
@@ -220,25 +221,21 @@ def generate_pipelines(parse_args):
 
             if parse_args.pick:
                 repopicks = parse_args.pick
-            else:
-                repopicks = modules.jobs.get_repopicks(distribution, version)[0]
 
             if parse_args.pick_lineage:
                 repopicks_lineage = parse_args.pick_lineage
-            else:
-                repopicks_lineage = modules.jobs.get_lineage_repopicks(\
-                    distribution, version)[0]
 
             if parse_args.pick_topic:
                 topics = parse_args.pick_topic
-            else:
-                topics = modules.jobs.get_repopicks(distribution, version)[1]
 
             if parse_args.pick_lineage_topic:
                 topics_lineage = parse_args.pick_lineage_topic
-            else:
-                topics_lineage = modules.jobs.get_lineage_repopicks(\
-                    distribution, version)[1]
+
+            # Append from conf
+            repopicks += modules.jobs.get_repopicks(distribution, version)[0]
+            repopicks_lineage += modules.jobs.get_lineage_repopicks(distribution, version)[0]
+            topics += modules.jobs.get_repopicks(distribution, version)[1]
+            topics_lineage += modules.jobs.get_lineage_repopicks(distribution, version)[1]
 
             for device in devices:
                 for build_variant in build_variants:
@@ -276,6 +273,9 @@ def generate_pipelines(parse_args):
                         for topic in topics_lineage:
                             script_args.append("--pick-lineage-topic")
                             script_args.append(str(topic))
+
+                        if force_pick:
+                            script_args.append("--force-pick")
 
                         desc = modules.build.get_build_release_description(\
                             distribution, version, device)
