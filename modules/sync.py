@@ -149,7 +149,7 @@ def sync_dist_repo(build_dir, distro, version, local_only=False):
 
     os.chdir(top_dir)
 
-def apply_repopicks(build_dir, distro, version, gerrit_url = lineage_gerrit, picks = [], topics = []):
+def apply_repopicks(build_dir, distro, version, gerrit_url = lineage_gerrit, picks = [], topics = [], force=False):
     """
     Apply repopicks supplied in picks to distro
     """
@@ -170,6 +170,7 @@ def apply_repopicks(build_dir, distro, version, gerrit_url = lineage_gerrit, pic
     for pick in picks:
         repo_args = ["python3", repopick_tool_path, "-g", gerrit_url, \
             "-r", str(pick)]
+        if force: repo_args.append("-f")
 
         result = subprocess.run(repo_args, input="", encoding="utf-8")
         if result.returncode != 0:
@@ -179,6 +180,7 @@ def apply_repopicks(build_dir, distro, version, gerrit_url = lineage_gerrit, pic
     for topic in topics:
         repo_args = ["python3", repopick_tool_path, "-g", gerrit_url, \
             "-r", "-t", topic]
+        if force: repo_args.append("-f")
 
         result = subprocess.run(repo_args, input="", encoding="utf-8")
         if result.returncode != 0:
