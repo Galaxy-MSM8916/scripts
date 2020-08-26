@@ -12,6 +12,8 @@ envvars = {
     "SSH_UPLOAD_HOST": "frs.sourceforge.net",
     "SSH_UPLOAD_BASE_DIR": "/home/frs/project/galaxy-msm8916",
     #"SSH_UPLOAD_IDENTITY": "",
+    "GIT_AUTHOR_EMAIL": "gerrit@msm8916.com",
+    "GIT_AUTHOR_NAME": "Gerrit",
 }
 
 jobs = {
