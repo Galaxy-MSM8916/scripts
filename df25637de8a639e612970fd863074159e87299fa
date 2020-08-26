@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "381fe101_8cd7ecec",
+        "filename": "conf_template/jobs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000024
+      },
+      "writtenOn": "2020-08-26T07:51:48Z",
+      "side": 1,
+      "message": "GIT_COMMITTER_EMAIL",
+      "revId": "df25637de8a639e612970fd863074159e87299fa",
+      "serverId": "5091bff9-ead9-4606-8fa0-a30165edc640",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "049c65c8_a87bc984",
+        "filename": "conf_template/jobs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000024
+      },
+      "writtenOn": "2020-08-26T07:51:48Z",
+      "side": 1,
+      "message": "GIT_COMMITTER_NAME",
+      "revId": "df25637de8a639e612970fd863074159e87299fa",
+      "serverId": "5091bff9-ead9-4606-8fa0-a30165edc640",
+      "unresolved": true
+    }
+  ]
+}
