@@ -24,7 +24,7 @@ def parse_config_url():
             args.append("-h")
             return args
 
-        config_url = sys.argv[i + 1]
+        config_url = args[i + 1]
 
     except ValueError:
         return args
